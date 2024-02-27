@@ -1,5 +1,5 @@
 ---
-title: Discriminating Seagrass From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery
+title: Discriminating Seagrass From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery.
 author:
   - name: Simon Oiry
     orcid: 0000-0001-7161-5246
