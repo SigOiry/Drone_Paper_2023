@@ -75,8 +75,6 @@ key-points:
   - An intertidal vegetation classifier has been built to be used across different study sites without losing classification accuracy. 
   - Neural Network made to accuratly discriminates intertidal seagrasses from green algae (chlorophyceae)
 date: last-modified
-citation:
-  container-title: Earth and Space Science
 number-sections: true
 ---
 

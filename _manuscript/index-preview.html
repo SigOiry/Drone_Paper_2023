@@ -213,7 +213,6 @@
 <meta name="citation_year" content="2024">
 <meta name="citation_online_date" content="2024-02-27">
 <meta name="citation_language" content="en">
-<meta name="citation_journal_title" content="Earth and Space Science">
 <meta name="citation_reference" content="citation_title=The planetary role of seagrass conservation;,citation_author=Richard KF Unsworth;,citation_author=Leanne C Cullen-Unsworth;,citation_author=Benjamin LH Jones;,citation_author=Richard J Lilley;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_issue=6606;,citation_volume=377;,citation_journal_title=Science;,citation_publisher=American Association for the Advancement of Science;">
 <meta name="citation_reference" content="citation_title=Global wetland outlook: State of the world’s wetlands and their services to people;,citation_author=Royal C Gardner;,citation_author=C Finlayson;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;">
 <meta name="citation_reference" content="citation_title=Remote sensing in seagrass ecology: Coupled dynamics between migratory herbivorous birds and intertidal meadows observed by satellite during four decades;,citation_author=Maria Laura Zoffoli;,citation_author=Pierre Gernez;,citation_author=Simon Oiry;,citation_author=Laurent Godet;,citation_author=Sébastien Dalloyau;,citation_author=Bede Ffinian Rowe Davies;,citation_author=Laurent Barillé;,citation_publication_date=2022-12;,citation_cover_date=2022-12;,citation_year=2022;,citation_doi=10.1002/rse2.319;,citation_issn=2056-3485;,citation_journal_title=Remote Sensing in Ecology and Conservation;">
@@ -512,7 +511,7 @@ L'objet suivant est masqué depuis 'package:stats':
 ✖ dplyr::lag()        masks stats::lag()
 ✖ yardstick::spec()   masks readr::spec()
 ✖ recipes::step()     masks stats::step()
-• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
+• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Utilities.Package) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -6478,7 +6477,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
