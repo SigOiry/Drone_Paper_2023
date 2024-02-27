@@ -14,7 +14,7 @@ format:
   docx:
     reference-doc: Word_Template.docx
   jats: default
-  pdf: default
+  elsevier-pdf: default
 
 bibliography: library.bib
 

@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving
+and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
+
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+
+<front>
+<journal-meta>
+<journal-id></journal-id>
+
+<journal-title-group>
+<journal-title>Earth and Space Science</journal-title>
+</journal-title-group>
+<issn></issn>
+
+<publisher>
+<publisher-name></publisher-name>
+</publisher>
+</journal-meta>
+
+
+<article-meta>
+
+
+<title-group>
+<article-title>Discriminating Seagrass From Green Macroalgae in European
+Intertidal areas using high resolution multispectral drone
+imagery</article-title>
+</title-group>
+
+<contrib-group>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">0000-0001-7161-5246</contrib-id>
+<name>
+<surname>Oiry</surname>
+<given-names>Simon</given-names>
+</name>
+<string-name>Simon Oiry</string-name>
+
+<email>oirysimon@gmail.com</email>
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role vocab="https://credit.niso.org" vocab-term="writing – original
+draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">Writing</role>
+<role>Data acquisition</role>
+<xref ref-type="aff" rid="aff-1">a</xref>
+<xref ref-type="corresp" rid="cor-1">&#x002A;</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Davies</surname>
+<given-names>Bede Ffinian Rowe</given-names>
+</name>
+<string-name>Bede Ffinian Rowe Davies</string-name>
+
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-1">a</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Gernez</surname>
+<given-names>Pierre</given-names>
+</name>
+<string-name>Pierre Gernez</string-name>
+
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-1">a</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Sousa</surname>
+<given-names>Ana I.</given-names>
+</name>
+<string-name>Ana I. Sousa</string-name>
+
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-2">b</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Rosa</surname>
+<given-names>Philippe</given-names>
+</name>
+<string-name>Philippe Rosa</string-name>
+
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-1">a</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Zoffoli</surname>
+<given-names>Maria Laura</given-names>
+</name>
+<string-name>Maria Laura Zoffoli</string-name>
+
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-3">c</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Brunier</surname>
+<given-names>Guillaume</given-names>
+</name>
+<string-name>Guillaume Brunier</string-name>
+
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-4">d</xref>
+</contrib>
+<contrib contrib-type="author">
+<name>
+<surname>Barillé</surname>
+<given-names>Laurent</given-names>
+</name>
+<string-name>Laurent Barillé</string-name>
+
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role>Data acquisition</role>
+<role>Revision</role>
+<xref ref-type="aff" rid="aff-1">a</xref>
+</contrib>
+</contrib-group>
+<aff id="aff-1">
+<institution-wrap>
+<institution>Nantes University</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="aff-2">
+<institution-wrap>
+<institution>Aveiro University</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="aff-3">
+<institution-wrap>
+<institution>CNR ISMAR</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="aff-4">
+<institution-wrap>
+<institution>JeSaisPas</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<author-notes>
+<corresp id="cor-1">oirysimon@gmail.com</corresp>
+</author-notes>
+
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-02-27">
+<year>2024</year>
+<month>2</month>
+<day>27</day>
+</pub-date>
+
+
+
+
+
+
+
+<history></history>
+
+
+<abstract>
+<p>In September 2021, a significant jump in seismic activity on the
+island of La Palma (Canary Islands, Spain) signaled the start of a
+volcanic crisis that still continues at the time of writing. Earthquake
+data is continually collected and published by the Instituto Geográphico
+Nacional (IGN). …</p>
+</abstract>
+<kwd-group kwd-group-type="author">
+<kwd>Drone</kwd>
+<kwd>Remote Sensing</kwd>
+</kwd-group>
+
+
+
+
+</article-meta>
+
+</front>
+
+<body>
+<sec id="introduction">
+  <title>1. Introduction</title>
+  <p>Coastal areas are vital hotshots for marine biodiversity, with
+  intertidal seagrass meadows playing a crucial role at the interface
+  between land and ocean
+  (<xref alt="Unsworth et al. 2022" rid="ref-unsworth2022" ref-type="bibr">Unsworth
+  et al. 2022</xref>). These meadows offer a myriad of ecosystem
+  services to humanity, including limitation of coastline erosion,
+  reducing the risk of eutrophication, carbon sequestration, and oxygen
+  production. They serve as vital habitats for a diverse array of marine
+  and terrestrial species, providing living, breeding, and feeding
+  grounds
+  (<xref alt="Gardner and Finlayson 2018" rid="ref-gardner2018" ref-type="bibr">Gardner
+  and Finlayson 2018</xref> ;
+  <xref alt="Zoffoli et al. 2022" rid="ref-Zoffoli2022" ref-type="bibr">Zoffoli
+  et al. 2022</xref> ;
+  <xref alt="Jankowska et al. 2019" rid="ref-jankowska2019" ref-type="bibr">Jankowska
+  et al. 2019</xref>). Due to their proximity to human activities,
+  seagrass meadows are directly exposed to and impacted by anthropogenic
+  pressures. Global regression and fragmentation are currently observed
+  due to diseases, disasters, coastal urbanization, sea reclamation, as
+  well as fishing activities, dredging, sea level rise, coastal erosion,
+  competition with alien species, and reduction in water quality
+  (<xref alt="Nguyen et al. 2021" rid="ref-nguyen2021" ref-type="bibr">Nguyen
+  et al. 2021</xref> ;
+  <xref alt="Soissons et al. 2018" rid="ref-soissons2018" ref-type="bibr">Soissons
+  et al. 2018</xref> ;
+  <xref alt="Orth et al. 2006" rid="ref-orth2006" ref-type="bibr">Orth
+  et al. 2006</xref> ;
+  <xref alt="Lin et al. 2018" rid="ref-lin2018" ref-type="bibr">Lin et
+  al. 2018</xref> ;
+  <xref alt="Duffy et al. 2019" rid="ref-duffy2019" ref-type="bibr">Duffy
+  et al. 2019</xref>). While improvements in water quality have been
+  recently reported in European sites, allowing an overall recovery of
+  seagrass ecosystems at the local scale, many other coastal waters
+  worldwide are still subjected to strong eutrophication processes
+  (<xref alt="Los Santos et al. 2019" rid="ref-deSantos2019" ref-type="bibr">Los
+  Santos et al. 2019</xref> ;
+  <xref alt="Zoffoli et al. 2021" rid="ref-Zoffoli2021" ref-type="bibr">Zoffoli
+  et al. 2021</xref>). Coastal eutrophication has been associated to
+  anomalous accumulation of green macroalgae, the so-called green tides.
+  Green tides produce shade and suffication over seagrass individuals,
+  thus threatening the health of seagrass ecosystems
+  (<xref alt="Duarte2002?" rid="ref-Duarte2002" ref-type="bibr"><bold>Duarte2002?</bold></xref>
+  ; <xref alt="Wang et al. 2022" rid="ref-wang2022" ref-type="bibr">Wang
+  et al. 2022</xref>).</p>
+  <p>The importance of seagrass meadows and the variety of ecosystem
+  services they provide have led to the enhancement of global and
+  regional monitoring programs for systematically surveying different
+  Essential Oceanic Variable
+  (<xref alt="Miloslavich et al. 2018" rid="ref-Miloslavich2018" ref-type="bibr">Miloslavich
+  et al. 2018</xref>) as seagrass coverage and composition; as well as
+  Essential Biodiversity Variable
+  (<xref alt="Pereira et al. 2013" rid="ref-Pereira2013" ref-type="bibr">Pereira
+  et al. 2013</xref>) such as seagrass taxonomic diversity; species
+  distribution, population abundance, and phenology. Monitoring programs
+  also prioritize the identification of threats to these ecosystems,
+  particularly during early stages, to facilitate effective mitigation
+  actions. Traditionally, these ecological parameters have been
+  quantified through in situ measurements, although this approach faces
+  several constraints over intertidal zones. Intertidal meadows are only
+  partially exposed during low tide and can be situated in
+  difficult-to-reach mudflats, potentially leading to inaccurate and
+  limited estimations with conventional sampling techniques
+  (<xref alt="Nijland, Reshitnyk, and Rubidge 2019" rid="ref-nijland2019" ref-type="bibr">Nijland,
+  Reshitnyk, and Rubidge 2019</xref>). However, satellite data have been
+  proven effective in complenmenting in situ surveys, allowing for the
+  rapid and consitent retrieval of EOV’s over extensive seagrass
+  meadows.
+  (<xref alt="Zoffoli et al. 2021" rid="ref-Zoffoli2021" ref-type="bibr">Zoffoli
+  et al. 2021</xref> ;
+  <xref alt="Xu et al. 2021" rid="ref-xu2021" ref-type="bibr">Xu et al.
+  2021</xref> ;
+  <xref alt="Traganos and Reinartz 2018" rid="ref-Traganos2018" ref-type="bibr">Traganos
+  and Reinartz 2018</xref> ;
+  <xref alt="Coffer et al. 2023" rid="ref-coffer2023" ref-type="bibr">Coffer
+  et al. 2023</xref>)</p>
+  <p>Satellite remote sensing offers the advantage of acquiring
+  large-scale data in real-time but presents its inherent challenges.
+  Free access satellite data (e.g., Sentinel-2 and Landsat8/9) provide
+  relatively low spatial resolution data (10 - 30 m) across a limited
+  number of spectral bands. These characteristics can be a limitation to
+  accurately discriminating seagrass from others co-existing macrophytes
+  over the meadow. Chlorophyceae (Green Algae) and marine Magnoliopsida
+  (Seagrass) share the same pigment composition
+  (<xref alt="Ralph et al. 2002" rid="ref-ralph2002" ref-type="bibr">Ralph
+  et al. 2002</xref> ;
+  <xref alt="Douay et al. 2022" rid="ref-Douay2022" ref-type="bibr">Douay
+  et al. 2022</xref>). As a result, their respective spectral signatures
+  can be considered similar by a non-expert observer
+  (<xref alt="Davies et al. 2023" rid="ref-Davies2023" ref-type="bibr">Davies
+  et al. 2023</xref> ;
+  <xref alt="Bannari, Ali, and Abahussain 2022" rid="ref-bannari2022" ref-type="bibr">Bannari,
+  Ali, and Abahussain 2022</xref>). Recently, using a hyperspectral
+  library, Davies et al.
+  (<xref alt="2023" rid="ref-Davies2023" ref-type="bibr">2023</xref>)
+  demonstrated that the spectral resolution of Sentinel-2, might be
+  enough for the discrimination between Magnoliopsida and Chlorophyceae.
+  However, green tide events occur at small spatial scales that are not
+  observable using satellite imagery
+  (<xref alt="Tuya et al. 2013" rid="ref-tuya2013" ref-type="bibr">Tuya
+  et al. 2013</xref>), especially during the initial stage of the
+  event.</p>
+  <p>Remote sensing drone acquisitions are presented as a tool that can
+  potentially fill gaps left by satellite and in situ data. Drone can
+  cover large expanses while recording imagery at significantly higher
+  spatial resolutions than satellite (pixel size from cm to mm) and
+  still capturing data at multi-spectral resolution
+  (<xref alt="Fairley et al. 2022" rid="ref-fairley2022drone" ref-type="bibr">Fairley
+  et al. 2022</xref> ;
+  <xref alt="Oh, Kim, and Lee 2017" rid="ref-oh2017use" ref-type="bibr">Oh,
+  Kim, and Lee 2017</xref>). The versatility of drones allows for their
+  application across a diverse thematic range , from coastal zone
+  management
+  (<xref alt="Adade et al. 2021" rid="ref-adade2021" ref-type="bibr">Adade
+  et al. 2021</xref> ;
+  <xref alt="Casella et al. 2020" rid="ref-casella2020" ref-type="bibr">Casella
+  et al. 2020</xref> ;
+  <xref alt="Angnuureng et al. 2022" rid="ref-angnuureng2022" ref-type="bibr">Angnuureng
+  et al. 2022</xref>) to mapping the spatial distribution of species
+  (<xref alt="Joyce, Fickas, and Kalamandeen 2023" rid="ref-joyce2023" ref-type="bibr">Joyce,
+  Fickas, and Kalamandeen 2023</xref> ;
+  <xref alt="Tallam et al. 2023" rid="ref-tallam2023" ref-type="bibr">Tallam
+  et al. 2023</xref> ;
+  <xref alt="Roca et al. 2022" rid="ref-Roca2022" ref-type="bibr">Roca
+  et al. 2022</xref> ;
+  <xref alt="Román et al. 2021" rid="ref-Roman2021" ref-type="bibr">Román
+  et al. 2021</xref> ;
+  <xref alt="Brunier et al. 2022" rid="ref-Brunier2022Topographic" ref-type="bibr">Brunier
+  et al. 2022</xref>). However, when applied to coastal habitat mapping,
+  many studies showcase their findings with study case limited to a
+  single flight, restricting the generalizability of their application
+  to other sites
+  (<xref alt="Román et al. 2021" rid="ref-Roman2021" ref-type="bibr">Román
+  et al. 2021</xref> ;
+  <xref alt="Collin et al. 2019" rid="ref-collin2019improving" ref-type="bibr">Collin
+  et al. 2019</xref> ;
+  <xref alt="Rossiter et al. 2020" rid="ref-rossiter2020uav" ref-type="bibr">Rossiter
+  et al. 2020</xref> ;
+  <xref alt="Brunier et al. 2022" rid="ref-Brunier2022Topographic" ref-type="bibr">Brunier
+  et al. 2022</xref>). This study aimed to analyze the potential of a
+  drone equipped with a multispectral sensor for maping intertidal
+  macrophytes, with a particular focus on discriminating Magnoliopsida
+  and Chlorophyceae. Ten drone flights were performed over soft-bottom
+  intertidal areas along two European countries (France and Portugal),
+  covering a wide range of habitats, from monospecific seagrass meadows
+  to meadows mixed with green or red algae. A deep learning algorithm
+  was trained and validated for macrophyte discrimination, emphasizing
+  applicability across diverse sites without a loss of accuracy in
+  predictions.</p>
+</sec>
+</body>
+
+<back>
+<ref-list>
+  <title></title>
+  <ref id="ref-unsworth2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Unsworth</surname><given-names>Richard KF</given-names></name>
+        <name><surname>Cullen-Unsworth</surname><given-names>Leanne C</given-names></name>
+        <name><surname>Jones</surname><given-names>Benjamin LH</given-names></name>
+        <name><surname>Lilley</surname><given-names>Richard J</given-names></name>
+      </person-group>
+      <article-title>The planetary role of seagrass conservation</article-title>
+      <source>Science</source>
+      <publisher-name>American Association for the Advancement of Science</publisher-name>
+      <year iso-8601-date="2022">2022</year>
+      <volume>377</volume>
+      <issue>6606</issue>
+      <fpage>609</fpage>
+      <lpage>613</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-gardner2018">
+    <element-citation publication-type="book">
+      <person-group person-group-type="author">
+        <name><surname>Gardner</surname><given-names>Royal C</given-names></name>
+        <name><surname>Finlayson</surname><given-names>C</given-names></name>
+      </person-group>
+      <source>Global wetland outlook: State of the world’s wetlands and their services to people</source>
+      <year iso-8601-date="2018">2018</year>
+      <fpage>2020</fpage>
+      <lpage>5</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Zoffoli2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Zoffoli</surname><given-names>Maria Laura</given-names></name>
+        <name><surname>Gernez</surname><given-names>Pierre</given-names></name>
+        <name><surname>Oiry</surname><given-names>Simon</given-names></name>
+        <name><surname>Godet</surname><given-names>Laurent</given-names></name>
+        <name><surname>Dalloyau</surname><given-names>Sébastien</given-names></name>
+        <name><surname>Davies</surname><given-names>Bede Ffinian Rowe</given-names></name>
+        <name><surname>Barillé</surname><given-names>Laurent</given-names></name>
+      </person-group>
+      <article-title>Remote sensing in seagrass ecology: Coupled dynamics between migratory herbivorous birds and intertidal meadows observed by satellite during four decades</article-title>
+      <source>Remote Sensing in Ecology and Conservation</source>
+      <year iso-8601-date="2022-12">2022</year><month>12</month>
+      <issn>2056-3485</issn>
+      <pub-id pub-id-type="doi">10.1002/rse2.319</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-jankowska2019">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Jankowska</surname><given-names>Emilia</given-names></name>
+        <name><surname>Michel</surname><given-names>Loı̈c N</given-names></name>
+        <name><surname>Lepoint</surname><given-names>Gilles</given-names></name>
+        <name><surname>Włodarska-Kowalczuk</surname><given-names>Maria</given-names></name>
+      </person-group>
+      <article-title>Stabilizing effects of seagrass meadows on coastal water benthic food webs</article-title>
+      <source>Journal of Experimental Marine Biology and Ecology</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2019">2019</year>
+      <volume>510</volume>
+      <fpage>54</fpage>
+      <lpage>63</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-nguyen2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Nguyen</surname><given-names>Hung Manh</given-names></name>
+        <name><surname>Ralph</surname><given-names>Peter J</given-names></name>
+        <name><surname>Marı́n-Guirao</surname><given-names>Lázaro</given-names></name>
+        <name><surname>Pernice</surname><given-names>Mathieu</given-names></name>
+        <name><surname>Procaccini</surname><given-names>Gabriele</given-names></name>
+      </person-group>
+      <article-title>Seagrasses in an era of ocean warming: A review</article-title>
+      <source>Biological Reviews</source>
+      <publisher-name>Wiley Online Library</publisher-name>
+      <year iso-8601-date="2021">2021</year>
+      <volume>96</volume>
+      <issue>5</issue>
+      <fpage>2009</fpage>
+      <lpage>2030</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-soissons2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Soissons</surname><given-names>Laura M</given-names></name>
+        <name><surname>Haanstra</surname><given-names>Eeke P</given-names></name>
+        <name><surname>Van Katwijk</surname><given-names>Marieke M</given-names></name>
+        <name><surname>Asmus</surname><given-names>Ragnhild</given-names></name>
+        <name><surname>Auby</surname><given-names>Isabelle</given-names></name>
+        <name><surname>Barillé</surname><given-names>Laurent</given-names></name>
+        <name><surname>Brun</surname><given-names>Fernando G</given-names></name>
+        <name><surname>Cardoso</surname><given-names>Patricia G</given-names></name>
+        <name><surname>Desroy</surname><given-names>Nicolas</given-names></name>
+        <name><surname>Fournier</surname><given-names>Jerome</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Latitudinal patterns in european seagrass carbon reserves: Influence of seasonal fluctuations versus short-term stress and disturbance events</article-title>
+      <source>Frontiers in Plant Science</source>
+      <publisher-name>Frontiers Media SA</publisher-name>
+      <year iso-8601-date="2018">2018</year>
+      <volume>9</volume>
+      <fpage>88</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-orth2006">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Orth</surname><given-names>Robert J</given-names></name>
+        <name><surname>Carruthers</surname><given-names>Tim JB</given-names></name>
+        <name><surname>Dennison</surname><given-names>William C</given-names></name>
+        <name><surname>Duarte</surname><given-names>Carlos M</given-names></name>
+        <name><surname>Fourqurean</surname><given-names>James W</given-names></name>
+        <name><surname>Heck</surname><given-names>Kenneth L</given-names></name>
+        <name><surname>Hughes</surname><given-names>A Randall</given-names></name>
+        <name><surname>Kendrick</surname><given-names>Gary A</given-names></name>
+        <name><surname>Kenworthy</surname><given-names>W Judson</given-names></name>
+        <name><surname>Olyarnik</surname><given-names>Suzanne</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>A global crisis for seagrass ecosystems</article-title>
+      <source>Bioscience</source>
+      <publisher-name>American Institute of Biological Sciences</publisher-name>
+      <year iso-8601-date="2006">2006</year>
+      <volume>56</volume>
+      <issue>12</issue>
+      <fpage>987</fpage>
+      <lpage>996</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-lin2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Lin</surname><given-names>Haiying</given-names></name>
+        <name><surname>Sun</surname><given-names>Tao</given-names></name>
+        <name><surname>Zhou</surname><given-names>Yi</given-names></name>
+        <name><surname>Gu</surname><given-names>Ruiting</given-names></name>
+        <name><surname>Zhang</surname><given-names>Xiaomei</given-names></name>
+        <name><surname>Yang</surname><given-names>Wei</given-names></name>
+      </person-group>
+      <article-title>Which genes in a typical intertidal seagrass (zostera japonica) indicate copper-, lead-, and cadmium pollution?</article-title>
+      <source>Frontiers in Plant Science</source>
+      <publisher-name>Frontiers Media SA</publisher-name>
+      <year iso-8601-date="2018">2018</year>
+      <volume>9</volume>
+      <fpage>1545</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-duffy2019">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Duffy</surname><given-names>J Emmett</given-names></name>
+        <name><surname>Benedetti-Cecchi</surname><given-names>Lisandro</given-names></name>
+        <name><surname>Trinanes</surname><given-names>Joaquin</given-names></name>
+        <name><surname>Muller-Karger</surname><given-names>Frank E</given-names></name>
+        <name><surname>Ambo-Rappe</surname><given-names>Rohani</given-names></name>
+        <name><surname>Boström</surname><given-names>Christoffer</given-names></name>
+        <name><surname>Buschmann</surname><given-names>Alejandro H</given-names></name>
+        <name><surname>Byrnes</surname><given-names>Jarrett</given-names></name>
+        <name><surname>Coles</surname><given-names>Robert G</given-names></name>
+        <name><surname>Creed</surname><given-names>Joel</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Toward a coordinated global observing system for seagrasses and marine macroalgae</article-title>
+      <source>Frontiers in Marine Science</source>
+      <publisher-name>Frontiers Media SA</publisher-name>
+      <year iso-8601-date="2019">2019</year>
+      <volume>6</volume>
+      <fpage>317</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-deSantos2019">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Los Santos</surname><given-names>Carmen B de</given-names></name>
+        <name><surname>Krause-Jensen</surname><given-names>Dorte</given-names></name>
+        <name><surname>Alcoverro</surname><given-names>Teresa</given-names></name>
+        <name><surname>Marbà</surname><given-names>Núria</given-names></name>
+        <name><surname>Duarte</surname><given-names>Carlos M</given-names></name>
+        <name><surname>Van Katwijk</surname><given-names>Marieke M</given-names></name>
+        <name><surname>Pérez</surname><given-names>Marta</given-names></name>
+        <name><surname>Romero</surname><given-names>Javier</given-names></name>
+        <name><surname>Sánchez-Lizaso</surname><given-names>José L</given-names></name>
+        <name><surname>Roca</surname><given-names>Guillem</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Recent trend reversal for declining european seagrass meadows</article-title>
+      <source>Nature communications</source>
+      <publisher-name>Nature Publishing Group UK London</publisher-name>
+      <year iso-8601-date="2019">2019</year>
+      <volume>10</volume>
+      <issue>1</issue>
+      <fpage>3356</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Zoffoli2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Zoffoli</surname><given-names>Maria Laura</given-names></name>
+        <name><surname>Gernez</surname><given-names>Pierre</given-names></name>
+        <name><surname>Godet</surname><given-names>Laurent</given-names></name>
+        <name><surname>Peters</surname><given-names>Steef</given-names></name>
+        <name><surname>Oiry</surname><given-names>Simon</given-names></name>
+        <name><surname>Barillé</surname><given-names>Laurent</given-names></name>
+      </person-group>
+      <article-title>Decadal increase in the ecological status of a north-atlantic intertidal seagrass meadow observed with multi-mission satellite time-series</article-title>
+      <source>Ecological Indicators</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2021-11">2021</year><month>11</month>
+      <volume>130</volume>
+      <issn>1470160X</issn>
+      <uri>https://linkinghub.elsevier.com/retrieve/pii/S1470160X21006981</uri>
+      <pub-id pub-id-type="doi">10.1016/j.ecolind.2021.108033</pub-id>
+      <fpage>108033</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-wang2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Wang</surname><given-names>Zhongyuan</given-names></name>
+        <name><surname>Fang</surname><given-names>Zhixiang</given-names></name>
+        <name><surname>Liang</surname><given-names>Jianfeng</given-names></name>
+        <name><surname>Song</surname><given-names>Xiao</given-names></name>
+      </person-group>
+      <article-title>Assessment of global habitat suitability and risk of ocean green tides</article-title>
+      <source>Harmful Algae</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2022">2022</year>
+      <volume>119</volume>
+      <fpage>102324</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Miloslavich2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Miloslavich</surname><given-names>Patricia</given-names></name>
+        <name><surname>Bax</surname><given-names>Nicholas J.</given-names></name>
+        <name><surname>Simmons</surname><given-names>Samantha E.</given-names></name>
+        <name><surname>Klein</surname><given-names>Eduardo</given-names></name>
+        <name><surname>Appeltans</surname><given-names>Ward</given-names></name>
+        <name><surname>Aburto-Oropeza</surname><given-names>Octavio</given-names></name>
+        <name><surname>Garcia</surname><given-names>Melissa Andersen</given-names></name>
+        <name><surname>Batten</surname><given-names>Sonia D.</given-names></name>
+        <name><surname>Benedetti-Cecchi</surname><given-names>Lisandro</given-names></name>
+        <name><surname>Checkley</surname><given-names>David M.</given-names></name>
+        <name><surname>Chiba</surname><given-names>Sanae</given-names></name>
+        <name><surname>Duffy</surname><given-names>J. Emmett</given-names></name>
+        <name><surname>Dunn</surname><given-names>Daniel C.</given-names></name>
+        <name><surname>Fischer</surname><given-names>Albert</given-names></name>
+        <name><surname>Gunn</surname><given-names>John</given-names></name>
+        <name><surname>Kudela</surname><given-names>Raphael</given-names></name>
+        <name><surname>Marsac</surname><given-names>Francis</given-names></name>
+        <name><surname>Muller-Karger</surname><given-names>Frank E.</given-names></name>
+        <name><surname>Obura</surname><given-names>David</given-names></name>
+        <name><surname>Shin</surname><given-names>Yunne Jai</given-names></name>
+      </person-group>
+      <article-title>Essential ocean variables for global sustained observations of biodiversity and ecosystem changes</article-title>
+      <source>Global Change Biology</source>
+      <publisher-name>John Wiley &amp; Sons, Ltd</publisher-name>
+      <year iso-8601-date="2018-06">2018</year><month>06</month>
+      <volume>24</volume>
+      <issn>1365-2486</issn>
+      <uri>https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.14108 https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.14108 https://onlinelibrary.wiley.com/doi/10.1111/gcb.14108</uri>
+      <pub-id pub-id-type="doi">10.1111/GCB.14108</pub-id>
+      <fpage>2416</fpage>
+      <lpage>2433</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-nijland2019">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Nijland</surname><given-names>Wiebe</given-names></name>
+        <name><surname>Reshitnyk</surname><given-names>Luba</given-names></name>
+        <name><surname>Rubidge</surname><given-names>Emily</given-names></name>
+      </person-group>
+      <article-title>Satellite remote sensing of canopy-forming kelp on a complex coastline: A novel procedure using the landsat image archive</article-title>
+      <source>Remote Sensing of Environment</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2019">2019</year>
+      <volume>220</volume>
+      <fpage>41</fpage>
+      <lpage>50</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-xu2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Xu</surname><given-names>Shaochun</given-names></name>
+        <name><surname>Xu</surname><given-names>Shuai</given-names></name>
+        <name><surname>Zhou</surname><given-names>Yi</given-names></name>
+        <name><surname>Yue</surname><given-names>Shidong</given-names></name>
+        <name><surname>Zhang</surname><given-names>Xiaomei</given-names></name>
+        <name><surname>Gu</surname><given-names>Ruiting</given-names></name>
+        <name><surname>Zhang</surname><given-names>Yu</given-names></name>
+        <name><surname>Qiao</surname><given-names>Yongliang</given-names></name>
+        <name><surname>Liu</surname><given-names>Mingjie</given-names></name>
+      </person-group>
+      <article-title>Long-term changes in the unique and largest seagrass meadows in the bohai sea (china) using satellite (1974–2019) and sonar data: Implication for conservation and restoration</article-title>
+      <source>Remote Sensing</source>
+      <publisher-name>MDPI</publisher-name>
+      <year iso-8601-date="2021">2021</year>
+      <volume>13</volume>
+      <issue>5</issue>
+      <fpage>856</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Traganos2018">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Traganos</surname><given-names>Dimosthenis</given-names></name>
+        <name><surname>Reinartz</surname><given-names>Peter</given-names></name>
+      </person-group>
+      <article-title>Mapping mediterranean seagrasses with sentinel-2 imagery</article-title>
+      <source>Marine Pollution Bulletin</source>
+      <publisher-name>Elsevier Ltd</publisher-name>
+      <year iso-8601-date="2018">2018</year>
+      <volume>134</volume>
+      <issn>18793363</issn>
+      <pub-id pub-id-type="doi">10.1016/j.marpolbul.2017.06.075</pub-id>
+      <fpage>197</fpage>
+      <lpage>209</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-coffer2023">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Coffer</surname><given-names>Megan M</given-names></name>
+        <name><surname>Graybill</surname><given-names>David D</given-names></name>
+        <name><surname>Whitman</surname><given-names>Peter J</given-names></name>
+        <name><surname>Schaeffer</surname><given-names>Blake A</given-names></name>
+        <name><surname>Salls</surname><given-names>Wilson B</given-names></name>
+        <name><surname>Zimmerman</surname><given-names>Richard C</given-names></name>
+        <name><surname>Hill</surname><given-names>Victoria</given-names></name>
+        <name><surname>Lebrasse</surname><given-names>Marie Cindy</given-names></name>
+        <name><surname>Li</surname><given-names>Jiang</given-names></name>
+        <name><surname>Keith</surname><given-names>Darryl J</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Providing a framework for seagrass mapping in united states coastal ecosystems using high spatial resolution satellite imagery</article-title>
+      <source>Journal of Environmental Management</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2023">2023</year>
+      <volume>337</volume>
+      <fpage>117669</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-ralph2002">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Ralph</surname><given-names>PJ</given-names></name>
+        <name><surname>Polk</surname><given-names>SM</given-names></name>
+        <name><surname>Moore</surname><given-names>KA</given-names></name>
+        <name><surname>Orth</surname><given-names>RJ</given-names></name>
+        <name><surname>Smith Jr</surname><given-names>WO</given-names></name>
+      </person-group>
+      <article-title>Operation of the xanthophyll cycle in the seagrass zostera marina in response to variable irradiance</article-title>
+      <source>Journal of Experimental Marine Biology and Ecology</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2002">2002</year>
+      <volume>271</volume>
+      <issue>2</issue>
+      <fpage>189</fpage>
+      <lpage>207</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Douay2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Douay</surname><given-names>Florian</given-names></name>
+        <name><surname>Verpoorter</surname><given-names>Charles</given-names></name>
+        <name><surname>Duong</surname><given-names>Gwendoline</given-names></name>
+        <name><surname>Spilmont</surname><given-names>Nicolas</given-names></name>
+        <name><surname>Gevaert</surname><given-names>François</given-names></name>
+      </person-group>
+      <article-title>New hyperspectral procedure to discriminate intertidal macroalgae</article-title>
+      <source>Remote Sensing</source>
+      <year iso-8601-date="2022">2022</year>
+      <volume>14</volume>
+      <issue>2</issue>
+      <issn>2072-4292</issn>
+      <uri>https://www.mdpi.com/2072-4292/14/2/346</uri>
+      <pub-id pub-id-type="doi">10.3390/rs14020346</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-Davies2023">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Davies</surname><given-names>B F R</given-names></name>
+        <name><surname>Gernez</surname><given-names>Pierre</given-names></name>
+        <name><surname>Geraud</surname><given-names>Andréa</given-names></name>
+        <name><surname>Oiry</surname><given-names>Simon</given-names></name>
+        <name><surname>Rosa</surname><given-names>Philippe</given-names></name>
+        <name><surname>Zoffoli</surname><given-names>Maria Laura</given-names></name>
+        <name><surname>Barillé</surname><given-names>Laurent</given-names></name>
+      </person-group>
+      <article-title>Multi- and hyperspectral classification of soft-bottom intertidal vegetation using a spectral library for coastal biodiversity remote sensing</article-title>
+      <source>Remote Sensing of Environment</source>
+      <year iso-8601-date="2023">2023</year>
+      <volume>290</volume>
+      <issn>0034-4257</issn>
+      <uri>https://www.sciencedirect.com/science/article/pii/S0034425723001050</uri>
+      <pub-id pub-id-type="doi">10.1016/j.rse.2023.113554</pub-id>
+      <fpage>113554</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-bannari2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Bannari</surname><given-names>Abderrazak</given-names></name>
+        <name><surname>Ali</surname><given-names>Thamer Salim</given-names></name>
+        <name><surname>Abahussain</surname><given-names>Asma</given-names></name>
+      </person-group>
+      <article-title>The capabilities of sentinel-MSI (2A/2B) and landsat-OLI (8/9) in seagrass and algae species differentiation using spectral reflectance</article-title>
+      <source>Ocean Science</source>
+      <publisher-name>Copernicus GmbH</publisher-name>
+      <year iso-8601-date="2022">2022</year>
+      <volume>18</volume>
+      <issue>2</issue>
+      <fpage>361</fpage>
+      <lpage>388</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-tuya2013">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Tuya</surname><given-names>Fernando</given-names></name>
+        <name><surname>Hernandez-Zerpa</surname><given-names>Harue</given-names></name>
+        <name><surname>Espino</surname><given-names>Fernando</given-names></name>
+        <name><surname>Haroun</surname><given-names>Ricardo</given-names></name>
+      </person-group>
+      <article-title>Drastic decadal decline of the seagrass cymodocea nodosa at gran canaria (eastern atlantic): Interactions with the green algae caulerpa prolifera</article-title>
+      <source>Aquatic Botany</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2013">2013</year>
+      <volume>105</volume>
+      <fpage>1</fpage>
+      <lpage>6</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-fairley2022drone">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Fairley</surname><given-names>Iain</given-names></name>
+        <name><surname>Williamson</surname><given-names>Benjamin J</given-names></name>
+        <name><surname>McIlvenny</surname><given-names>Jason</given-names></name>
+        <name><surname>King</surname><given-names>Nicholas</given-names></name>
+        <name><surname>Masters</surname><given-names>Ian</given-names></name>
+        <name><surname>Lewis</surname><given-names>Matthew</given-names></name>
+        <name><surname>Neill</surname><given-names>Simon</given-names></name>
+        <name><surname>Glasby</surname><given-names>David</given-names></name>
+        <name><surname>Coles</surname><given-names>Daniel</given-names></name>
+        <name><surname>Powell</surname><given-names>Ben</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Drone-based large-scale particle image velocimetry applied to tidal stream energy resource assessment</article-title>
+      <source>Renewable Energy</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2022">2022</year>
+      <volume>196</volume>
+      <fpage>839</fpage>
+      <lpage>855</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-oh2017use">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Oh</surname><given-names>Jaehong</given-names></name>
+        <name><surname>Kim</surname><given-names>Duk-jin</given-names></name>
+        <name><surname>Lee</surname><given-names>Hyoseong</given-names></name>
+      </person-group>
+      <article-title>Use of a drone for mapping and time series image acquisition of tidal zones</article-title>
+      <source>Journal of the Korean Institute of Intelligent Systems</source>
+      <publisher-name>Korean Institute of Intelligent Systems</publisher-name>
+      <year iso-8601-date="2017">2017</year>
+      <volume>27</volume>
+      <issue>2</issue>
+      <fpage>119</fpage>
+      <lpage>125</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-adade2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Adade</surname><given-names>Richard</given-names></name>
+        <name><surname>Aibinu</surname><given-names>Abiodun Musa</given-names></name>
+        <name><surname>Ekumah</surname><given-names>Bernard</given-names></name>
+        <name><surname>Asaana</surname><given-names>Jerry</given-names></name>
+      </person-group>
+      <article-title>Unmanned aerial vehicle (UAV) applications in coastal zone management—a review</article-title>
+      <source>Environmental Monitoring and Assessment</source>
+      <publisher-name>Springer</publisher-name>
+      <year iso-8601-date="2021">2021</year>
+      <volume>193</volume>
+      <fpage>1</fpage>
+      <lpage>12</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-casella2020">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Casella</surname><given-names>Elisa</given-names></name>
+        <name><surname>Drechsel</surname><given-names>Jan</given-names></name>
+        <name><surname>Winter</surname><given-names>Christian</given-names></name>
+        <name><surname>Benninghoff</surname><given-names>Markus</given-names></name>
+        <name><surname>Rovere</surname><given-names>Alessio</given-names></name>
+      </person-group>
+      <article-title>Accuracy of sand beach topography surveying by drones and photogrammetry</article-title>
+      <source>Geo-Marine Letters</source>
+      <publisher-name>Springer</publisher-name>
+      <year iso-8601-date="2020">2020</year>
+      <volume>40</volume>
+      <fpage>255</fpage>
+      <lpage>268</lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-angnuureng2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Angnuureng</surname><given-names>Donatus B</given-names></name>
+        <name><surname>Brempong</surname><given-names>KE</given-names></name>
+        <name><surname>Jayson-Quashigah</surname><given-names>PN</given-names></name>
+        <name><surname>Dada</surname><given-names>OA</given-names></name>
+        <name><surname>Akuoko</surname><given-names>SGI</given-names></name>
+        <name><surname>Frimpomaa</surname><given-names>J</given-names></name>
+        <name><surname>Mattah</surname><given-names>PA</given-names></name>
+        <name><surname>Almar</surname><given-names>Rafaël</given-names></name>
+      </person-group>
+      <article-title>Satellite, drone and video camera multi-platform monitoring of coastal erosion at an engineered pocket beach: A showcase for coastal management at elmina bay, ghana (west africa)</article-title>
+      <source>Regional Studies in Marine Science</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2022">2022</year>
+      <volume>53</volume>
+      <fpage>102437</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-joyce2023">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Joyce</surname><given-names>Karen E</given-names></name>
+        <name><surname>Fickas</surname><given-names>Kate C</given-names></name>
+        <name><surname>Kalamandeen</surname><given-names>Michelle</given-names></name>
+      </person-group>
+      <article-title>The unique value proposition for using drones to map coastal ecosystems</article-title>
+      <source>Cambridge Prisms: Coastal Futures</source>
+      <publisher-name>Cambridge University Press</publisher-name>
+      <year iso-8601-date="2023">2023</year>
+      <volume>1</volume>
+      <fpage>e6</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-tallam2023">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Tallam</surname><given-names>Krti</given-names></name>
+        <name><surname>Nguyen</surname><given-names>Nam</given-names></name>
+        <name><surname>Ventura</surname><given-names>Jonathan</given-names></name>
+        <name><surname>Fricker</surname><given-names>Andrew</given-names></name>
+        <name><surname>Calhoun</surname><given-names>Sadie</given-names></name>
+        <name><surname>O’Leary</surname><given-names>Jennifer</given-names></name>
+        <name><surname>Fitzgibbons</surname><given-names>Mauriça</given-names></name>
+        <name><surname>Robbins</surname><given-names>Ian</given-names></name>
+        <name><surname>Walter</surname><given-names>Ryan K</given-names></name>
+      </person-group>
+      <article-title>Application of deep learning for classification of intertidal eelgrass from drone-acquired imagery</article-title>
+      <source>Remote Sensing</source>
+      <publisher-name>MDPI</publisher-name>
+      <year iso-8601-date="2023">2023</year>
+      <volume>15</volume>
+      <issue>9</issue>
+      <fpage>2321</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Roca2022">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Roca</surname><given-names>Mar</given-names></name>
+        <name><surname>Dunbar</surname><given-names>Martha Bonnet</given-names></name>
+        <name><surname>Román</surname><given-names>Alejandro</given-names></name>
+        <name><surname>Caballero</surname><given-names>Isabel</given-names></name>
+        <name><surname>Zoffoli</surname><given-names>Maria Laura</given-names></name>
+        <name><surname>Gernez</surname><given-names>Pierre</given-names></name>
+        <name><surname>Navarro</surname><given-names>Gabriel</given-names></name>
+      </person-group>
+      <article-title>Monitoring the marine invasive alien species rugulopteryx okamurae using unmanned aerial vehicles and satellites</article-title>
+      <source>Frontiers in Marine Science</source>
+      <year iso-8601-date="2022-10">2022</year><month>10</month>
+      <volume>9</volume>
+      <issn>2296-7745</issn>
+      <pub-id pub-id-type="doi">10.3389/fmars.2022.1004012</pub-id>
+    </element-citation>
+  </ref>
+  <ref id="ref-Roman2021">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Román</surname><given-names>Alejandro</given-names></name>
+        <name><surname>Tovar-Sánchez</surname><given-names>Antonio</given-names></name>
+        <name><surname>Olivé</surname><given-names>Irene</given-names></name>
+        <name><surname>Navarro</surname><given-names>Gabriel</given-names></name>
+      </person-group>
+      <article-title>Using a UAV-mounted multispectral camera for the monitoring of marine macrophytes</article-title>
+      <source>Frontiers in Marine Science</source>
+      <publisher-name>Frontiers</publisher-name>
+      <year iso-8601-date="2021">2021</year>
+      <fpage>1225</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Brunier2022Topographic">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Brunier</surname><given-names>Guillaume</given-names></name>
+        <name><surname>Oiry</surname><given-names>Simon</given-names></name>
+        <name><surname>Gruet</surname><given-names>Yves</given-names></name>
+        <name><surname>Dubois</surname><given-names>Stanislas F.</given-names></name>
+        <name><surname>Barillé</surname><given-names>Laurent</given-names></name>
+      </person-group>
+      <article-title>Topographic analysis of intertidal polychaete reefs (sabellaria alveolata) at a very high spatial resolution</article-title>
+      <source>Remote Sensing 2022, Vol. 14, Page 307</source>
+      <publisher-name>Multidisciplinary Digital Publishing Institute</publisher-name>
+      <year iso-8601-date="2022-01">2022</year><month>01</month>
+      <volume>14</volume>
+      <issn>2072-4292</issn>
+      <uri>https://www.mdpi.com/2072-4292/14/2/307</uri>
+      <pub-id pub-id-type="doi">10.3390/RS14020307</pub-id>
+      <fpage>307</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-collin2019improving">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Collin</surname><given-names>Antoine</given-names></name>
+        <name><surname>Dubois</surname><given-names>Stanislas</given-names></name>
+        <name><surname>James</surname><given-names>Dorothée</given-names></name>
+        <name><surname>Houet</surname><given-names>Thomas</given-names></name>
+      </person-group>
+      <article-title>Improving intertidal reef mapping using UAV surface, red edge, and near-infrared data</article-title>
+      <source>Drones</source>
+      <publisher-name>MDPI</publisher-name>
+      <year iso-8601-date="2019">2019</year>
+      <volume>3</volume>
+      <issue>3</issue>
+      <fpage>67</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-rossiter2020uav">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Rossiter</surname><given-names>Thomas</given-names></name>
+        <name><surname>Furey</surname><given-names>Thomas</given-names></name>
+        <name><surname>McCarthy</surname><given-names>Tim</given-names></name>
+        <name><surname>Stengel</surname><given-names>Dagmar B</given-names></name>
+      </person-group>
+      <article-title>UAV-mounted hyperspectral mapping of intertidal macroalgae</article-title>
+      <source>Estuarine, Coastal and Shelf Science</source>
+      <publisher-name>Elsevier</publisher-name>
+      <year iso-8601-date="2020">2020</year>
+      <volume>242</volume>
+      <fpage>106789</fpage>
+      <lpage></lpage>
+    </element-citation>
+  </ref>
+  <ref id="ref-Pereira2013">
+    <element-citation publication-type="article-journal">
+      <person-group person-group-type="author">
+        <name><surname>Pereira</surname><given-names>Henrique Miguel</given-names></name>
+        <name><surname>Ferrier</surname><given-names>Simon</given-names></name>
+        <name><surname>Walters</surname><given-names>Michele</given-names></name>
+        <name><surname>Geller</surname><given-names>Gary N</given-names></name>
+        <name><surname>Jongman</surname><given-names>Rob HG</given-names></name>
+        <name><surname>Scholes</surname><given-names>Robert J</given-names></name>
+        <name><surname>Bruford</surname><given-names>Michael William</given-names></name>
+        <name><surname>Brummitt</surname><given-names>Neil</given-names></name>
+        <name><surname>Butchart</surname><given-names>Stuart HM</given-names></name>
+        <name><surname>Cardoso</surname><given-names>AC</given-names></name>
+        <etal/>
+      </person-group>
+      <article-title>Essential biodiversity variables</article-title>
+      <source>Science</source>
+      <publisher-name>American Association for the Advancement of Science</publisher-name>
+      <year iso-8601-date="2013">2013</year>
+      <volume>339</volume>
+      <issue>6117</issue>
+      <fpage>277</fpage>
+      <lpage>278</lpage>
+    </element-citation>
+  </ref>
+</ref-list>
+</back>
+
+
+
+</article>
