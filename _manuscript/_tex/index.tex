@@ -76,6 +76,18 @@
 \def\fps@figure{htbp}
 \makeatother
 
+\usepackage{fontspec}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage{hhline}
+\newlength\Oldarrayrulewidth
+\newlength\Oldtabcolsep
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{wrapfig}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -192,11 +204,26 @@ Intertidal areas using high resolution multispectral drone imagery.}
 
         
 \begin{abstract}
-In September 2021, a significant jump in seismic activity on the island
-of La Palma (Canary Islands, Spain) signaled the start of a volcanic
-crisis that still continues at the time of writing. Earthquake data is
-continually collected and published by the Instituto Geográphico
-Nacional (IGN). \ldots{}
+Coastal areas host seagrass meadows, which offer crucial ecosystem
+services including erosion control and carbon sequestration. However,
+these areas are increasingly impacted by human activities, leading to
+seagrass decline and habitat fragmentation. In situ surveys,
+traditionally performed to monitor these ecosystems face limitations on
+temporal and spatial coverage, particularly in intertidal zones,
+prompting the use of satellite data within monitoring programs. Yet,
+satellite remote sensing struggles with spatial and spectral resolution,
+making it difficult to discriminate seagrass from other macrophytes in
+highly heterogenous meadows. To address these challenges, drone images
+acquired with multi-spectral sensors offer a promising solution. This
+study focuses on using drones acquisitions for mapping intertidal
+macrophytes, effectively discriminating between seagrass and green
+macroalgae. Ten drone flights were conducted at two different altitudes
+(12m and 120m) across diverse European habitats in France and Portugal.
+Low altitude flights were used to train a Deep Learning classifier based
+on Neural Networks to discrimintate among 5 intertidal vegetation
+classes. Drone mapping demonstrated an overall accuracy of 94\% across
+all the sites and images, covering a total area of 467 000 m². The model
+exhibited an accuracy of 96.4\% in identifying seagrass.
 \end{abstract}
 
 
@@ -209,6 +236,14 @@ Nacional (IGN). \ldots{}
 \end{keyword}
 \end{frontmatter}
     
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
 \section{Introduction}\label{introduction}
 
 Coastal areas are vital hotshots for marine biodiversity, with
@@ -303,7 +338,804 @@ A deep learning algorithm was trained and validated for macrophyte
 discrimination, emphasizing applicability across diverse sites without a
 loss of accuracy in predictions.
 
+\section{Material \& Methods}\label{material-methods}
 
+\subsection{Study sites}\label{study-sites}
+
+Seven study sites distributed between France and Portugal were selected
+for their relatively extensive intertidal seagrass beds. Two sites are
+located in Gulf of Morbihan (Figure~\ref{fig-map} A), France (47.5791°N,
+2.8018°W). This gulf covers an area of 115 km² and is only connect to
+the sea through a 900m wide channel. A total of 53 small islands are
+scattered across the gulf leading to 250 km of shorelines. Patchy
+seagrass meadows can be found on a lot of these islands. Within the Gulf
+of Morbihan we have chosen two sites : One is located in one of these
+island (Arz island). The other one is located in the sourthern part of
+the Gulf (Duer). Two others sites are located in Bourgneuf Bay, France
+(46.9849°N, 2.1488°W). This bay is a semi-enclosed macrotidal bay,
+protected from waves by Noirmoutier Island. With up to 6m in tidal range
+during spring tide, a 6 km² seagrass meadow can uncover at low tide. The
+sites we surveyed (L'Epine and Barbatre, Figure~\ref{fig-map} B) are
+located in the southernmost part of the bay, along the Noirmoutier
+Island, and host a monospecific \emph{Zostera noltei} seagrass bed with
+very little mixing with other macrophytes. Three sites have been survey
+in the Ria de Aveiro Lagoon in Portugal (40.6887°N, 8.6810°W). The
+extent of this lagoon is about 80 km² with many narrow channels, large
+salt marshes and many mudflats that uncovers at low tide. It is
+connected to the open sea through a single channel, with a tidal lag
+between the North and the South of the lagoon. The southernmost site
+(Gafanha) is a mudflat located in an affluent of the lagoon whereas the
+two other sites are situated in the middle of the lagoon and are only
+accessible by boat (Figure~\ref{fig-map} C). These Portuguese sites were
+characterized by a more diverse intertidal area, where the seagrass
+meadow could intermingle with red algae (Rhodophyceae), brown algae
+(Phaeophyceae), or green algae (Chlorophyceae).
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-map}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=26.67in,height=\textheight]{./Figures/Fig1_Map_Drone_Sites.png}
+
+}
+
+\caption{\label{fig-map}Sites where the different drone flights were
+made. A: Gulf of Morbihan, B: Bourngeuf Bay, C: Ria de Aveiro Lagoon.
+Light green represent terrestrial areas whereas darkgreen represent
+intertidal areas.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\subsection{Drone Data}\label{drone-data}
+
+At each location, a DJI Matrice 200 quadcopter drone equipped with a
+Micasense RedEdge Dual MX multispectral camera was flown to take 1.2
+million pixel reflectance photographs in 10 spectral bands, from blue
+(444 nm) to near infrared (840 nm). An angle of 90° has been maintained
+between the sun and the drone's route to guarantee uniform lighting
+conditions between flight lines. A side overlap of 70\% and a front
+overlap of 80\% between each image has been set. Images have been
+calibrated in reflectance using a calibration panel reflective at
+\textasciitilde50\% provided by the camera's manufaturer and a
+Downwelling Light Sensor (DLS2) that was utilized to acquire irradiance
+data during the flight. A Structure-from-Motion photogrammetry software
+(Agisoft Metashape) has been used to process images to obtain
+multispectral orthomosaics of each flight. The workflow for
+orthomosaicking has remained consistent for every flight. First, tying
+key points were detected inside of each image and between overlapping
+images in order to obtain a sparse point cloud. This cloud was cleaned
+using reprojection accuracy metric in order to remove noisy points. A
+dense point cloud has been then produced using a structure from motion
+algorithm. A surface interpolation of this dense point cloud has been
+made to obtain a Digital Surface Model (DSM), used to reconstruct the
+multispectral ortho-image. Across all the sites, flights were made at
+two different altitudes : 12 m or/and 120 m. Low altitude drone flights
+produce ortho-images with a very high spatial resolution (8 mm per
+pixel), making it simple to visually distinguish between the various
+types of vegetation. High altitude fights on the other hand allow to
+cover large areas and produced images with a pixel size of 80 mm (Table
+1).
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{0pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable}[c]{ccccc}
+\caption{List of drone Flight, summarising the date, the altitude and the purpose
+of each flight.}\tabularnewline
+
+
+
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Country}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Site}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Name}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Altitude}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Utility}}} \\
+
+\ascline{1.5pt}{000000}{1-5}\endfirsthead 
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Country}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Site}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Name}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Altitude}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Utility}}} \\
+
+\ascline{1.5pt}{000000}{1-5}\endhead
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Arz\ Island}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Duer}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{\multirow[c]{-3}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Morbihan}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Duer}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{666666}{2-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Barbâtre}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{\multirow[c]{-5}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{France}}}}} & \multicolumn{1}{>{}c}{\multirow[c]{-2}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Bourgneuf\ Bay}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{L'Epine}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{000000}{1-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Inner\ Lagoon}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Mataducos}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Gafanha}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
+
+\ascline{1.5pt}{BEBEBE}{3-5}
+
+
+
+\multicolumn{1}{>{}c}{\multirow[c]{-4}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Portugal}}}}} & \multicolumn{1}{>{}c}{\multirow[c]{-4}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Aveiro\ Lagoon}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Gafanha}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
+
+\ascline{1.5pt}{000000}{1-5}
+
+
+
+\end{longtable}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\subsection{Field sampling}\label{field-sampling}
+
+Before each flight, targets used as Ground Control Points (GCPs) were
+dispersed and georeferenced with a Trimble © Geo XH 6000 differential
+GPS (dGPS). GCPs were used to correct georeferencing imprecision of
+orthomosaics with an horizontal and vertical accuracy of 10cm. dGPS was
+also used to georeference quardrats of 0.25cm² used to assess the
+presence or absence of 5 key classes of vegetation : Bacillariophyceae
+(Diatoms forming large biofilm over the sediment during low tide),
+Phaeophyceae (Brown algae), Magnoliopsida (Seagrass), Chlorophyceae
+(Green algae) and Rhodophyceae (Red algae)
+(Figure~\ref{fig-vegetation}). Picture of each quadrat were taken and
+uploaded on the online on the Global Biodiversity Information Facility
+(GBIF) platform \citep{BedeGbif}. Each photograph was also processed to
+estimate the percent cover of each type of vegetation. Georeferenced
+hyperspectral reflectance signatures of each vegetation class were also
+sampled using an ASD FieldSpec HandHeld 2 spectroradiomete, which
+acquires reflectance between 325 and 1075 nm, with 1 nm of spectral
+resolution. The methodological scheme followed in this study is
+presented in Figure~\ref{fig-workflow}.
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-vegetation}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{Figures/Spectral_shapes_total.png}
+
+}
+
+\caption{\label{fig-vegetation}Class of vegetation used to train the CNN
+model and their standardised spectral signature}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\subsection{Intertidal vegetation
+mapping}\label{intertidal-vegetation-mapping}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-workflow}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Figure3_workflow.png}
+
+}
+
+\caption{\label{fig-workflow}Schematic representation of the workflow.
+Diamonds represent input or output data, and rectangles represent Python
+processing algorithms. The overall workflow of this study is divided
+into two distinct parts based on the spatial resolution of the drone
+flights: high-resolution flights were utilized for training and
+prediction of the CNN model, whereas low-resolution flights were solely
+employed for prediction purposes.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The spectral similarities of reflectance signatures between intertidal
+green macrophytes (Magnoliopsida and Chlorophyceae) make their
+discrimination challenging using simple classification algorithms
+(Figure~\ref{fig-vegetation} F). To overcome this challenge, a deep
+learning classification method was developed, trained, validated, and
+applied to each drone flight (Figure~\ref{fig-workflow}).
+
+\subsubsection{Neural Network model
+building}\label{neural-network-model-building}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{0pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable}[c]{ccc}
+\caption{Vegetation Classes of the model and the number of pixels used to train
+and validate each class}\tabularnewline
+
+
+
+
+\ascline{1.5pt}{666666}{1-3}
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Class}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training\ Pixels}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation\ Pixels}}} \\
+
+\ascline{1.5pt}{666666}{1-3}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-3}
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Class}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training\ Pixels}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation\ Pixels}}} \\
+
+\ascline{1.5pt}{666666}{1-3}\endhead
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Bacillariophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{4,475}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{3,371,920}}} \\
+
+
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Chlorophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{17,140}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{6,258,737}}} \\
+
+
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Magnoliopsida}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{221,065}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{69,079,189}}} \\
+
+
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Phaeophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{169,936}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{18,481,141}}} \\
+
+
+
+
+
+\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Rhodophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{5,771}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{}}} \\
+
+\ascline{1.5pt}{666666}{1-3}
+
+
+
+\end{longtable}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+A dataset containing photo-interpreted drone reflectance pixels was
+built to train a Convolutional Neural Network (CNN) model with 2 hidden
+layers. The training pixels were categorized into 7 different classes,
+representing the various habitats encountered at the different study
+sites: Sediment, Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae,
+Phaeophyceae and Rhodophyceae. Only low-altitude flights (Table 1) were
+used for training purposes because of their 8 mm spatial resolution
+allowing to avoid spectral sub-pixel mixing and to accurately visually
+differentiate various vegetation classes. More than 418,000 pixels at 8
+mm resolution from the 3 training flights have been used to train the
+model (Table 2). Twenty one variables were used by the model as
+predictors: 10 raw spectral bands of the Micasense RedEdge Dual MX
+multispectral camera (ranging from 444 nm to 840 nm), the same 10
+spectral bands standardized using a min/max transformation
+(Equation~\ref{eq-std} ; \citep{cao2017}) and the NDVI
+(Equation~\ref{eq-ndvi}). Standardisation of spectral bands is used to
+eliminate the scaling differences between spectra and to limit the
+effect of biomass on the shape of the spectra \citetext{\citealp[
+]{Douay2022}; \citealp{Davies2023}}.
+
+\begin{equation}\phantomsection\label{eq-std}{
+R_{i}^{*}(\lambda) = \frac{R_{i}(\lambda) - min(R_{i})}{max(R_{i})- min(R_{i})}
+}\end{equation}
+
+where \(R_{i}(\lambda)\) is the reflectance at the wavelength
+\((\lambda)\) of each individual spectra \((i)\), \(min(R_{i})\), and
+\(max(R_{i})\) are the minimum and maximum value of the spectra \((i)\)
+
+\begin{equation}\phantomsection\label{eq-ndvi}{
+NDVI = \frac{R(840nm)-R(668nm)}{R(840nm)+R(668nm)}
+}\end{equation}
+
+where \(R(840nm)\) is the reflectance at 840 nm and \(R(668nm)\) is the
+reflectance at 668 nm.
+
+\subsubsection{Validation}\label{validation}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The CNN model was applied to all the 9 flights at both 12 and 120 m of
+altitude. In situ information on georeferenced class type and percent
+cover collected during each flight has been used to assess the CNN
+accuracy. These images were used to construct a validation dataset
+indicating the presence or absence of each class. Additionally to the
+quadrat-based validation dataset, polygons of each class were photo
+interpreted in order to increase the number of pixels of the validation
+dataset. A confusion matrix, along with precision metrics such as the
+global accuracy, the sensitivity, the specificity, and the Kappa
+coefficient, was generated for each of the study sites. Finally each
+validation matrix has been merge to create a unique matrix of the model.
+A total of 536,000 pixels has been used to globally validate the CNN
+model.
+
+\section{Results}\label{results}
+
+\subsection{Classification}\label{classification}
+
+A total of 9 prediction maps corresponding to the 9 drone flights were
+obtained. Each prediction map is associated with a probability map,
+indicating the probability of the selected class for every pixel. The
+low-altitude flight conducted in Gafanaha, Portugal, represents the site
+with the highest complexity (Figure~\ref{fig-GafLow}). Among the 5
+vegetation classes on which the CNN model was trained, 4 were present on
+this site. On this site, there is a mixture of Chlorophyceae and
+Rhodophyceae over the seagrass meadow. This is also where
+Bacillariophyceae is most abundant. Although the seagrass bed is solely
+composed of \emph{Zostera noltei}, various colors can be observed: dark
+green (indicating healthy beds with 100\% coverage) and whitish/brown
+(indicating beds where leaves are dying). Regardless of the color, the
+meadow is predicted as Magnoliopsida by the CNN model.
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-GafLow}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Maps Pred/FigX-Gaf_Low_Pred.png}
+
+}
+
+\caption{\label{fig-GafLow}RGB orthomosaic (Left) and Prediction (Right)
+of the low altitude flight of Gafanaha, Portugal. The total extent of
+this flight is 3000m² with a resolution of 8 mm per pixel. Background
+colors means intertidal area (Light Green) and land area (Light Grey).
+The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The high-altitude flight over Gafanha covered nearly 1 km² in total
+(Figure~\ref{fig-GafHigh}). A channel delineating a small island was
+present in the flight, but it has been masked in the prediction map due
+to glinting and misclassification caused by the turbid shallow water.
+Most of the intertidal area has been classified as Magnoliopsida by the
+model, even though there is discoloration of seagrass blades. Only a few
+pixels have been classified as Chlorophyceae at this scale. Furthermore,
+the area that was classified as Bacillariophyceae in the low-altitude
+flight remains mostly classified as such in the high-altitude flight,
+but some pixels of it are now classified as Magnoliopsida. The patches
+of Rhodophyceae are still well classified. \emph{Spartina sp.} was
+present in the northern part of the flight, near the land, and has been
+classified either as Magnoliopsida or as Phaeophyceae.
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-GafHigh}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Maps Pred/FigX-Gaf_High_Pred.png}
+
+}
+
+\caption{\label{fig-GafHigh}RGB orthomosaic (Left) and Prediction
+(Right) of the high altitude flight of Gafanaha, Portugal. The total
+extent of this flight is about 1 km² with a resolution of 80 mm per
+pixel. Background colors means intertidal area (Light Green), land area
+(Light Grey) and water (Light Blue). The red triangle shows the extent
+of the low altitude flight of Gafanha. The zoom covers an area
+equivalent to a 10-meter Sentinel-2 pixel size.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The High altitude flight made in the inner lagoon of the Ria de Aveiro
+is the largest of all flights, covering almost 1.5 km²
+(Figure~\ref{fig-Boat}). On this site, only seagrass and red algae where
+seen on the field. The classification follows the same pattern, with a
+patchy Magnoliopsida meadow mixed on the eastern part of the flight with
+Rhodophyceae. As shown in the zoom (Figure~\ref{fig-Boat}), the edges of
+the meadow can be colonised by Chlorophyceae.
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-Boat}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Maps Pred/FigX-Boat_Pred.png}
+
+}
+
+\caption{\label{fig-Boat}RGB orthomosaic (Top) and Prediction (Bottom)
+of the flight made in the inner part of Ria de Aveiro Lagoon, Portugal.
+The total extent of this flight is about 1.5 km² with a resolution of 80
+mm per pixel. Background colors means intertidal area (Light Green),
+land area (Light Grey) and water (Light Blue). The zoom covers an area
+equivalent to a 10-meter Sentinel-2 pixel size.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The flight over L'Epine in Noirmoutier Island, France
+(Figure~\ref{fig-Dike}) was conducted near a dike crossing the northern
+part of the flight from west to east. Alongside this dike, brown algae
+attached to rocks and stranded green algae could be found. Despite the
+high mixture between Chlorophyceae and Magnoliopsida in this flight,
+these two classes are well discriminated by the classifier.
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-Dike}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Maps Pred/FigX-Dike_Pred.png}
+
+}
+
+\caption{\label{fig-Dike}RGB orthomosaic (Top) and Prediction (Bottom)
+of Northern part of Noirmoutier Island, France. The total extent of this
+flight is about 28 000 m² with a resolution of 80 mm per pixel.
+Background colors means intertidal area (Light Green) and land area
+(Light Grey). The zoom covers an area equivalent to a 10-meter
+Sentinel-2 pixel size.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\subsection{Validation}\label{validation-1}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-Validation}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Validation/ConfusionMatrixGlobal.png}
+
+}
+
+\caption{\label{fig-Validation}A global confusion matrix on the left is
+derived from validation data across each flight, while a mosaic of
+confusion matrices from individual flights is presented on the right.
+The labels inside the matrices indicate the balanced accuracy for each
+class. The labels at the bottom of the matrices indicate the User's
+accuracy for each class, and those on the right indicate the Producer's
+Accuracy. The values adjacent to the names of each site represent the
+proportion of total pixels from that site contributing to the overall
+matrix. Grey lines within the mosaic indicate the absence of validation
+data for the class at that site. The table at the bottom summarizes the
+Sensitivity, Specificity, and Accuracy for each class and for the
+overall model.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+A total amount of 536,000 pixels have been used to validate the Neural
+Network classifier. The site with the least amount of validation data is
+Kerdrean with a total of 5557 pixels whereas Marinha Lanzarote is the
+site with the most amount of validation data with 159713 pixels. The
+global accuracy of the model is 94.26\% and a Kappa coefficient of 0.92
+(Figure~\ref{fig-Validation}). The least performing site is Gafanha High
+with an accuracy of 75.45\% whereas Mataducos is the site with most
+accurate prediction, with a global accuracy of 98.05\%. Overall
+Phaeophyceae, Magnoliopsida, Sediment and Rhodophyceae are well
+classified with a balanced accuracy of 1, 0.96, 0.96 and 0.91
+respectively. Bacillariophyceae is the least performing class with an
+accuracy of 0.72 mainly due to a confusion with Magnoliopsida and
+Sediment.
+
+\subsection{Variable importance}\label{variable-importance}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-VIP}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{Figures/VIP/Fig_VIP.png}
+
+}
+
+\caption{\label{fig-VIP}Variable Importance of the Neural Network
+Classifier for each vegetation class. The bigger the slice, the more
+important is the variable to predict accuratly this class. The bottom
+right plot shows the drone standardised reflectance spectra of each
+class.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+The computation of the importance variable of each class indicate which
+wavelength is mandatory to accurately predict the class
+(Figure~\ref{fig-VIP}). Bands at 444 nm, 717 nm and 842 nm of the
+Micasense camera are important for none of the vegetation classes. The
+band at 531 nm is the only important predictor for the classifier to
+accuratly predict chlorophyceae. In fact, at this wavelength, the
+Chlorophyceae spectra has the maximum reflectance value of all the
+classes. 531 nm and 740 nm are the most important predictors to predict
+Phaeophyceae, corresponding to the minimum reflectance value among all
+the classes. Bands at 475 and 560 nm are the most important predictors
+for Bacillariophyceae and Rhodophyceae, respectively. 4 predictors,
+ranging from the Green (560 nm) to the RedEdge (705 nm) are important to
+predict accurately magnoliopsida.
+
+\subsection{Effect of the flight height on the
+prediction}\label{effect-of-the-flight-height-on-the-prediction}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-upscaling}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=0.9\textwidth,height=\textheight]{Figures/Upscaling/density_vs_Proportion.png}
+
+}
+
+\caption{\label{fig-upscaling}Kernel density plot showing the proportion
+of pixel well classified based on the percent cover of the class in high
+altitude flight pixels of Gafanha, Portugal. Each subplot shows all the
+pixels of the same classes on the hight altitude flight. Percent cover
+of classes is retrieve using the result of the classification of the low
+altitude flight of Gafanha, Portugal. The vertical dashed line shows the
+0.85 probability of the model. Everything on the right of this line has
+a probability higher then 0.85 and everuthing on the left of this line
+has a probability lower.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+Figure~\ref{fig-upscaling} is showing the percent cover of a class
+required to classify correctly the high altitude flight. When the
+percent cover of the class is 100 \%, big pixels are well classified for
+all the classes excepted for Bare Sediment, where it's well classified
+80\% of the time. A vegetative percent cover of at least 80\% is need to
+have all the big pixels well classified, at the exception of
+Magnoliopsida that needs an higher percent cover (\textgreater90 \%) to
+be well classified. Concerning the probability of each class, a really
+high Percent cover is needed to confidently predict Bacillariophyceae.
+To predict Chlorophyceae with a confidence of 0.85, a percent cover of
+93 \% is needed, 90 \% for magnoliopsida, 92 \% for Rhodophyceae and 97
+\% for Bacillariophyceae.
+
+\section{Discussion}\label{discussion}
+
+\subsection{Seagrass Discrimination}\label{seagrass-discrimination}
+
+\subsection{Spatial and Spectral Resolution impact on the
+prediction}\label{spatial-and-spectral-resolution-impact-on-the-prediction}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-Pigm}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Disc_Pigment_Table.png}
+
+}
+
+\caption{\label{fig-Pigm}Photosynthetic and carotenoid pigments present
+(Green) or absent (Red) in each taxonomic class present in the Neural
+Network Classifier, along with their absorption wavelength measured with
+spectroradiometer. Chl b: chlorophyll b, Chl c: chlorophyll c, Fuco:
+fucoxanthin, Zea: zeaxanthin, Diato: diatoxanthin, Diadino:
+diadinoxanthin, Neo: neoxanthin.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\phantomsection\label{cell-fig-CompareRef}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{./Figures/Compare_reflectance.png}
+
+}
+
+\caption{\label{fig-CompareRef}Comparison of reflectance retrieved from
+both low-altitude and high-altitude flights over a common area. The red
+dashed line represents a 1 to 1 relationship.}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://SigOiry.github.io/Drone_Paper_2023/index.qmd.html}{Article
+Notebook}}
+
+\subsection{Big picture}\label{big-picture}
+
+\section{Conclusion}\label{conclusion}
+
+
+\renewcommand\refname{Bibliography}
   \bibliography{library.bib}
 
 

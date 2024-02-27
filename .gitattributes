@@ -1,0 +1,2 @@
+_manuscript/index.embed.ipynb filter=lfs diff=lfs merge=lfs -text
+_manuscript/index-meca.zip filter=lfs diff=lfs merge=lfs -text
