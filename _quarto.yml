@@ -9,13 +9,13 @@ format:
     toc: true
     comments:
       hypothesis: true
+      
   docx:
     reference-doc: Word_Template.docx
   jats: default
   pdf: default
 
 bibliography: library.bib
-
 
 
   
