@@ -10,9 +10,7 @@ format:
     theme: spacelab
     comments:
       hypothesis: true
-      
   docx: default
-  elsevier-pdf: default
 
 bibliography: library.bib
 
