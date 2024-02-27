@@ -116,7 +116,7 @@ library(caret)
 options(scipen = 100000000)
 ```
 
-```{r}
+```{r my_comma}
 #| cache: false
 #| echo: false
 #| warning: false
@@ -1234,7 +1234,7 @@ write.csv(df_training,"Data/training/TrainandValid_NewStanRawMetrics_Processed.c
 
 ```
 
-```{r}
+```{r df_training}
 #| cache: true
 #| echo: false
 #| warning: false
@@ -1359,7 +1359,7 @@ count_validation_pixel<-nrow(df)
 write.csv(count_validation_pixel,"Output/count_validation_pixel.csv", row.names = F)
 ```
 
-```{r}
+```{r count_validation_pixel}
 #| echo: false
 #| warning: false
 #| cache: true
