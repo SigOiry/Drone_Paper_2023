@@ -4,10 +4,12 @@
     "tempName": "Untitled1",
     "source_window_id": "",
     "Source": "Source",
-    "cursorPosition": "5439,3",
-    "scrollLine": "5393",
+    "cursorPosition": "5579,354",
+    "scrollLine": "5556",
     "docOutlineVisible": "0",
-    "rmdVisualCollapsedChunks": "1,4372,4978,12399,16651,18944,21372,23534,24387,26594,29545,41481,41822,44446,48908,49949,51161,51326,52176,54500,56775,58704,70899,71463,78718,91255,92361,107196,108188,119298,119879,171263,174459,181727,183082,203108,204123,206066,211095,212018,215109",
-    "rmdVisualModeLocation": "211095:7340",
-    "disableDependencyDiscovery": "1"
+    "rmdVisualCollapsedChunks": "1,4372,4978,12400,16652,18945,21373,23535,24388,26595,29546,41482,41823,44447,48909,49950,51162,51327,52177,54501,56776,58705,70900,71464,78719,91256,92362,107197,108189,119299,119880,171264,174460,181728,183083,203109,204124,207017,212046,213507,216598",
+    "rmdVisualModeLocation": "213448:8653",
+    "disableDependencyDiscovery": "1",
+    "content_preview_inline": "false",
+    "chunk_output_type": "console"
 }

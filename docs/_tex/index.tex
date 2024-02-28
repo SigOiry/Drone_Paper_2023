@@ -140,7 +140,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery.},
-  pdfauthor={Simon Oiry; Bede Ffinian Rowe Davies; Pierre Gernez; Ana I. Sousa; Philippe Rosa; Maria Laura Zoffoli; Guillaume Brunier; Laurent Barillé},
+  pdfauthor={Simon Oiry; Bede Ffinian Rowe Davies; Ana I. Sousa; Philippe Rosa; Maria Laura Zoffoli; Guillaume Brunier; Pierre Gernez; Laurent Barillé},
   pdfkeywords={Drone, Remote Sensing},
   colorlinks=true,
   linkcolor={blue},
@@ -163,10 +163,6 @@ Intertidal areas using high resolution multispectral drone imagery.}
 %
 }
 
-\author[1]{Pierre Gernez%
-%
-}
-
 \author[2]{Ana I. Sousa%
 %
 }
@@ -180,6 +176,10 @@ Intertidal areas using high resolution multispectral drone imagery.}
 }
 
 \author[4]{Guillaume Brunier%
+%
+}
+
+\author[1]{Pierre Gernez%
 %
 }
 
@@ -328,7 +328,7 @@ of their application to other sites \citetext{\citealp[
 ]{Roman2021}; \citealp[ ]{collin2019improving}; \citealp[
 ]{rossiter2020uav}; \citealp{Brunier2022Topographic}}. This study aimed
 to analyze the potential of a drone equipped with a multispectral sensor
-for maping intertidal macrophytes, with a particular focus on
+for mapping intertidal macrophytes, with a particular focus on
 discriminating Magnoliopsida and Chlorophyceae. Ten drone flights were
 performed over soft-bottom intertidal areas along two European countries
 (France and Portugal), covering a wide range of habitats, from
@@ -939,10 +939,23 @@ To predict Chlorophyceae with a confidence of 0.85, a percent cover of
 
 \section{Discussion}\label{discussion}
 
-\subsection{Seagrass Discrimination}\label{seagrass-discrimination}
+The primary objective of this study was to develop a method for the
+accurate classification of macrophytes on intertidal mudflats,
+specifically focusing on distinguishing between Chlorophyceae (green
+algae) and marine Magnoliopsida (seagrasses) using multispectral drone
+data. The challenge arises from the shared pigment composition between
+these two vegetation classes, complicating their differentiation using
+remote sensing techniques. This challenge has been addressed through the
+utilization of high-resolution drone flights allowing a precise
+photointerpretation of pure pixels of the different vegetation classes
+used as training data, providing a robust foundation for subsequent
+classification analyses. In achieving 94.26 accuracy across all study
+sites, this method demonstrates its efficacy in accurately classifying
+macrophytes, thus offering a reliable approach for vegetation
+classification in intertidal mudflats using remote sensing data.
 
-\subsection{Spatial and Spectral Resolution impact on the
-prediction}\label{spatial-and-spectral-resolution-impact-on-the-prediction}
+\subsection{Green Macrophytes
+Discrimination}\label{green-macrophytes-discrimination}
 
 \phantomsection\label{cell-fig-Pigm}
 \begin{figure}[H]
@@ -961,6 +974,58 @@ fucoxanthin, Zea: zeaxanthin, Diato: diatoxanthin, Diadino:
 diadinoxanthin, Neo: neoxanthin.}
 
 \end{figure}%
+
+The discrimination of seagrasses from green macroalgae presents
+significant challenges, primarily due to the shared pigment composition
+between these taxa, as depicted in Figure~\ref{fig-Pigm} but also by the
+frequent spatial mixing of these green macrophytes. This similarity in
+pigment composition, including photosynthetic and carotenoid pigments
+like chlorophyll b and c, fucoxanthin, and neoxanthin, results in
+spectral signatures that are often indistinguishable to non expererences
+This spectral overlap is further complicated by the intermingling of
+seagrasses and green macroalgae in the same spatial locations, posing a
+significant challenge for remote sensing aimed at accurately mapping and
+monitoring coastal ecosystems. Our study addresses these complexities by
+utilizing high-resolution drone imagery with 10 spectral bands.
+\citep{Davies2023} has shown that having at least 8 spectral bands
+ranging between 500 nm to 850 nm with on band at 530 nm and another one
+at 730 nm is crucial to accurately discriminate green macrophytes.
+
+\phantomsection\label{cell-fig-ValidationGreen}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Validation/ConfusionMatrixGreen.png}
+
+}
+
+\caption{\label{fig-ValidationGreen}Sample of
+Figure~\ref{fig-Validation} focusing on green macrophytes. The labels
+inside the matrice indicate the number of pixels.}
+
+\end{figure}%
+
+The Micasense RedEdge-MX DUAL camera used in this study meets these two
+criteria, enabling the classifier to achieve 97\% of accuracy between
+these two classes (Figure~\ref{fig-ValidationGreen}). Even if the
+pigment compostion of green macrophytes is similar, differences in the
+spectral shape can still be observed (Figure~\ref{fig-vegetation}).
+Several factors can explain these differences such has different pigment
+concentration en proportion, different cellular organisation and 3D
+disposition of the plant a whole on the intertidal mudflat
+\citep[\citep{kirk1994light},
+\citep{hedley2018influence}]{beach1997vivo}.
+
+The VIP analysis of the Neural Network model (see Fig. VIP) shows that
+the 531 nm band is the most important spectral band for accurately
+identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae
+exhibits the highest reflectance among all other classes, highlighting
+the difference in carotenoid proportion between seagrasses and green
+algae.
+
+\subsection{Spectral and Temporal Resolution impact on the
+prediction}\label{spectral-and-temporal-resolution-impact-on-the-prediction}
 
 \phantomsection\label{cell-fig-CompareRef}
 \begin{figure}[H]

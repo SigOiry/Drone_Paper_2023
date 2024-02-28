@@ -19,14 +19,6 @@ author:
       - Revision
     affiliations:
       - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
-  - name: Pierre Gernez
-    corresponding: false
-    roles: 
-      - Investigation
-      - Data acquisition
-      - Revision
-    affiliations:
-      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Ana I. Sousa
     corresponding: false
     roles:
@@ -55,6 +47,14 @@ author:
       - Revision
     affiliations:
       - BRGM French Geological Survey, Cayenne 97300, French Guiana
+  - name: Pierre Gernez
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Laurent Barillé
     corresponding: false
     roles: 
@@ -78,8 +78,10 @@ citation:
   container-title: Earth and Space Science
 number-sections: true
 notebook-links: false
+editor_options: 
+  chunk_output_type: console
+csl: RSE.csl
 ---
-
 
 ```{r library}
 #| cache: false
@@ -135,7 +137,7 @@ The importance of seagrass meadows and the variety of ecosystem services they pr
 
 Satellite remote sensing offers the advantage of acquiring large-scale data in real-time but presents its inherent challenges. Free access satellite data (e.g., Sentinel-2 and Landsat8/9) provide relatively low spatial resolution data (10 - 30 m) across a limited number of spectral bands. These characteristics can be a limitation to accurately discriminating seagrass from others co-existing macrophytes over the meadow. Chlorophyceae (Green Algae) and marine Magnoliopsida (Seagrass) share the same pigment composition [@ralph2002 ; @Douay2022]. As a result, their respective spectral signatures can be considered similar by a non-expert observer [@Davies2023 ; @bannari2022]. Recently, using a hyperspectral library, @Davies2023 demonstrated that the spectral resolution of Sentinel-2, might be enough for the discrimination between Magnoliopsida and Chlorophyceae. However, green tide events occur at small spatial scales that are not observable using satellite imagery [@tuya2013], especially during the initial stage of the event.
 
-Remote sensing drone acquisitions are presented as a tool that can potentially fill gaps left by satellite and in situ data. Drone can cover large expanses while recording imagery at significantly higher spatial resolutions than satellite (pixel size from cm to mm) and still capturing data at multi-spectral resolution [@fairley2022drone ; @oh2017use]. The versatility of drones allows for their application across a diverse thematic range , from coastal zone management [@adade2021 ; @casella2020 ; @angnuureng2022] to mapping the spatial distribution of species [@joyce2023 ; @tallam2023 ; @Roca2022 ; @Roman2021 ; @Brunier2022Topographic]. However, when applied to coastal habitat mapping, many studies showcase their findings with study case limited to a single flight, restricting the generalizability of their application to other sites [@Roman2021 ; @collin2019improving ; @rossiter2020uav ; @Brunier2022Topographic]. This study aimed to analyze the potential of a drone equipped with a multispectral sensor for maping intertidal macrophytes, with a particular focus on discriminating Magnoliopsida and Chlorophyceae. Ten drone flights were performed over soft-bottom intertidal areas along two European countries (France and Portugal), covering a wide range of habitats, from monospecific seagrass meadows to meadows mixed with green or red algae. A deep learning algorithm was trained and validated for macrophyte discrimination, emphasizing applicability across diverse sites without a loss of accuracy in predictions.
+Remote sensing drone acquisitions are presented as a tool that can potentially fill gaps left by satellite and in situ data. Drone can cover large expanses while recording imagery at significantly higher spatial resolutions than satellite (pixel size from cm to mm) and still capturing data at multi-spectral resolution [@fairley2022drone ; @oh2017use]. The versatility of drones allows for their application across a diverse thematic range , from coastal zone management [@adade2021 ; @casella2020 ; @angnuureng2022] to mapping the spatial distribution of species [@joyce2023 ; @tallam2023 ; @Roca2022 ; @Roman2021 ; @Brunier2022Topographic]. However, when applied to coastal habitat mapping, many studies showcase their findings with study case limited to a single flight, restricting the generalizability of their application to other sites [@Roman2021 ; @collin2019improving ; @rossiter2020uav ; @Brunier2022Topographic]. This study aimed to analyze the potential of a drone equipped with a multispectral sensor for mapping intertidal macrophytes, with a particular focus on discriminating Magnoliopsida and Chlorophyceae. Ten drone flights were performed over soft-bottom intertidal areas along two European countries (France and Portugal), covering a wide range of habitats, from monospecific seagrass meadows to meadows mixed with green or red algae. A deep learning algorithm was trained and validated for macrophyte discrimination, emphasizing applicability across diverse sites without a loss of accuracy in predictions.
 
 # Material & Methods
 
@@ -1294,7 +1296,6 @@ df_training %>%
 
 ```
 
-
 A dataset containing photo-interpreted drone reflectance pixels was built to train a Convolutional Neural Network (CNN) model with 2 hidden layers. The training pixels were categorized into 7 different classes, representing the various habitats encountered at the different study sites: Sediment, Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and Rhodophyceae. Only low-altitude flights (Table 1) were used for training purposes because of their 8 mm spatial resolution allowing to avoid spectral sub-pixel mixing and to accurately visually differentiate various vegetation classes. More than `r my_comma(round(sum(df_training$Training_Pixels),-3))` pixels at 8 mm resolution from the 3 training flights have been used to train the model (Table 2). Twenty one variables were used by the model as predictors: 10 raw spectral bands of the Micasense RedEdge Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same 10 spectral bands standardized using a min/max transformation ([@eq-std] ; @Cao2017) and the NDVI (@eq-ndvi). Standardisation of spectral bands is used to eliminate the scaling differences between spectra and to limit the effect of biomass on the shape of the spectra [@Douay2022 ; @Davies2023].
 
 $$
@@ -1371,7 +1372,6 @@ write.csv(count_validation_pixel,"Output/count_validation_pixel.csv", row.names 
 count_validation_pixel<-read.csv("Output/count_validation_pixel.csv") %>% 
   pull(x)
 ```
-
 
 The CNN model was applied to all the 9 flights at both 12 and 120 m of altitude. In situ information on georeferenced class type and percent cover collected during each flight has been used to assess the CNN accuracy. These images were used to construct a validation dataset indicating the presence or absence of each class. Additionally to the quadrat-based validation dataset, polygons of each class were photo interpreted in order to increase the number of pixels of the validation dataset. A confusion matrix, along with precision metrics such as the global accuracy, the sensitivity, the specificity, and the Kappa coefficient, was generated for each of the study sites. Finally each validation matrix has been merge to create a unique matrix of the model. A total of `r my_comma(round(count_validation_pixel,-3))` pixels has been used to globally validate the CNN model.
 
@@ -4518,6 +4518,115 @@ Overall_metrics_ByClass<-validation_metrics$byClass %>%
 
 ggsave("Figures/Validation/ConfusionMatrixGlobal.png",plot_matrix_global , width = 1920*4, height = 1032*4, units = "px")
 
+######### Focus on green macrophytes
+df_green<-df %>% 
+  filter(Pred_Class %in% c("Magnoliopsida", "Chlorophyceae"),
+         Truth %in% c("Magnoliopsida", "Chlorophyceae")) %>% 
+  mutate(Pred_Class = as.factor(as.character(Pred_Class)),
+         Truth = as.factor(as.character(Truth)))
+ 
+validation_metrics_green<-confusionMatrix(df_green$Pred_Class,df_green$Truth)
+
+
+conf_mat_green<-validation_metrics_green[[2]] %>% 
+  as.numeric() %>%
+  base::matrix(ncol = 2) %>%
+  as.data.frame()
+
+for(i in 1:(nrow(conf_mat_green))){
+  if(i == 1 ){
+    df_sum<-data.frame(row = NA,
+                       col = NA)
+  }
+  df_sum[i,1] <- sum(conf_mat_green[i,],na.rm = T)
+  df_sum[i,2] <- sum(conf_mat_green[,i],na.rm = T)
+}
+conf_mat_std_green<-conf_mat_green
+
+for(row in 1:nrow(conf_mat_std_green)){
+  for(col in 1:ncol(conf_mat_std_green)){
+    conf_mat_std_green[row,col]<-conf_mat_std_green[row,col]/((df_sum$row[row] + df_sum$col[col])-conf_mat_std_green[row,col])
+    }
+}
+
+confmat_rast_green<-conf_mat_std_green %>% 
+  as.matrix() %>% 
+  as.array() %>% 
+  rast()
+
+confmat_rast_green<-subst(confmat_rast_green, NA, -99)
+names(confmat_rast_green)<-"layer"
+ext(confmat_rast_green)<-c(0,2,0,2)
+confmat_rast_green_sf<-as.polygons(confmat_rast_green,aggregate=F) %>% 
+  sf::st_as_sf()
+confmat_rast_green_centroid<-st_centroid(confmat_rast_green_sf)
+
+values(confmat_rast_green)[values(confmat_rast_green) == 0] = NA
+values(confmat_rast_green)[values(confmat_rast_green) == -99] = NA
+
+labels_green<-validation_metrics_green[[2]] %>% 
+  as.numeric() %>%
+  base::matrix(ncol = 1) %>%
+  as.data.frame() %>% 
+  rename(label = "V1") %>% 
+  mutate(x = c(0.5,0.5,1.5,1.5),
+         y = c(1.5,0.5,1.5,0.5))
+
+plot_green<-ggplot()+
+geom_spatraster(data = confmat_rast_green,
+                  na.rm = TRUE
+                  )+
+  geom_sf(data = confmat_rast_green_sf,
+          fill = "transparent")+
+  scale_fill_gradientn(
+    # colours = c("black","firebrick4","goldenrod","yellow","chartreuse3"),
+    # colours = c("khaki1","goldenrod","firebrick3","chartreuse4"),
+    colours = c("khaki1","firebrick4","firebrick4","firebrick4","#3e0b0b"),
+    # colours = c("#7d0000","#00b300","#00b300","#00b300","#007d00"),
+    na.value = "white", 
+    trans = "sqrt",
+    limits = c(0,1),
+    labels = c("0.05","0.25", "0.50", "1"),
+    breaks = c(0.05,0.25,0.50,1))+
+  # scale_fill_Bede("mixed", 
+  #                 discrete = F,
+  #                 reverse = TRUE,
+  #                 na.value = "white",
+  #                 trans = "sqrt",
+  #                 labels = c("5","25", "50", "75", "100"),
+  #                 breaks = c(0.05,0.25,0.50,0.75,0.9999))+
+  labs(fill = "Proportion \n of pixels")+
+  scale_x_continuous(breaks = seq(0.5,1.5, by = 1),
+                     labels = c("Chlorophyceae","Magnoliopsida"),
+                     expand = c(0, 0),
+                     position = "top",
+                     limits = c(0,2))+
+  scale_y_continuous(breaks = seq(0.5,1.5, by = 1),
+                     labels = c("Magnoliopsida","Chlorophyceae"),
+                     expand = c(0, 0),
+                     limits = c(0,2))+
+  geom_label(data = labels_green,aes(x = x, y = y, label = label ))+
+  xlab("References")+
+  ylab("Prediction")+
+  # ggplot2::annotation_custom(ggplotGrob(small_validation_matrices), xmin = 12, ymin = 0)+
+  theme_Bede()+
+  theme( 
+        panel.border = element_blank(),
+        axis.line=element_blank(),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20, angle =90, hjust = 0.5),
+
+        # legend.position = "top",
+        # legend.position = c(0.73, 0.9),
+        # legend.direction="horizontal",
+        # legend.key.width = unit(2,"cm"),
+        legend.text = element_text(size = 20),
+        legend.title = element_text(size = 20, vjust = 2),
+        legend.title.align = 0.5,
+        legend.justification = "center")
+
+ggsave("./Figures/Validation/ConfusionMatrixGreen.png", plot_green, width = 671*4, height = 479*4, units = "px" )
+
 ```
 
 ```{r Global Accuracy assesment Plot}
@@ -5241,10 +5350,9 @@ knitr::include_graphics("Figures/Upscaling/density_vs_Proportion.png")
 
 # Discussion
 
+The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green algae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The challenge arises from the shared pigment composition between these two vegetation classes, complicating their differentiation using remote sensing techniques. This challenge has been addressed through the utilization of high-resolution drone flights allowing a precise photointerpretation of pure pixels of the different vegetation classes used as training data, providing a robust foundation for subsequent classification analyses. In achieving `r round(validation_metrics$overall[[1]]*100,2)` accuracy across all study sites, this method demonstrates its efficacy in accurately classifying macrophytes, thus offering a reliable approach for vegetation classification in intertidal mudflats using remote sensing data.
 
-## Seagrass Discrimination 
-
-## Spatial and Spectral Resolution impact on the prediction
+## Green Macrophytes Discrimination
 
 ```{r Table Pigment}
 #| cache: true
@@ -5445,6 +5553,36 @@ ggsave("./Figures/Disc_Pigment_Table.png",rast_pigment, width= 1066*4, height=51
 knitr::include_graphics("./Figures/Disc_Pigment_Table.png")
 ```
 
+The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in @fig-Pigm but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non expererences This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. @Davies2023 has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with on band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes. 
+
+::::: columns
+::: column
+```{r Global Accuracy assesment Plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: Sample of @fig-Validation focusing on green macrophytes. The labels inside the matrice indicate the number of pixels.
+#| label: fig-ValidationGreen
+#| fig-width: 10
+#| fig-height: 10
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/Validation/ConfusionMatrixGreen.png")
+
+```
+:::
+
+::: column
+The Micasense RedEdge-MX DUAL camera used in this study meets these two criteria, enabling the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if the pigment compostion of green macrophytes is similar, differences in the spectral shape can still be observed (@fig-vegetation). Several factors can explain these differences such has different pigment concentration en proportion, different cellular organisation and 3D disposition of the plant a whole on the intertidal mudflat [@beach1997vivo, @kirk1994light, @hedley2018influence]. 
+:::
+:::::
+
+The VIP analysis of the Neural Network model (see Fig. VIP) shows that the 531 nm band is the most important spectral band for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibits the highest reflectance among all other classes, highlighting the difference in carotenoid proportion between seagrasses and green algae.
+
+
+
+## Spectral and Temporal Resolution impact on the prediction
+
 ```{r Reflectance_Validation 2 height}
 #| cache: true
 #| echo: false
@@ -5563,4 +5701,3 @@ knitr::include_graphics("./Figures/Compare_reflectance.png")
 # Conclusion
 
 # Bibliography
-
