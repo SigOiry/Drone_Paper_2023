@@ -4,10 +4,10 @@
     "tempName": "Untitled1",
     "source_window_id": "",
     "Source": "Source",
-    "cursorPosition": "1206,0",
-    "scrollLine": "623",
+    "cursorPosition": "5439,3",
+    "scrollLine": "5393",
     "docOutlineVisible": "0",
-    "rmdVisualCollapsedChunks": "",
-    "rmdVisualModeLocation": "2:0",
+    "rmdVisualCollapsedChunks": "1,4372,4978,12399,16651,18944,21372,23534,24387,26594,29545,41481,41822,44446,48908,49949,51161,51326,52176,54500,56775,58704,70899,71463,78718,91255,92361,107196,108188,119298,119879,171263,174459,181727,183082,203108,204123,206066,211095,212018,215109",
+    "rmdVisualModeLocation": "211095:7340",
     "disableDependencyDiscovery": "1"
 }

@@ -10,7 +10,7 @@ author:
       - Writing
       - Data acquisition
     affiliations:
-      - Nantes University
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Bede Ffinian Rowe Davies
     corresponding: false
     roles: 
@@ -18,7 +18,7 @@ author:
       - Data acquisition
       - Revision
     affiliations:
-      - Nantes University
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Pierre Gernez
     corresponding: false
     roles: 
@@ -26,35 +26,35 @@ author:
       - Data acquisition
       - Revision
     affiliations:
-      - Nantes University
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Ana I. Sousa
     corresponding: false
     roles:
       - Data acquisition
       - Revision
     affiliations:
-      - Aveiro University
+      - CESAM – Centre for Environmental and Marine Studies, Department of Biology, University of Aveiro, Aveiro, Portugal
   - name: Philippe Rosa
     corresponding: false
     roles: 
       - Data acquisition
       - Revision
     affiliations:
-      - Nantes University
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
   - name: Maria Laura Zoffoli
     corresponding: false
     roles: 
       - Data acquisition
       - Revision
     affiliations:
-      - CNR ISMAR
+      - Consiglio Nazionale delle Ricerche, Istituto di Scienze Marine (CNR-ISMAR), 00133 Rome, Italy
   - name: Guillaume Brunier
     corresponding: false
     roles: 
       - Data acquisition
       - Revision
     affiliations:
-      - JeSaisPas
+      - BRGM French Geological Survey, Cayenne 97300, French Guiana
   - name: Laurent Barillé
     corresponding: false
     roles: 
@@ -62,7 +62,7 @@ author:
       - Data acquisition
       - Revision
     affiliations:
-      - Nantes University
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
 keywords:
   - Drone
   - Remote Sensing
@@ -74,7 +74,10 @@ key-points:
   - An intertidal vegetation classifier has been built to be used across different study sites without losing classification accuracy. 
   - Neural Network made to accuratly discriminates intertidal seagrasses from green algae (chlorophyceae)
 date: last-modified
+citation:
+  container-title: Earth and Space Science
 number-sections: true
+notebook-links: false
 ---
 
 
@@ -527,8 +530,9 @@ ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 #| fig-cap: >
 #|   Sites where the different drone flights were made. A: Gulf of Morbihan, B: Bourngeuf Bay, C: Ria de Aveiro Lagoon. Light green represent terrestrial areas whereas darkgreen represent intertidal areas. 
 #| label: fig-map
-#| fig-width: 9
-#| fig-height: 9
+#| fig-width: 7
+#| fig-height: 7
+#| out-width: "100%"
 
 knitr::include_graphics("./Figures/Fig1_Map_Drone_Sites.png")
 ```
@@ -1291,7 +1295,7 @@ df_training %>%
 ```
 
 
-A dataset containing photo-interpreted drone reflectance pixels was built to train a Convolutional Neural Network (CNN) model with 2 hidden layers. The training pixels were categorized into 7 different classes, representing the various habitats encountered at the different study sites: Sediment, Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and Rhodophyceae. Only low-altitude flights (Table 1) were used for training purposes because of their 8 mm spatial resolution allowing to avoid spectral sub-pixel mixing and to accurately visually differentiate various vegetation classes. More than `r my_comma(round(sum(df_training$Training_Pixels),-3))` pixels at 8 mm resolution from the 3 training flights have been used to train the model (Table 2). Twenty one variables were used by the model as predictors: 10 raw spectral bands of the Micasense RedEdge Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same 10 spectral bands standardized using a min/max transformation ([@eq-std] ; @cao2017) and the NDVI (@eq-ndvi). Standardisation of spectral bands is used to eliminate the scaling differences between spectra and to limit the effect of biomass on the shape of the spectra [@Douay2022 ; @Davies2023].
+A dataset containing photo-interpreted drone reflectance pixels was built to train a Convolutional Neural Network (CNN) model with 2 hidden layers. The training pixels were categorized into 7 different classes, representing the various habitats encountered at the different study sites: Sediment, Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and Rhodophyceae. Only low-altitude flights (Table 1) were used for training purposes because of their 8 mm spatial resolution allowing to avoid spectral sub-pixel mixing and to accurately visually differentiate various vegetation classes. More than `r my_comma(round(sum(df_training$Training_Pixels),-3))` pixels at 8 mm resolution from the 3 training flights have been used to train the model (Table 2). Twenty one variables were used by the model as predictors: 10 raw spectral bands of the Micasense RedEdge Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same 10 spectral bands standardized using a min/max transformation ([@eq-std] ; @Cao2017) and the NDVI (@eq-ndvi). Standardisation of spectral bands is used to eliminate the scaling differences between spectra and to limit the effect of biomass on the shape of the spectra [@Douay2022 ; @Davies2023].
 
 $$
 R_{i}^{*}(\lambda) = \frac{R_{i}(\lambda) - min(R_{i})}{max(R_{i})- min(R_{i})}
