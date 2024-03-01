@@ -5352,7 +5352,7 @@ Using the very high precision low altitude flight, we determined the minimal per
 
 The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green algae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The challenge arises from the shared pigment composition between these two vegetation classes, complicating their differentiation using remote sensing techniques. This challenge has been addressed through the utilization of high-resolution drone flights allowing a precise photointerpretation of pure pixels of the different vegetation classes used as training data, providing a robust foundation for subsequent classification analyses. In achieving `r round(validation_metrics$overall[[1]]*100,2)` accuracy across all study sites, this method demonstrates its efficacy in accurately classifying macrophytes, thus offering a reliable approach for vegetation classification in intertidal mudflats using remote sensing data.
 
-## Green Macrophytes Discrimination
+## Vegetation Discrimination
 
 ```{r Table Pigment}
 #| cache: true
@@ -5553,7 +5553,7 @@ ggsave("./Figures/Disc_Pigment_Table.png",rast_pigment, width= 1066*4, height=51
 knitr::include_graphics("./Figures/Disc_Pigment_Table.png")
 ```
 
-The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in @fig-Pigm but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non expererences This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. @Davies2023 has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with on band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes.
+The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in @fig-Pigm but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non exper eyes. This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. @Davies2023 has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with including a band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes.
 
 ::: columns
 ::: column
@@ -5573,15 +5573,15 @@ knitr::include_graphics("./Figures/Validation/ConfusionMatrixGreen.png")
 :::
 
 ::: column
-The Micasense RedEdge-MX DUAL camera used in this study meets these two criteria, enabling the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if the pigment compostion of green macrophytes is similar, differences in the spectral shape can still be observed (@fig-vegetation). Several factors can explain these differences such has different pigment concentration en proportion, different cellular organisation and 3D disposition of the plant a whole on the intertidal mudflat [@beach1997vivo, @kirk1994light, @hedley2018influence].
+The Micasense RedEdge-MX DUAL camera used in this study meets these two criteria, enabling the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if the pigment compostion of green macrophytes is similar, differences in the spectral shape can still be observed (@fig-vegetation). Several factors can explain these differences such has different pigment concentration or proportion, different cellular organisation and 3D disposition of the plant a whole on the intertidal mudflat [@beach1997vivo, @kirk1994light, @hedley2018influence].
 :::
 :::
 
-The VIP analysis of the Neural Network model (see Fig. VIP) shows that the 531 nm band is the most important spectral band for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibits the highest reflectance among all other classes, highlighting the difference in accessories carotenoid proportion between seagrasses and green algae (@repolho2017seagrass).
+The VIP analysis of the Neural Network model (@fig-VIP) shows that the 531 nm band is the most important spectral band for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibits the highest reflectance among all other classes, highlighting the difference in accessories carotenoid proportion between seagrasses and green algae (@repolho2017seagrass).
 
-Concerning Phaeophyceae, the thick cell walls of plant of this class make it really reflective in the infrared part of the spectra whereas the presence of Fucoxanthin and Zeaxanthin result in a low reflectance in the visible part of the electomagnetic spectra. These two key features has been identified by the Neural Network as the two principale predictors to accuratly identify Brown algae (@fig-VIP, )
+Concerning Phaeophyceae, the thick cell walls of plant of this class make it really reflective in the infrared part of the spectra whereas the presence of Fucoxanthin and Zeaxanthin result in a low reflectance in the visible part of the electromagnetic spectra. These two key features has been identified by the Neural Network as the two principal predictors to accurately identify Brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range of 560 to 615 nm (@fig-VIP). The band at 560 nm has been identified as important for accurately identifying this class Resolution impact on the prediction. Regarding Bacillariophyceae, the VIP analysis (@fig-VIP) indicates that 475 nm is the most important predictor for this class. This could be attributed to the absence of lutein, neoxanthin, and zeaxanthin in diatoms, absorbing in the blue part of spectra, resulting in the highest visible reflectance among all classes. Furethemore, it is vegetation with the lowest concentration of chlorphyll-a, pigment absorbing light both in the blue and the red. The transparency of Bacillariophyceae makes the reflectance of the sediment part of the overall reflectance of Bacillariophyceae, further explaining the high reflectance in the blue.
 
-## Spectral and Temporal Resolution impact on the prediction
+## **Spectral Spatial Temporal Resolution impact on the prediction**
 
 ```{r Reflectance_Validation 2 height}
 #| cache: true
@@ -5653,9 +5653,7 @@ df<-stk_summarized %>%
  
 plot <- df %>% 
   group_by(pred) %>% 
-  sample_n(10000) %>% 
-  rearrr::rotate_2d(x_col = "Low", y_col = "High",degrees = 9, origin = c(0,0)) %>% select(Low_rotated,High_rotated) %>% 
-  rename(Low = Low_rotated, High = High_rotated) %>% 
+  sample_n(10000) %>%
   mutate(Low = Low /10000, 
          High = High/10000) %>% 
   ggplot(aes(x=Low, y=High))+
