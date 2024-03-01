@@ -22,6 +22,7 @@ resources:
   - "!*.qmd"
   - "!*.ipynb"
   - "!*.out.ipynb"
+  - "!*.embed.ipynb"
 
 bibliography: library.bib
 
