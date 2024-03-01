@@ -409,7 +409,7 @@
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion"><span class="header-section-number">4</span> Discussion</a>
   <ul class="collapse">
   <li><a href="#vegetation-discrimination" id="toc-vegetation-discrimination" class="nav-link" data-scroll-target="#vegetation-discrimination"><span class="header-section-number">4.1</span> Vegetation Discrimination</a></li>
-  <li><a href="#spectral-spatial-temporal-resolution-impact-on-the-prediction" id="toc-spectral-spatial-temporal-resolution-impact-on-the-prediction" class="nav-link" data-scroll-target="#spectral-spatial-temporal-resolution-impact-on-the-prediction"><span class="header-section-number">4.2</span> <strong>Spectral Spatial Temporal Resolution impact on the prediction</strong></a></li>
+  <li><a href="#spectral-spatial-temporal-resolution-impact-on-the-prediction" id="toc-spectral-spatial-temporal-resolution-impact-on-the-prediction" class="nav-link" data-scroll-target="#spectral-spatial-temporal-resolution-impact-on-the-prediction"><span class="header-section-number">4.2</span> Spectral Spatial Temporal Resolution impact on the prediction</a></li>
   <li><a href="#big-picture" id="toc-big-picture" class="nav-link" data-scroll-target="#big-picture"><span class="header-section-number">4.3</span> Big picture</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
@@ -469,7 +469,7 @@ L'objet suivant est masqué depuis 'package:stats':
 ✖ dplyr::lag()        masks stats::lag()
 ✖ yardstick::spec()   masks readr::spec()
 ✖ recipes::step()     masks stats::step()
-• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
+• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Utilities.Package) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -5907,7 +5907,7 @@ Figure&nbsp;12: Sample of <a href="#fig-Validation" class="quarto-xref">Figure&n
 <p>Concerning Phaeophyceae, the thick cell walls of plant of this class make it really reflective in the infrared part of the spectra whereas the presence of Fucoxanthin and Zeaxanthin result in a low reflectance in the visible part of the electromagnetic spectra. These two key features has been identified by the Neural Network as the two principal predictors to accurately identify Brown algae (<a href="#fig-VIP" class="quarto-xref">Figure&nbsp;9</a>). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range of 560 to 615 nm (<a href="#fig-VIP" class="quarto-xref">Figure&nbsp;9</a>). The band at 560 nm has been identified as important for accurately identifying this class Resolution impact on the prediction. Regarding Bacillariophyceae, the VIP analysis (<a href="#fig-VIP" class="quarto-xref">Figure&nbsp;9</a>) indicates that 475 nm is the most important predictor for this class. This could be attributed to the absence of lutein, neoxanthin, and zeaxanthin in diatoms, absorbing in the blue part of spectra, resulting in the highest visible reflectance among all classes. Furethemore, it is vegetation with the lowest concentration of chlorphyll-a, pigment absorbing light both in the blue and the red. The transparency of Bacillariophyceae makes the reflectance of the sediment part of the overall reflectance of Bacillariophyceae, further explaining the high reflectance in the blue.</p>
 </section>
 <section id="spectral-spatial-temporal-resolution-impact-on-the-prediction" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="spectral-spatial-temporal-resolution-impact-on-the-prediction"><span class="header-section-number">4.2</span> <strong>Spectral Spatial Temporal Resolution impact on the prediction</strong></h2>
+<h2 data-number="4.2" class="anchored" data-anchor-id="spectral-spatial-temporal-resolution-impact-on-the-prediction"><span class="header-section-number">4.2</span> Spectral Spatial Temporal Resolution impact on the prediction</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [40]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>high_alt<span class="ot">&lt;-</span> <span class="st">"Data/image/micasense/Gafanha_high_multi.tif"</span> <span class="sc">%&gt;%</span> </span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
@@ -5996,6 +5996,8 @@ Figure&nbsp;12: Sample of <a href="#fig-Validation" class="quarto-xref">Figure&n
 <span id="cb88-85"><a href="#cb88-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-86"><a href="#cb88-86" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"./Figures/Compare_reflectance.png"</span>,plot, <span class="at">width=</span> <span class="dv">472</span><span class="sc">*</span><span class="dv">4</span>, <span class="at">height=</span><span class="dv">402</span><span class="sc">*</span><span class="dv">4</span>, <span class="at">units =</span> <span class="st">"px"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
+<div class="columns">
+<div class="column">
 <div class="cell-container"><div class="cell-decorator"><pre>In [41]:</pre></div><div id="cell-fig-CompareRef" class="cell">
 <div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pigment composition of the different vegetation classes. Green indicate the presence of the pigment in the class while red indicate the abscence. Chlb : Chlorophyll-b ; Chlc : Chlorophyll-c ; Fuco : Fucoxanthin ; Zea : Zeaxanthin ; Diad : Diadinoxanthin ; Lut : Lutein ; Neo : Neoxanthin ; PE : Phycoerythrin ; PC : Phycocyanin.</span></span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -6013,6 +6015,10 @@ Figure&nbsp;13: Comparison of reflectance retrieved from both low-altitude and h
 </div>
 </div>
 </div></div>
+</div><div class="column">
+<p>In the present study, the main novelty is the usage of two different altitude (12m and 120m) in the neural network model building. The spatial resolution of the low altitude fights (8mm) allows for an accurate selection of pure pixel of the classes used in the neural network model</p>
+</div>
+</div>
 </section>
 <section id="big-picture" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="big-picture"><span class="header-section-number">4.3</span> Big picture</h2>
@@ -6554,7 +6560,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","selector":".lightbox"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"closeEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -5581,7 +5581,7 @@ The VIP analysis of the Neural Network model (@fig-VIP) shows that the 531 nm ba
 
 Concerning Phaeophyceae, the thick cell walls of plant of this class make it really reflective in the infrared part of the spectra whereas the presence of Fucoxanthin and Zeaxanthin result in a low reflectance in the visible part of the electromagnetic spectra. These two key features has been identified by the Neural Network as the two principal predictors to accurately identify Brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range of 560 to 615 nm (@fig-VIP). The band at 560 nm has been identified as important for accurately identifying this class Resolution impact on the prediction. Regarding Bacillariophyceae, the VIP analysis (@fig-VIP) indicates that 475 nm is the most important predictor for this class. This could be attributed to the absence of lutein, neoxanthin, and zeaxanthin in diatoms, absorbing in the blue part of spectra, resulting in the highest visible reflectance among all classes. Furethemore, it is vegetation with the lowest concentration of chlorphyll-a, pigment absorbing light both in the blue and the red. The transparency of Bacillariophyceae makes the reflectance of the sediment part of the overall reflectance of Bacillariophyceae, further explaining the high reflectance in the blue.
 
-## **Spectral Spatial Temporal Resolution impact on the prediction**
+## Spectral Spatial Temporal Resolution impact on the prediction
 
 ```{r Reflectance_Validation 2 height}
 #| cache: true
@@ -5678,6 +5678,8 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
   
 ```
 
+::: columns
+::: column
 ```{r Plot Reflectance_Validation 2 height}
 #| cache: false
 #| echo: false
@@ -5693,6 +5695,12 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
 
 knitr::include_graphics("./Figures/Compare_reflectance.png")
 ```
+:::
+
+::: column
+In the present study, the main novelty is the usage of two different altitude (12m and 120m) in the neural network model building. The spatial resolution of the low altitude fights (8mm) allows for an accurate selection of pure pixel of the classes used in the neural network model
+:::
+:::
 
 ## Big picture
 
