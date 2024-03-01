@@ -5653,9 +5653,7 @@ df<-stk_summarized %>%
  
 plot <- df %>% 
   group_by(pred) %>% 
-  sample_n(10000) %>% 
-  rearrr::rotate_2d(x_col = "Low", y_col = "High",degrees = 9, origin = c(0,0)) %>% select(Low_rotated,High_rotated) %>% 
-  rename(Low = Low_rotated, High = High_rotated) %>% 
+  sample_n(10000) %>%
   mutate(Low = Low /10000, 
          High = High/10000) %>% 
   ggplot(aes(x=Low, y=High))+
