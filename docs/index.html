@@ -612,6 +612,7 @@ Figure&nbsp;13: Comparison of reflectance retrieved from both low-altitude and h
 </div>
 </div>
 <p>The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (<a href="#eq-std" class="quarto-xref">Equation&nbsp;1</a> ; <span class="citation" data-cites="Cao2017">(<a href="#ref-Cao2017" role="doc-biblioref">Cao et al., 2017</a>)</span>). This approach allows us to eliminate differences in the level of reflectance, focusing instead on the shape of the spectra. This is a key feature in building a model that can reliably predict vegetation across geographical sites and seasons. It enables consistent prediction of vegetation classes across variations in biomass and variability in light conditions <span class="citation" data-cites="fyfe2003spatial COSTA2021107018 piaser2023impact">(<a href="#ref-fyfe2003spatial" role="doc-biblioref">Fyfe, 2003</a> ; <a href="#ref-COSTA2021107018" role="doc-biblioref">Costa et al., 2021</a> ; <a href="#ref-piaser2023impact" role="doc-biblioref">Piaser et al., 2023</a>)</span>.</p>
+<p>The <a href="#fig-upscaling" class="quarto-xref">Figure&nbsp;10</a> demonstrates that a seagrass cover percentage of 90 % is necessary for confident prediction of seagrass presence. This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset was composed exclusively of pure pixels, which has resulted in the model’s reduced confidence when faced with lower percentages of seagrass cover. This implies that outside of the biomass peak of seagrass this model should be less accurate. This needs to be futher investigated.</p>
 </section>
 <section id="big-picture" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="big-picture"><span class="header-section-number">4.3</span> Big picture</h2>
@@ -1201,7 +1202,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","selector":".lightbox","descPosition":"bottom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -1070,28 +1070,37 @@ altitudes (12m and 120m) for constructing the neural network model. The
 lower altitude flights (8mm spatial resolution) enable precise selection
 of pure pixels representing the classes used in the neural network
 model. This methodology implies a consistency between the reflectance of
-both altitude.
+both altitude. Figure~\ref{fig-CompareRef} depicts the relationship
+between reflectance from a low-altitude flight and a high-altitude
+flight conducted over the same area. An apparent underestimation of
+reflectance values is observed in the high-altitude flight, particularly
+for higher values. Since both flights were conducted over vegetation
+areas, the highest reflectance values correspond to the infrared part of
+the spectrum.
 
-Figure~\ref{fig-CompareRef} depicts the relationship between reflectance
-from a low-altitude flight and a high-altitude flight conducted over the
-same area. An apparent underestimation of reflectance values is observed
-in the high-altitude flight, particularly for higher values. Since both
-flights were conducted over vegetation areas, the highest reflectance
-values correspond to the infrared part of the spectrum. The disparity in
-infrared reflectance may stem from temporal differences between the
-flights, possibly resulting in a slightly drier intertidal area and
-consequently higher infrared reflectance. This disparity poses an issue
-for the methodology followed in the present study, relying solely on one
-flight height for training. To address this issue, we employed min/max
-standardized reflectance spectra as predictors for the model
-(Equation~\ref{eq-std} ; \citep{Cao2017}). This approach allows us to
-eliminate differences in the level of reflectance, focusing instead on
-the shape of the spectra. This is a key feature in building a model that
-can reliably predict vegetation across geographical sites and seasons.
-It enables consistent prediction of vegetation classes across variations
-in biomass and variability in light conditions \citetext{\citealp[
-]{fyfe2003spatial}; \citealp[
+The disparity in infrared reflectance may stem from temporal differences
+between the flights, possibly resulting in a slightly drier intertidal
+area and consequently higher infrared reflectance. This disparity poses
+an issue for the methodology followed in the present study, relying
+solely on one flight height for training. To address this issue, we
+employed min/max standardized reflectance spectra as predictors for the
+model (Equation~\ref{eq-std} ; \citep{Cao2017}). This approach allows us
+to eliminate differences in the level of reflectance, focusing instead
+on the shape of the spectra. This is a key feature in building a model
+that can reliably predict vegetation across geographical sites and
+seasons. It enables consistent prediction of vegetation classes across
+variations in biomass and variability in light conditions
+\citetext{\citealp[ ]{fyfe2003spatial}; \citealp[
 ]{COSTA2021107018}; \citealp{piaser2023impact}}.
+
+The Figure~\ref{fig-upscaling} demonstrates that a seagrass cover
+percentage of 90 \% is necessary for confident prediction of seagrass
+presence. This highlights a limitation of the methodology used to
+construct the training dataset for the model. The dataset was composed
+exclusively of pure pixels, which has resulted in the model's reduced
+confidence when faced with lower percentages of seagrass cover. This
+implies that outside of the biomass peak of seagrass this model should
+be less accurate. This needs to be futher investigated.
 
 \subsection{Big picture}\label{big-picture}
 
