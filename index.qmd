@@ -5687,9 +5687,9 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
 #| warning: false
 #| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a linear model wheras the black dashed line represents a 1 to 1 relationship. 
 #| label: fig-CompareRef
-#| fig-width: 5
-#| fig-height: 5
-#| out-width: "50%"
+#| fig-width: 10
+#| fig-height: 10
+#| out-width: "100%"
 
 
 # Pigment composition of the different vegetation classes. Green indicate the presence of the pigment in the class while red indicate the abscence. Chlb : Chlorophyll-b ; Chlc : Chlorophyll-c ; Fuco : Fucoxanthin ; Zea : Zeaxanthin ; Diad : Diadinoxanthin ; Lut : Lutein ; Neo : Neoxanthin ; PE : Phycoerythrin ; PC : Phycocyanin.
