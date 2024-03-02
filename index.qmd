@@ -5577,7 +5577,7 @@ The Micasense RedEdge-MX DUAL camera used in this study meets these two criteria
 :::
 :::
 
-The VIP analysis of the Neural Network model (@fig-VIP) shows that the 531 nm band is the most important spectral band for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibits the highest reflectance among all other classes, highlighting the difference in accessories carotenoid proportion between seagrasses and green algae (@repolho2017seagrass).
+The VIP analysis of the Neural Network model (@fig-VIP) shows that the 531 nm band is the most important spectral band for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibits the highest reflectance among all other classes, highlighting the difference in accessories carotenoid proportion between seagrasses and green algae [@repolho2017seagrass].
 
 Concerning Phaeophyceae, the thick cell walls of plant of this class make it really reflective in the infrared part of the spectra whereas the presence of Fucoxanthin and Zeaxanthin result in a low reflectance in the visible part of the electromagnetic spectra. These two key features has been identified by the Neural Network as the two principal predictors to accurately identify Brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range of 560 to 615 nm (@fig-VIP). The band at 560 nm has been identified as important for accurately identifying this class Resolution impact on the prediction. Regarding Bacillariophyceae, the VIP analysis (@fig-VIP) indicates that 475 nm is the most important predictor for this class. This could be attributed to the absence of lutein, neoxanthin, and zeaxanthin in diatoms, absorbing in the blue part of spectra, resulting in the highest visible reflectance among all classes. Furethemore, it is vegetation with the lowest concentration of chlorphyll-a, pigment absorbing light both in the blue and the red. The transparency of Bacillariophyceae makes the reflectance of the sediment part of the overall reflectance of Bacillariophyceae, further explaining the high reflectance in the blue.
 
@@ -5653,7 +5653,7 @@ df<-stk_summarized %>%
  
 plot <- df %>% 
   group_by(pred) %>% 
-  sample_n(10000) %>%
+  sample_n(10000) %>% 
   mutate(Low = Low /10000, 
          High = High/10000) %>% 
   ggplot(aes(x=Low, y=High))+
@@ -5663,7 +5663,8 @@ plot <- df %>%
                                breaks = c(0,2000,4000,6000),
                                labels = c("1","2000","4000","6000"))+
   # geom_smooth(method = "loess")+
-  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "red" )+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
   theme_Bede()+
   ylim(c(0.05,0.6))+
   xlim(c(0.05,0.6))+
@@ -5673,7 +5674,7 @@ plot <- df %>%
   theme(
     legend.position = "top",
         legend.key.width = unit(3,"line"))
-
+plot
 ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, units = "px")
   
 ```
@@ -5684,7 +5685,7 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a 1 to 1 relationship. 
+#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a linear model wheras the black dashed line represents a 1 to 1 relationship. 
 #| label: fig-CompareRef
 #| fig-width: 5
 #| fig-height: 5
@@ -5698,9 +5699,11 @@ knitr::include_graphics("./Figures/Compare_reflectance.png")
 :::
 
 ::: column
-In the present study, the main novelty is the usage of two different altitude (12m and 120m) in the neural network model building. The spatial resolution of the low altitude fights (8mm) allows for an accurate selection of pure pixel of the classes used in the neural network model
+In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enable precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude.
 :::
 :::
+
+ @fig-CompareRef depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. An apparent underestimation of reflectance values is observed in the high-altitude flight, particularly for higher values. Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum. The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allows us to eliminate differences in the level of reflectance, focusing instead on the shape of the spectra. This is a key feature in building a model that can reliably predict vegetation across geographical sites and seasons. It enables consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
 
 ## Big picture
 
