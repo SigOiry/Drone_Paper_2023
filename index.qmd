@@ -536,7 +536,7 @@ ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Fig1_Map_Drone_Sites.png")
+knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
 ```
 
 ## Drone Data
@@ -958,7 +958,7 @@ ggsave("Figures/Spectral_shapes_total.png",plot, height = 7, width = 10, dpi = 8
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/Spectral_shapes_total.png")
+knitr::include_graphics("Figures/Low_res/Spectral_shapes_total.png")
 ```
 
 ## Intertidal vegetation mapping
@@ -1202,7 +1202,7 @@ a
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Figure3_workflow.png")
+knitr::include_graphics("./Figures/Low_res/Figure3_workflow.png")
 
 ```
 
@@ -1746,7 +1746,7 @@ ggsave("Figures/Maps Pred/FigX-Gaf_Low_Pred.png",plot_Gaf_Low , width = 1920*4, 
 #| fig-height: 8
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Maps Pred/FigX-Gaf_Low_Pred.png")
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_Low_Pred.png")
 
 ```
 
@@ -2287,7 +2287,7 @@ ggsave("Figures/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width = 2105*4,
 #| fig-height: 8
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Maps Pred/FigX-Gaf_High_Pred.png")
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png")
 
 ```
 
@@ -2718,7 +2718,7 @@ ggsave("Figures/Maps Pred/FigX-Boat_Pred.png",plot_Boat , width = 1000*4, height
 #| fig-height: 4
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Maps Pred/FigX-Boat_Pred.png")
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Boat_Pred.png")
 
 ```
 
@@ -3043,7 +3043,7 @@ ggsave("Figures/Maps Pred/FigX-Dike_Pred.png",plot_Dike , width = 1200*4, height
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Maps Pred/FigX-Dike_Pred.png")
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png")
 ```
 
 ## Validation
@@ -4639,7 +4639,7 @@ ggsave("./Figures/Validation/ConfusionMatrixGreen.png", plot_green, width = 671*
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Validation/ConfusionMatrixGlobal.png")
+knitr::include_graphics("./Figures/Low_res/Validation/ConfusionMatrixGlobal.png")
 
 ```
 
@@ -4838,7 +4838,7 @@ VIP_NDVI<-
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/VIP/Fig_VIP.png")
+knitr::include_graphics("Figures/Low_res/VIP/Fig_VIP.png")
 
 ```
 
@@ -5342,7 +5342,7 @@ lm_Rodo<-output_80_filtered_same %>%
 #| fig-height: 7
 #| out-width: "90%"
 
-knitr::include_graphics("Figures/Upscaling/density_vs_Proportion.png")
+knitr::include_graphics("Figures/Low_res/Upscaling/density_vs_Proportion.png")
 
 ```
 
@@ -5550,7 +5550,7 @@ ggsave("./Figures/Disc_Pigment_Table.png",rast_pigment, width= 1066*4, height=51
 
 # Pigment composition of the different vegetation classes. Green indicate the presence of the pigment in the class while red indicate the abscence. Chlb : Chlorophyll-b ; Chlc : Chlorophyll-c ; Fuco : Fucoxanthin ; Zea : Zeaxanthin ; Diad : Diadinoxanthin ; Lut : Lutein ; Neo : Neoxanthin ; PE : Phycoerythrin ; PC : Phycocyanin.
 
-knitr::include_graphics("./Figures/Disc_Pigment_Table.png")
+knitr::include_graphics("./Figures/Low_res/Disc_Pigment_Table.png")
 ```
 
 The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in @fig-Pigm but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non exper eyes. This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. @Davies2023 has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with including a band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes.
@@ -5567,7 +5567,7 @@ The discrimination of seagrasses from green macroalgae presents significant chal
 #| fig-height: 10
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Validation/ConfusionMatrixGreen.png")
+knitr::include_graphics("./Figures/Low_res/Validation/ConfusionMatrixGreen.png")
 
 ```
 :::
@@ -5694,7 +5694,7 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
 
 # Pigment composition of the different vegetation classes. Green indicate the presence of the pigment in the class while red indicate the abscence. Chlb : Chlorophyll-b ; Chlc : Chlorophyll-c ; Fuco : Fucoxanthin ; Zea : Zeaxanthin ; Diad : Diadinoxanthin ; Lut : Lutein ; Neo : Neoxanthin ; PE : Phycoerythrin ; PC : Phycocyanin.
 
-knitr::include_graphics("./Figures/Compare_reflectance.png")
+knitr::include_graphics("./Figures/Low_res/Compare_reflectance.png")
 ```
 :::
 
