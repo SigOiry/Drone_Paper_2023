@@ -66,6 +66,9 @@ author:
 keywords:
   - Drone
   - Remote Sensing
+  - Seagrass
+  - Coastal Ecosystems
+  - Neural Network 
 abstract: |
   Coastal areas host seagrass meadows, which offer crucial ecosystem services including erosion control and carbon sequestration. However, these areas are increasingly impacted by human activities, leading to seagrass decline and habitat fragmentation. In situ surveys, traditionally performed to monitor these ecosystems face limitations on temporal and spatial coverage, particularly in intertidal zones, prompting the use of satellite data within monitoring programs. Yet, satellite remote sensing struggles with spatial and spectral resolution, making it difficult to discriminate seagrass from other macrophytes in highly heterogenous meadows. To address these challenges, drone images acquired with multi-spectral sensors offer a promising solution. This study focuses on using drones acquisitions for mapping intertidal macrophytes, effectively discriminating between seagrass and green macroalgae. Ten drone flights were conducted at two different altitudes (12m and 120m) across diverse European habitats in France and Portugal. Low altitude flights were used to train a Deep Learning classifier based on Neural Networks to discrimintate among 5 intertidal vegetation classes. Drone mapping demonstrated an overall accuracy of 94% across all the sites and images, covering a total area of 467 000 m². The model exhibited an accuracy of 96.4% in identifying seagrass.
 plain-language-summary: |
@@ -75,7 +78,7 @@ key-points:
   - Neural Network made to accuratly discriminates intertidal seagrasses from green algae (chlorophyceae)
 date: last-modified
 citation:
-  container-title: Earth and Space Science
+  container-title: Remote Sensing of Environment
 number-sections: true
 notebook-links: false
 editor_options: 
@@ -532,8 +535,8 @@ ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 #| fig-cap: >
 #|   Sites observed by drone. A: Gulf of Morbihan, B: Bourngeuf Bay, C: Ria de Aveiro Lagoon. Light green represent terrestrial areas whereas darkgreen represent intertidal areas. 
 #| label: fig-map
-#| fig-width: 7
-#| fig-height: 7
+#| fig-width: 10
+#| fig-height: 10
 #| out-width: "100%"
 
 knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
@@ -5679,34 +5682,58 @@ ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, uni
   
 ```
 
-::: columns
-::: column
-```{r Plot Reflectance_Validation 2 height}
+
+```{r}
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a linear model wheras the black dashed line represents a 1 to 1 relationship. 
+#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a linear model wheras the black dashed line represents a 1 to 1 relationship. Left (A) plots RAW data and right (B) plots standardise data. 
 #| label: fig-CompareRef
 #| fig-width: 10
-#| fig-height: 10
+#| fig-height: 5
 #| out-width: "100%"
 
+RAW <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/Low_res/Compare_reflectance.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
 
-# Pigment composition of the different vegetation classes. Green indicate the presence of the pigment in the class while red indicate the abscence. Chlb : Chlorophyll-b ; Chlc : Chlorophyll-c ; Fuco : Fucoxanthin ; Zea : Zeaxanthin ; Diad : Diadinoxanthin ; Lut : Lutein ; Neo : Neoxanthin ; PE : Phycoerythrin ; PC : Phycocyanin.
+STD <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/Low_res/Compare_reflectance_std.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
 
-knitr::include_graphics("./Figures/Low_res/Compare_reflectance.png")
+
+RAW+STD
+
+
 ```
-:::
 
-::: column
-In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enable precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude. @fig-CompareRef depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. An apparent underestimation of reflectance values is observed in the high-altitude flight, particularly for higher values. Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum.
-:::
-:::
 
-The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allows us to eliminate differences in the level of reflectance, focusing instead on the shape of the spectra. This is a key feature in building a model that can reliably predict vegetation across geographical sites and seasons. It enables consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
+In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enable precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude. @fig-CompareRef (A) depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. An apparent underestimation of reflectance values is observed in the high-altitude flight, particularly for higher values. Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum.
 
-The @fig-upscaling demonstrates that a seagrass cover percentage of `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % is necessary for confident prediction of seagrass presence. This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset was composed exclusively of pure pixels, which has resulted in the model's reduced confidence when faced with lower percentages of seagrass cover. This implies that outside of the biomass peak of seagrass this model should be less accurate. This needs to be futher investigated.
+The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; @fig-CompareRef (B) ; [@Cao2017]). This approach allows us to eliminate differences in the level of reflectance, focusing instead on the shape of the spectra. This is a key feature in building a model that can reliably predict vegetation across geographical sites and seasons. It enables consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
+
+The @fig-upscaling demonstrates that a seagrass cover percentage of `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % is necessary for confident prediction of seagrass presence. This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset was composed exclusively of pure pixels, which has resulted in the model's reduced confidence when faced with lower percentages of seagrass cover. Intertidal seagrasses exhibit strong phenology, with varying pigment composition throughout the year[@bargain2013seasonal ; @legare2022remote]. This suggests that outside of the biomass peak of seagrasses, this model may be less accurate. Further investigation is warranted to explore this aspect.
 
 ## Big picture
+
+Climate change, global warming, alien and invasive species development, coastal erosion, sealevel rise, while further impact coastal ecosystems in the future [@SCHIBALSKI2022101414; @holon2018predictive ; @marquet2024global]. The demand for meaningful and efficient monitoring methods for these habitats has therefore never been greater [@muller2018satellite ; @villalobos2023remote ; @oiry2021using]. Employing traditional sampling methods to monitor these ecosystems is time and resource-intensive, and the findings are often difficult to scale up. Earth observation methods can bridge this gap and meet the needs for monitoring coastal ecosystems. [@papathanasopoulou2019satellite]. The retrieval of Essential Biodiversity Variables (EBVs) and Essential Ocean Variables (EOVs) through satellite observations is increasingly common, enabling comprehensive monitoring of entire ecosystems over extended time periods [@ratnarajah2023monitoring ; @ZOFFOLI2020112020].
 
 # Conclusion
