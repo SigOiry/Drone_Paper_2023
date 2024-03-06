@@ -13,7 +13,7 @@
     <meta name="author" content="Guillaume Brunier">
     <meta name="author" content="Pierre Gernez">
     <meta name="author" content="Laurent Barillé">
-    <meta name="dcterms.date" content="2024-03-05">
+    <meta name="dcterms.date" content="2024-03-06">
     <meta name="keywords" content="Drone, Remote Sensing, Seagrass, Coastal Ecosystems, Neural Network">
 
     <title>PREPRINT – Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery – PREPRINT.</title>
@@ -208,10 +208,10 @@
 <meta name="citation_author" content="Guillaume Brunier">
 <meta name="citation_author" content="Pierre Gernez">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_publication_date" content="2024-03-05">
-<meta name="citation_cover_date" content="2024-03-05">
+<meta name="citation_publication_date" content="2024-03-06">
+<meta name="citation_cover_date" content="2024-03-06">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-03-05">
+<meta name="citation_online_date" content="2024-03-06">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=The planetary role of seagrass conservation;,citation_author=Richard KF Unsworth;,citation_author=Leanne C Cullen-Unsworth;,citation_author=Benjamin LH Jones;,citation_author=Richard J Lilley;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_issue=6606;,citation_volume=377;,citation_journal_title=Science;,citation_publisher=American Association for the Advancement of Science;">
@@ -370,7 +370,7 @@
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">March 5, 2024</p>
+              <p class="date">March 6, 2024</p>
             </div>
           </div>
           
@@ -484,7 +484,7 @@ L'objet suivant est masqué depuis 'package:stats':
 ✖ dplyr::lag()        masks stats::lag()
 ✖ yardstick::spec()   masks readr::spec()
 ✖ recipes::step()     masks stats::step()
-• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Utilities.Package) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -5702,7 +5702,6 @@ Figure&nbsp;10: Kernel density plot showing the proportion of pixel well classif
 </section>
 <section id="discussion" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Discussion</h1>
-<p>The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green algae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The challenge arises from the shared pigment composition between these two vegetation classes, complicating their differentiation using remote sensing techniques. This challenge has been addressed through the utilization of high-resolution drone flights allowing a precise photointerpretation of pure pixels of the different vegetation classes used as training data, providing a robust foundation for subsequent classification analyses. In achieving 94.26 accuracy across all study sites, this method demonstrates its efficacy in accurately classifying macrophytes, thus offering a reliable approach for vegetation classification in intertidal mudflats using remote sensing data.</p>
 <section id="vegetation-discrimination" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="vegetation-discrimination"><span class="header-section-number">4.1</span> Vegetation Discrimination</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [37]:</pre></div><div class="cell">
@@ -5896,7 +5895,7 @@ Figure&nbsp;11: Photosynthetic and carotenoid pigments present (Green) or absent
 </div>
 </div>
 </div></div>
-<p>The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in <a href="#fig-Pigm" class="quarto-xref">Figure&nbsp;11</a> but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non exper eyes. This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. <span class="citation" data-cites="Davies2023">Davies et al. (<a href="#ref-Davies2023" role="doc-biblioref">2023a</a>)</span> has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with including a band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes.</p>
+<p>The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green algae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The discrimination of seagrasses from green macroalgae presents significant challenges, primarily due to the shared pigment composition between these taxa, as depicted in <a href="#fig-Pigm" class="quarto-xref">Figure&nbsp;11</a> but also by the frequent spatial mixing of these green macrophytes. This similarity in pigment composition, including photosynthetic and carotenoid pigments like chlorophyll b and c, fucoxanthin, and neoxanthin, results in spectral signatures that are often indistinguishable to non exper eyes. This spectral overlap is further complicated by the intermingling of seagrasses and green macroalgae in the same spatial locations, posing a significant challenge for remote sensing aimed at accurately mapping and monitoring coastal ecosystems. Our study addresses these complexities by utilizing high-resolution drone imagery with 10 spectral bands. <span class="citation" data-cites="Davies2023">Davies et al. (<a href="#ref-Davies2023" role="doc-biblioref">2023a</a>)</span> has shown that having at least 8 spectral bands ranging between 500 nm to 850 nm with including a band at 530 nm and another one at 730 nm is crucial to accurately discriminate green macrophytes.</p>
 <div class="columns">
 <div class="column">
 <div class="cell-container"><div class="cell-decorator"><pre>In [39]:</pre></div><div id="cell-fig-ValidationGreen" class="cell">
@@ -6658,7 +6657,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
