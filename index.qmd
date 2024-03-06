@@ -535,8 +535,6 @@ ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 #| fig-cap: >
 #|   Sites observed by drone. A: Gulf of Morbihan, B: Bourngeuf Bay, C: Ria de Aveiro Lagoon. Light green represent terrestrial areas whereas darkgreen represent intertidal areas. 
 #| label: fig-map
-#| fig-width: 10
-#| fig-height: 10
 #| out-width: "100%"
 
 knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
@@ -957,8 +955,6 @@ ggsave("Figures/Spectral_shapes_total.png",plot, height = 7, width = 10, dpi = 8
 #| warning: false
 #| fig-cap: Class of vegetation used to train the Neural Network model and their standardised spectral signature
 #| label: fig-vegetation
-#| fig-width: 10
-#| fig-height: 7
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/Low_res/Spectral_shapes_total.png")
