@@ -76,18 +76,6 @@
 \def\fps@figure{htbp}
 \makeatother
 
-\usepackage{fontspec}
-\usepackage{multirow}
-\usepackage{multicol}
-\usepackage{colortbl}
-\usepackage{hhline}
-\newlength\Oldarrayrulewidth
-\newlength\Oldtabcolsep
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{hyperref}
-\usepackage{float}
-\usepackage{wrapfig}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -432,100 +420,19 @@ vegetation. High altitude fights on the other hand allow to cover large
 areas and produced images with a pixel size of 80 mm
 (Table~\ref{tbl-flights}).
 
-\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
-
-\global\setlength{\Oldtabcolsep}{\tabcolsep}
-
-\setlength{\tabcolsep}{0pt}
-
-\renewcommand*{\arraystretch}{1.5}
-
-
-
-\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
-
-\begin{longtable}[c]{ccccc}
+\begin{table}
 
 \caption{\label{tbl-flights}List of drone flight, summarising the date,
 the altitude and the purpose of each flight. 12 m and 120 m flights have
 a spatial resolution of 8 and 80 mm respectively.}
 
-\tabularnewline
+\centering{
 
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Country}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Site}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Name}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Altitude}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Utility}}} \\
+\includegraphics[width=6.63in,height=\textheight]{Figures/table_flights.png}
 
-\ascline{1.5pt}{000000}{1-5}\endfirsthead 
+}
 
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Country}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Site}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Name}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Altitude}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Utility}}} \\
-
-\ascline{1.5pt}{000000}{1-5}\endhead
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Arz\ Island}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Duer}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{\multirow[c]{-3}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Gulf\ of\ Morbihan}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Duer}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{666666}{2-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Barbâtre}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{\multirow[c]{-5}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{France}}}}} & \multicolumn{1}{>{}c}{\multirow[c]{-2}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Bourgneuf\ Bay}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{L'Epine}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{000000}{1-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Inner\ Lagoon}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Mataducos}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{} & \multicolumn{1}{>{}c}{} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Gafanha}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{120m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation}}} \\
-
-\ascline{1.5pt}{BEBEBE}{3-5}
-
-
-
-\multicolumn{1}{>{}c}{\multirow[c]{-4}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Portugal}}}}} & \multicolumn{1}{>{}c}{\multirow[c]{-4}{*}{\parbox{0.75in}{\centering \textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Aveiro\ Lagoon}}}}} & \multicolumn{1}{!{\color[HTML]{000000}\vrule width 1.5pt}>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Gafanha}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{12m}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training}}} \\
-
-\ascline{1.5pt}{000000}{1-5}
-
-
-\end{longtable}
-
-\arrayrulecolor[HTML]{000000}
-
-\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
-
-\global\setlength{\tabcolsep}{\Oldtabcolsep}
-
-\renewcommand*{\arraystretch}{1}
+\end{table}%
 
 \subsection{Field sampling}\label{field-sampling}
 
@@ -602,77 +509,18 @@ applied to each drone flight (Figure~\ref{fig-workflow}).
 \subsubsection{Neural Network model
 building}\label{neural-network-model-building}
 
-\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
-
-\global\setlength{\Oldtabcolsep}{\tabcolsep}
-
-\setlength{\tabcolsep}{0pt}
-
-\renewcommand*{\arraystretch}{1.5}
-
-
-
-\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
-
-\begin{longtable}[c]{ccc}
+\begin{table}
 
 \caption{\label{tbl-validationPX}Vegetation Classes of the model and the
 number of pixels used to train and validate each class}
 
-\tabularnewline
+\centering{
 
-\ascline{1.5pt}{666666}{1-3}
+\includegraphics[width=6.63in,height=\textheight]{Figures/table_validation_px.png}
 
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Class}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training\ Pixels}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation\ Pixels}}} \\
+}
 
-\ascline{1.5pt}{666666}{1-3}\endfirsthead 
-
-\ascline{1.5pt}{666666}{1-3}
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Class}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Training\ Pixels}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Validation\ Pixels}}} \\
-
-\ascline{1.5pt}{666666}{1-3}\endhead
-
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Bacillariophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{4,475}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{3,371,920}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Chlorophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{17,140}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{6,258,737}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Magnoliopsida}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{221,065}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{69,079,189}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Phaeophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{169,936}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{18,481,141}}} \\
-
-
-
-
-
-\multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Rhodophyceae}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{5,771}}} & \multicolumn{1}{>{}c}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{3,515,421}}} \\
-
-\ascline{1.5pt}{666666}{1-3}
-
-
-\end{longtable}
-
-\arrayrulecolor[HTML]{000000}
-
-\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
-
-\global\setlength{\tabcolsep}{\Oldtabcolsep}
-
-\renewcommand*{\arraystretch}{1}
+\end{table}%
 
 A dataset containing photo-interpreted drone reflectance pixels was
 built to train a Neural Network model with 2 hidden layers. The training

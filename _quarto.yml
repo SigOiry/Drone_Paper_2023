@@ -11,9 +11,11 @@ format:
     theme: spacelab
     comments:
       hypothesis: true
-  docx: default
+  docx: 
+    output-file: "Simon_Drone_Paper"
   elsevier-pdf: 
     fig-pos: "H"
+    output-file: "Simon_Drone_Paper"
 render: 
   - "!*.qmd"
   - "!*.ipynb"

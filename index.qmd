@@ -544,14 +544,11 @@ knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
 
 At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs in ten spectral bands, from 444 nm (blue) to 840 nm (near infrared, NIR). An angle of 90° was maintained between the sun and the drone's route to guarantee uniform lighting conditions between flight lines. A side overlap of 70% and a front overlap of 80% between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at \~50% provided by the manufacturer. A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The workflow for orthomosaicking was the same for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m. Low altitude drone flights produce ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allow to cover large areas and produced images with a pixel size of 80 mm (@tbl-flights). 
 
-```{r Table1}
+```{r Table1 building}
+#| cache: false
 #| echo: false
+#| eval: false
 #| warning: false
-#| label: tbl-flights
-#| tbl-cap: List of drone flight, summarising the date, the altitude and the purpose of each flight. 12 m  and 120 m flights have a spatial resolution of 8 and 80 mm respectively.
-#| cache: true
-
-
 
 df<-data.frame(
   Country = c(
@@ -602,8 +599,11 @@ brdr1 <- fp_border_default(color = "black", width = 1.5)
 brdr2 <- fp_border_default(color = "grey", width = 1.5)
 brdr3 <- fp_border_default(color = "grey40", width = 1.5)
 
-
-flextable(df)  %>%
+ i = 16.5 # width of the side borders in the word_document output (in centimeters)
+ w = i*0.3937 # width of the side borders in the word_document output (in inches)
+ 
+flx1<-flextable(df)  %>%
+  flextable::width(width = (w/(ncol(df)))) %>% 
   merge_v(j = 1) %>%
   merge_v(j = 2) %>%
     border_remove() %>%
@@ -624,7 +624,21 @@ flextable(df)  %>%
   # set_caption(caption = "Table 1 List of drone Flight, summarising the date, the altitude and the purpose of each flight.") %>%
   set_table_properties(layout = "autofit") 
 
+
+
+save_as_image(flx1, "Figures/table_flights.png", res = 300)
 ```
+
+```{r Table1}
+#| echo: false
+#| warning: false
+#| label: tbl-flights
+#| tbl-cap: List of drone flight, summarising the date, the altitude and the purpose of each flight. 12 m  and 120 m flights have a spatial resolution of 8 and 80 mm respectively.
+#| cache: true
+
+knitr::include_graphics("Figures/table_flights.png")
+```
+
 
 ## Field sampling
 
@@ -1275,6 +1289,35 @@ write.csv(df_validation,"Data/training/TrainandValid_NewStanRawMetrics_Processed
 
 ```
 
+```{r Table2 building}
+#| cache: false
+#| echo: false
+#| eval: false
+#| warning: false
+
+
+df_validation<-read.csv("Data/training/TrainandValid_NewStanRawMetrics_Processed_valid.csv")
+
+ i = 16.5 # width of the side borders in the word_document output (in centimeters)
+ w = i*0.3937 # width of the side borders in the word_document output (in inches)
+ 
+df_flx2<-df_training %>% 
+  left_join(df_validation, by = "True") %>% 
+  rename(`Validation Pixels` = "n",
+         Class = "True",
+         `Training Pixels` = "Training_Pixels")
+flx2 <- df_flx2 %>% 
+  flextable() %>% 
+  flextable::width(width = (w/(ncol(df_flx2)))) %>% 
+  # border_remove() %>%
+  flextable::align(align = "center",part = "all") %>%
+  flextable::align(align = "center",part = "header") %>% 
+  set_table_properties(layout = "autofit") 
+
+save_as_image(flx2, "Figures/table_validation_px.png", res = 300)
+
+```
+
 ```{r Table2}
 #| echo: false
 #| warning: false
@@ -1282,19 +1325,7 @@ write.csv(df_validation,"Data/training/TrainandValid_NewStanRawMetrics_Processed
 #| label: tbl-validationPX
 #| cache: true
 
-df_validation<-read.csv("Data/training/TrainandValid_NewStanRawMetrics_Processed_valid.csv")
-
-df_training %>% 
-  left_join(df_validation, by = "True") %>% 
-  rename(`Validation Pixels` = "n",
-         Class = "True",
-         `Training Pixels` = "Training_Pixels") %>% 
-  flextable() %>% 
-  # border_remove() %>%
-  flextable::align(align = "center",part = "all") %>%
-  flextable::align(align = "center",part = "header") %>% 
-  set_table_properties(layout = "autofit") 
-
+knitr::include_graphics("Figures/table_validation_px.png")
 ```
 
 A dataset containing photo-interpreted drone reflectance pixels was built to train a Neural Network model with 2 hidden layers. The training pixels were categorized into seven different classes, representing the various habitats encountered at the different study sites: Sediment, Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and Rhodophyceae. Only low-altitude flights (@tbl-flights) were used for training because their 8 mm spatial resolution allowied to avoid spectral sub-pixel mixing and to accurately differentiate vegetation classes. More than `r my_comma(round(sum(df_training$Training_Pixels),-3))` pixels at 8 mm resolution from the 3 training flights were used to train the model (@tbl-validationPX). Twenty one variables were used by the model as predictors: the ten raw spectral bands of the Micasense RedEdge Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same ten spectral bands standardized using a min/max transformation ([@eq-std] ; @Cao2017) and the Normalized difference vegetation index (NDVI, @eq-ndvi). Standardisation of spectral bands is used to eliminate the scaling differences between spectra and to limit the effect of biomass on the shape of the spectra [@Douay2022 ; @Davies2023].
