@@ -2318,7 +2318,7 @@ ggsave("Figures/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width = 2105*4,
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The red triangle shows the extent of the low altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
+#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The yellow polygon shows the extent of the low altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
 #| label: fig-GafHigh
 #| fig-width: 10
 #| fig-height: 8
@@ -5622,73 +5622,82 @@ Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021
 #| eval: false
 #| warning: false
 
-high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
-  rast()
-
-# low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
+# high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
+#   rast()
+# 
+# # low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
+# #   rast() 
+# 
+# low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
+#   rast() %>% 
+#   resample(high_alt, method = "med")
+# 
+# 
+# low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
 #   rast() 
-
-low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
-  rast() %>% 
-  resample(high_alt, method = "med")
-
-
-low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
-  rast() 
-
-mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
-  vect()
-  
-high_alt_masked<-crop(high_alt,mask)
-high_alt_masked<-mask(high_alt_masked,mask)
-
-low_alt_masked<-crop(low_alt,mask)
-low_alt_masked<-mask(low_alt_masked,mask)
-
-low_alt_pred_masked<-crop(low_alt_pred,mask)
-low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
-
-
-stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
-  as.data.frame()
-
-names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
-              "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
-              "pred")
-
-stk_long<-stk %>% 
-  mutate(px_ID = c(1:nrow(stk))) %>% 
-  pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
-  mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
-                         str_detect(Bands, "high") ~ "High",
-                         TRUE ~ "NA"),
-         Bands = gsub("_high","",Bands),
-         Bands = gsub("_low","",Bands))
-
-
-stk_summarized<-stk_long %>% 
-  # group_by(px_ID,alt) %>% 
-  # reframe(Value = mean(Value),
-  #         pred = unique(pred)) %>% 
-  pivot_wider(names_from = "alt", values_from = "Value")
-
-df<-stk_summarized %>% 
-  ungroup() %>% 
-  group_by(Bands) %>% 
-  filter(Low<10000,
-         High < 10000,
-         Low < quantile(Low,probs = 0.99),
-         High < quantile(High,probs = 0.99),
-         Low > quantile(Low,probs = 0.01),
-         High > quantile(High,probs = 0.01),
-         !pred %in% c(7,9,3,10)) %>%
-  ungroup()
+# 
+# mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
+#   vect()
+#   
+# high_alt_masked<-crop(high_alt,mask)
+# high_alt_masked<-mask(high_alt_masked,mask)
+# 
+# low_alt_masked<-crop(low_alt,mask)
+# low_alt_masked<-mask(low_alt_masked,mask)
+# 
+# low_alt_pred_masked<-crop(low_alt_pred,mask)
+# low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
+# 
+# 
+# stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
+#   as.data.frame()
+# 
+# names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
+#               "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
+#               "pred")
+# 
+# stk_long<-stk %>% 
+#   mutate(px_ID = c(1:nrow(stk))) %>% 
+#   pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
+#   mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
+#                          str_detect(Bands, "high") ~ "High",
+#                          TRUE ~ "NA"),
+#          Bands = gsub("_high","",Bands),
+#          Bands = gsub("_low","",Bands))
+# 
+# 
+# stk_summarized<-stk_long %>% 
+#   # group_by(px_ID,alt) %>% 
+#   # reframe(Value = mean(Value),
+#   #         pred = unique(pred)) %>% 
+#   pivot_wider(names_from = "alt", values_from = "Value")
+# 
+# df<-stk_summarized %>% 
+#   ungroup() %>% 
+#   group_by(Bands) %>% 
+#   filter(Low<10000,
+#          High < 10000,
+#          Low < quantile(Low,probs = 0.99),
+#          High < quantile(High,probs = 0.99),
+#          Low > quantile(Low,probs = 0.01),
+#          High > quantile(High,probs = 0.01),
+#          !pred %in% c(7,9,3,10)) %>%
+#   ungroup()
  
-plot <- df %>% 
-  group_by(pred) %>% 
-  sample_n(10000) %>% 
-  mutate(Low = Low /10000, 
-         High = High/10000) %>% 
+
+RAW <- read.csv("Data/CompareReflectance/Compare_ref_raw.csv")%>%  
+  mutate(Low = Low /10000,
+         High = High/10000)
+
+RMSE_raw <- sqrt(mean((RAW$Low - RAW$High)^2))
+lm_raw <- lm(RAW$High ~ RAW$Low)
+
+STD <- read.csv("Data/CompareReflectance/Compare_ref_std.csv")
+
+RMSE_STD <- sqrt(mean((STD$Low - STD$High)^2))
+lm_STD <- lm(STD$High ~ STD$Low)
+
+plot_RAW <- RAW %>%  
   ggplot(aes(x=Low, y=High))+
   # geom_point(aes(color = as.factor(pred)))
   ggpointdensity::geom_pointdensity(adjust = .03)+
@@ -5697,7 +5706,7 @@ plot <- df %>%
                                labels = c("1","2000","4000","6000"))+
   # geom_smooth(method = "loess")+
   geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
-  geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
   theme_Bede()+
   ylim(c(0.05,0.6))+
   xlim(c(0.05,0.6))+
@@ -5707,23 +5716,42 @@ plot <- df %>%
   theme(
     legend.position = "top",
         legend.key.width = unit(3,"line"))
-plot
-ggsave("./Figures/Compare_reflectance.png",plot, width= 472*4, height=402*4, units = "px")
+
+plot_STD <- STD %>%  
+    ggplot(aes(x=Low, y=High))+
+  # geom_point(aes(color = as.factor(pred)))
+  ggpointdensity::geom_pointdensity(adjust = .03)+
+  viridis::scale_color_viridis(limits = c(1,2000),
+                               breaks = c(1,1000,2000),
+                               labels = c("1","1000","2000"))+
+  # scale_color_gradient(na.value = 1)+
+  # geom_smooth(method = "loess")+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  theme_Bede()+
+  ylim(c(0.05,1))+
+  xlim(c(0.05,1))+
+  ylab("Standardised reflectance of the 120m flight")+
+  xlab("Standardised reflectance of the 12m flight")+
+  labs(color = "Pixel density")+
+  theme(
+    legend.position = "top",
+        legend.key.width = unit(3,"line"))
+
+ggsave("./Figures/High_res/Compare_reflectance.png",plot_RAW, width= 472*4, height=402*4, units = "px")
+ggsave("./Figures/High_res/Compare_reflectance_std.png",plot_STD, width= 472*4, height=402*4, units = "px")
   
+
 ```
 
-```{r}
-#| cache: false
+```{r ref_compare_building}
+#| cache: true
 #| echo: false
+#| eval: false
 #| warning: false
-#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The red dashed line represents a linear model whereas the black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardised data. 
-#| label: fig-CompareRef
-#| fig-width: 10
-#| fig-height: 5
-#| out-width: "100%"
 
 RAW <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/Low_res/Compare_reflectance.png"))+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance.png"))+
   coord_equal()+
   geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
     theme_void()+
@@ -5736,7 +5764,7 @@ RAW <- ggplot()+
         plot.margin = margin(0, 0, 0, 0, "pt"))
 
 STD <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/Low_res/Compare_reflectance_std.png"))+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance_std.png"))+
   coord_equal()+
   geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
     theme_void()+
@@ -5749,10 +5777,25 @@ STD <- ggplot()+
         plot.margin = margin(0, 0, 0, 0, "pt"))
 
 
-RAW+STD
+plot <- RAW+STD
 
+ggsave("./Figures/High_res/Compare_reflectance_both.png",plot,width= 1920*4, height=1129*4, units = "px")
+```
+
+```{r RefComapare}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardised data. 
+#| label: fig-CompareRef
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/High_res/Compare_reflectance_both.png")
 
 ```
+
 
 In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enabled precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude. @fig-CompareRef depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. Overall there was a good agreement between the two altitudes. There was however a slight underestimation for raw reflectance values in the high-altitude flight, particularly for higher values (@fig-CompareRef A). Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum.
 
