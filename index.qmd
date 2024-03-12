@@ -540,9 +540,12 @@ ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
 ```
 
-## Drone Data
 
-At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands, from 444 nm (blue) to 840 nm (near infrared, NIR). To ensure consistent lighting conditions across flight paths, the drone's trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at \~50% provided by the manufacturer. A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The workflow for orthomosaicking was the same for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m. Low altitude drone flights produce ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allow to cover large areas and produced images with a pixel size of 80 mm (@tbl-flights).
+## Field sampling
+
+### Drone acquisition
+
+At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands, from 444 nm (blue) to 840 nm (near infrared, NIR). To ensure consistent lighting conditions across flight paths, the drone's trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at \~50% provided by the manufacturer. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m. (@tbl-flights). 
 
 ```{r Table1 building}
 #| cache: false
@@ -639,7 +642,8 @@ save_as_image(flx1, "Figures/table_flights.png", res = 300)
 knitr::include_graphics("Figures/table_flights.png")
 ```
 
-## Field sampling
+
+### Ground Control Points
 
 Before each flight, targets used as Ground Control Points (GCPs) were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). GCPs were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. dGPS was also used to georeference quadrats of 0.25 m² assessing the presence or absence of five key taxonomic classes of intertidal vegetation : Bacillariophyceae (Unicellular benthic diatoms forming biofilms at the sediment surface during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (seagrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red macroalgae) (@fig-vegetation). Pictures of each quadrat were uploaded online to the Global Biodiversity Information Facility (GBIF) platform [@BedeGbif], a public open portal to store and share biodiversity data. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software (imageJ). For all quadrats, the hyperspectral reflectance signatures of each vegetation class was measured using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures from quadrats serve dual purposes: they validate the radiometric calibration of drone data and contribute to error reduction in photo interpretation. The workflow developed in this study is presented in @fig-workflow.
 
@@ -974,7 +978,11 @@ ggsave("Figures/Spectral_shapes_total.png",plot, height = 7, width = 10, dpi = 8
 knitr::include_graphics("Figures/Low_res/Spectral_shapes_total.png")
 ```
 
-## Intertidal vegetation mapping
+## Drone Processing
+
+A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The workflow for orthomosaicking was the same for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image. Low altitude drone flights produce ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allow to cover large areas and produced images with a pixel size of 80 mm (@tbl-flights).
+
+## General Workflow
 
 ```{r Figure3 text opening}
 #| cache: true
@@ -1410,7 +1418,11 @@ The model was applied to all flights at both 12 and 120 m of altitude. In situ i
 
 ## Variable Importance Plots (VIP)
 
+Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model (@WEI2015399).
+
 ## Impact of the percent cover on the prediction
+
+The key aspect of the workflow adopted in the present study is the mapping of specific areas at two different altitudes (12m and 120m), resulting in two distinct resolutions for the same area (8mm and 80mm). The predictions made on the high-resolution flight can be used to estimate the percent cover of each vegetation class for every pixel of the lower resolution flight. Consequently, for each pixel of the high-altitude flights, percent covers of each vegetation class were obtained, and a kernel density plot was generated. This plot provides a visual representation of the behavior of the model in different vegetation percent cover scenarios. 
 
 # Results
 

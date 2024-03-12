@@ -387,7 +387,9 @@ intertidal areas.}
 
 \end{figure}%
 
-\subsection{Drone Data}\label{drone-data}
+\subsection{Field sampling}\label{field-sampling}
+
+\subsubsection{Drone acquisition}\label{drone-acquisition}
 
 At each location, a DJI Matrice 200 quadcopter drone equipped with a
 Micasense RedEdge Dual MX multispectral camera was flown to take 1.2
@@ -399,22 +401,8 @@ maintain a solar azimuth angle of 90 degrees. An overlap of 70\% and
 flight. A downwelling light sensor (DLS2) was used to acquire irradiance
 data concomitantly with the camera measurements. Raw data were
 calibrated in reflectance using a calibration panel reflective at
-\textasciitilde50\% provided by the manufacturer. A
-structure-from-motion photogrammetry software (Agisoft Metashape) was
-used to process images to obtain multispectral orthomosaics of each
-flight. The workflow for orthomosaicking was the same for every flight.
-First, tying key points were detected inside of each image and between
-overlapping images in order to obtain a sparse point cloud. This cloud
-was cleaned using reprojection accuracy metric in order to remove noisy
-points. A dense point cloud was then produced using a structure from
-motion algorithm. A surface interpolation of this dense point cloud was
-made to obtain a digital surface model (DSM), used to reconstruct the
-multispectral ortho-image. Across all sites, flights were made at two
-different altitudes : 12 m or/and 120 m. Low altitude drone flights
-produce ortho-images with a very high spatial resolution (8 mm per
-pixel), making it efficient to visually distinguish between the various
-types of vegetation. High altitude fights on the other hand allow to
-cover large areas and produced images with a pixel size of 80 mm
+\textasciitilde50\% provided by the manufacturer. Across all sites,
+flights were made at two different altitudes : 12 m or/and 120 m.
 (Table~\ref{tbl-flights}).
 
 \begin{table}
@@ -431,7 +419,7 @@ a spatial resolution of 8 and 80 mm respectively.}
 
 \end{table}%
 
-\subsection{Field sampling}\label{field-sampling}
+\subsubsection{Ground Control Points}\label{ground-control-points}
 
 Before each flight, targets used as Ground Control Points (GCPs) were
 distributed over the study site and georeferenced with a Trimble © Geo
@@ -472,8 +460,25 @@ at the spectral resolution of the Micasense RedEdge Dual MX.}
 
 \end{figure}%
 
-\subsection{Intertidal vegetation
-mapping}\label{intertidal-vegetation-mapping}
+\subsection{Drone Processing}\label{drone-processing}
+
+A structure-from-motion photogrammetry software (Agisoft Metashape) was
+used to process images to obtain multispectral orthomosaics of each
+flight. The workflow for orthomosaicking was the same for every flight.
+First, tying key points were detected inside of each image and between
+overlapping images in order to obtain a sparse point cloud. This cloud
+was cleaned using reprojection accuracy metric in order to remove noisy
+points. A dense point cloud was then produced using a structure from
+motion algorithm. A surface interpolation of this dense point cloud was
+made to obtain a digital surface model (DSM), used to reconstruct the
+multispectral ortho-image. Low altitude drone flights produce
+ortho-images with a very high spatial resolution (8 mm per pixel),
+making it efficient to visually distinguish between the various types of
+vegetation. High altitude fights on the other hand allow to cover large
+areas and produced images with a pixel size of 80 mm
+(Table~\ref{tbl-flights}).
+
+\subsection{General Workflow}\label{general-workflow}
 
 \phantomsection\label{cell-fig-workflow}
 \begin{figure}[H]

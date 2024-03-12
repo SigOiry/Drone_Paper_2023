@@ -314,9 +314,13 @@ window.Quarto = {
   <li><a href="#material-methods" id="toc-material-methods" class="nav-link" data-scroll-target="#material-methods"><span class="header-section-number">2</span> Material &amp; Methods</a>
   <ul class="collapse">
   <li><a href="#study-sites" id="toc-study-sites" class="nav-link" data-scroll-target="#study-sites"><span class="header-section-number">2.1</span> Study sites</a></li>
-  <li><a href="#drone-data" id="toc-drone-data" class="nav-link" data-scroll-target="#drone-data"><span class="header-section-number">2.2</span> Drone Data</a></li>
-  <li><a href="#field-sampling" id="toc-field-sampling" class="nav-link" data-scroll-target="#field-sampling"><span class="header-section-number">2.3</span> Field sampling</a></li>
-  <li><a href="#intertidal-vegetation-mapping" id="toc-intertidal-vegetation-mapping" class="nav-link" data-scroll-target="#intertidal-vegetation-mapping"><span class="header-section-number">2.4</span> Intertidal vegetation mapping</a>
+  <li><a href="#field-sampling" id="toc-field-sampling" class="nav-link" data-scroll-target="#field-sampling"><span class="header-section-number">2.2</span> Field sampling</a>
+  <ul class="collapse">
+  <li><a href="#drone-acquisition" id="toc-drone-acquisition" class="nav-link" data-scroll-target="#drone-acquisition"><span class="header-section-number">2.2.1</span> Drone acquisition</a></li>
+  <li><a href="#ground-control-points" id="toc-ground-control-points" class="nav-link" data-scroll-target="#ground-control-points"><span class="header-section-number">2.2.2</span> Ground Control Points</a></li>
+  </ul></li>
+  <li><a href="#drone-processing" id="toc-drone-processing" class="nav-link" data-scroll-target="#drone-processing"><span class="header-section-number">2.3</span> Drone Processing</a></li>
+  <li><a href="#general-workflow" id="toc-general-workflow" class="nav-link" data-scroll-target="#general-workflow"><span class="header-section-number">2.4</span> General Workflow</a>
   <ul class="collapse">
   <li><a href="#neural-network-model-building" id="toc-neural-network-model-building" class="nav-link" data-scroll-target="#neural-network-model-building"><span class="header-section-number">2.4.1</span> Neural Network model building</a></li>
   <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">2.4.2</span> Validation</a></li>
@@ -377,9 +381,11 @@ Figure&nbsp;1: Location of drone flights in France and Portugal. A: Gulf of Morb
 </div>
 </div>
 </section>
-<section id="drone-data" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="drone-data"><span class="header-section-number">2.2</span> Drone Data</h2>
-<p>At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands, from 444 nm (blue) to 840 nm (near infrared, NIR). To ensure consistent lighting conditions across flight paths, the drone’s trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at ~50% provided by the manufacturer. A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The workflow for orthomosaicking was the same for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m. Low altitude drone flights produce ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allow to cover large areas and produced images with a pixel size of 80 mm (<a href="#tbl-flights" class="quarto-xref">Table&nbsp;1</a>).</p>
+<section id="field-sampling" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="field-sampling"><span class="header-section-number">2.2</span> Field sampling</h2>
+<section id="drone-acquisition" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="drone-acquisition"><span class="header-section-number">2.2.1</span> Drone acquisition</h3>
+<p>At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands, from 444 nm (blue) to 840 nm (near infrared, NIR). To ensure consistent lighting conditions across flight paths, the drone’s trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at ~50% provided by the manufacturer. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m. (<a href="#tbl-flights" class="quarto-xref">Table&nbsp;1</a>).</p>
 <div class="cell">
 <div id="tbl-flights" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -399,8 +405,8 @@ Table&nbsp;1: List of drone flight, summarising the date, the altitude and the p
 </div>
 </div>
 </section>
-<section id="field-sampling" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="field-sampling"><span class="header-section-number">2.3</span> Field sampling</h2>
+<section id="ground-control-points" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="ground-control-points"><span class="header-section-number">2.2.2</span> Ground Control Points</h3>
 <p>Before each flight, targets used as Ground Control Points (GCPs) were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). GCPs were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. dGPS was also used to georeference quadrats of 0.25 m² assessing the presence or absence of five key taxonomic classes of intertidal vegetation : Bacillariophyceae (Unicellular benthic diatoms forming biofilms at the sediment surface during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (seagrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red macroalgae) (<a href="#fig-vegetation" class="quarto-xref">Figure&nbsp;2</a>). Pictures of each quadrat were uploaded online to the Global Biodiversity Information Facility (GBIF) platform <span class="citation" data-cites="BedeGbif">(<a href="#ref-BedeGbif" role="doc-biblioref">Davies et al., 2023b</a>)</span>, a public open portal to store and share biodiversity data. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software (imageJ). For all quadrats, the hyperspectral reflectance signatures of each vegetation class was measured using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures from quadrats serve dual purposes: they validate the radiometric calibration of drone data and contribute to error reduction in photo interpretation. The workflow developed in this study is presented in <a href="#fig-workflow" class="quarto-xref">Figure&nbsp;3</a>.</p>
 <div id="cell-fig-vegetation" class="cell">
 <div class="cell-output-display">
@@ -417,8 +423,13 @@ Figure&nbsp;2: The five taxonomic classes of vegetation used to train the Neural
 </div>
 </div>
 </section>
-<section id="intertidal-vegetation-mapping" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="intertidal-vegetation-mapping"><span class="header-section-number">2.4</span> Intertidal vegetation mapping</h2>
+</section>
+<section id="drone-processing" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="drone-processing"><span class="header-section-number">2.3</span> Drone Processing</h2>
+<p>A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The workflow for orthomosaicking was the same for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image. Low altitude drone flights produce ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allow to cover large areas and produced images with a pixel size of 80 mm (<a href="#tbl-flights" class="quarto-xref">Table&nbsp;1</a>).</p>
+</section>
+<section id="general-workflow" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="general-workflow"><span class="header-section-number">2.4</span> General Workflow</h2>
 <div id="cell-fig-workflow" class="cell">
 <div class="cell-output-display">
 <div id="fig-workflow" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -1343,7 +1354,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
