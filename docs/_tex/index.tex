@@ -588,8 +588,28 @@ dataset.
 \subsection{Variable Importance Plots
 (VIP)}\label{variable-importance-plots-vip}
 
+Variable Importance Plots (VIP) serve as a method to identify which
+predictors are important for predicting a specific class. This is
+achieved by repeatedly predicting the same dataset while shuffling one
+predictor at a time. The benchmark score obtained after each iteration
+is then compared to the benchmark score obtained without shuffling any
+variables. The greater the difference between these two benchmark
+values, the more important the variable is for the model
+\citep{WEI2015399}.
+
 \subsection{Impact of the percent cover on the
 prediction}\label{impact-of-the-percent-cover-on-the-prediction}
+
+The key aspect of the workflow adopted in the present study is the
+mapping of specific areas at two different altitudes (12m and 120m),
+resulting in two distinct resolutions for the same area (8mm and 80mm).
+The predictions made on the high-resolution flight can be used to
+estimate the percent cover of each vegetation class for every pixel of
+the lower resolution flight. Consequently, for each pixel of the
+high-altitude flights, percent covers of each vegetation class were
+obtained, and a kernel density plot was generated. This plot provides a
+visual representation of the behavior of the model in different
+vegetation percent cover scenarios.
 
 \section{Results}\label{results}
 
@@ -716,6 +736,45 @@ Sentinel-2 pixel size.}
 \end{figure}%
 
 \subsection{Validation}\label{validation-1}
+
+\subsubsection{Reflectance comparison between the two different
+altitudes}\label{reflectance-comparison-between-the-two-different-altitudes}
+
+\phantomsection\label{cell-fig-CompareRef}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/High_res/Compare_reflectance_both.png}
+
+}
+
+\caption{\label{fig-CompareRef}Comparison of reflectance retrieved from
+both low-altitude and high-altitude flights over a common area. The
+black dashed line represents a 1 to 1 relationship. Left (A) plots raw
+data and right (B) plots standardized data (Equation~\ref{eq-std}).}
+
+\end{figure}%
+
+In this study, a key innovation lies in the utilization of two different
+altitudes (12m and 120m) for constructing the neural network model. The
+lower altitude flights (8mm spatial resolution) enabled precise
+selection of pure pixels representing the classes used in the neural
+network model. This methodology implies a consistency between the
+reflectance of both altitude. Figure~\ref{fig-CompareRef} depicts the
+relationship between reflectance from a low-altitude flight and a
+high-altitude flight conducted over the same area. Overall there was a
+good agreement between the two altitudes. There was however a slight
+underestimation for raw reflectance values in the high-altitude flight,
+particularly for higher values (Figure~\ref{fig-CompareRef} A). Since
+both flights were conducted over vegetation areas, the highest
+reflectance values correspond to the infrared part of the spectrum. This
+different is not present anymore when reflectance values of both flights
+have been standardized (Equation~\ref{eq-std} ;
+Figure~\ref{fig-CompareRef} B).
+
+\subsubsection{Neural network classification
+validation}\label{neural-network-classification-validation}
 
 \phantomsection\label{cell-fig-Validation}
 \begin{figure}[H]
@@ -942,51 +1001,25 @@ Bacillariophyceae, further explaining the high reflectance in the blue.
 \subsection{Spectral Spatial Temporal Resolution impact on the
 prediction}\label{spectral-spatial-temporal-resolution-impact-on-the-prediction}
 
-\phantomsection\label{cell-fig-CompareRef}
-\begin{figure}[H]
-
-\centering{
-
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/High_res/Compare_reflectance_both.png}
-
-}
-
-\caption{\label{fig-CompareRef}Comparison of reflectance retrieved from
-both low-altitude and high-altitude flights over a common area. The
-black dashed line represents a 1 to 1 relationship. Left (A) plots raw
-data and right (B) plots standardised data.}
-
-\end{figure}%
-
-In this study, a key innovation lies in the utilization of two different
-altitudes (12m and 120m) for constructing the neural network model. The
-lower altitude flights (8mm spatial resolution) enabled precise
-selection of pure pixels representing the classes used in the neural
-network model. This methodology implies a consistency between the
-reflectance of both altitude. Figure~\ref{fig-CompareRef} depicts the
-relationship between reflectance from a low-altitude flight and a
-high-altitude flight conducted over the same area. Overall there was a
-good agreement between the two altitudes. There was however a slight
-underestimation for raw reflectance values in the high-altitude flight,
-particularly for higher values (Figure~\ref{fig-CompareRef} A). Since
-both flights were conducted over vegetation areas, the highest
-reflectance values correspond to the infrared part of the spectrum.
-
-The disparity in infrared reflectance may stem from temporal differences
-between the flights, possibly resulting in a slightly drier intertidal
-area and consequently higher infrared reflectance. This disparity poses
-an issue for the methodology followed in the present study, relying
-solely on one flight height for training. To address this issue, we
-employed min/max standardized reflectance spectra as predictors for the
-model (Equation~\ref{eq-std} ; \citep{Cao2017}). This approach allowed
-us to eliminate the slight reflectance difference between the flights
-(Figure~\ref{fig-CompareRef} B) and to focus on the shape of the spectra
-in the visible part of the electromagnetic spectra, where different
-pigmentation are associated to taxonomic dignostic features. This was a
-key feature in building a model that could reliably predict vegetation
-across geographical sites and seasons. It enabled consistent prediction
-of vegetation classes across variations in biomass and variability in
-light conditions \citetext{\citealp[ ]{fyfe2003spatial}; \citealp[
+While comparing the reflectance of both altitudes (12 m and 120 m), it
+was observed Figure~\ref{fig-CompareRef} that there is an
+underestimation of the infrared part of the spectra in the high-altitude
+dataset. The disparity in infrared reflectance may stem from temporal
+differences between the flights, possibly resulting in a slightly drier
+intertidal area and consequently higher infrared reflectance. This
+disparity poses an issue for the methodology followed in the present
+study, relying solely on one flight height for training. To address this
+issue, we employed min/max standardized reflectance spectra as
+predictors for the model (Equation~\ref{eq-std} ; \citep{Cao2017}). This
+approach allowed us to eliminate the slight reflectance difference
+between the flights (Figure~\ref{fig-CompareRef} B) and to focus on the
+shape of the spectra in the visible part of the electromagnetic spectra,
+where different pigmentation are associated to taxonomic dignostic
+features. This was a key feature in building a model that could reliably
+predict vegetation across geographical sites and seasons. It enabled
+consistent prediction of vegetation classes across variations in biomass
+and variability in light conditions \citetext{\citealp[
+]{fyfe2003spatial}; \citealp[
 ]{COSTA2021107018}; \citealp{piaser2023impact}}.
 
 The Figure~\ref{fig-upscaling} demonstrates that a seagrass cover

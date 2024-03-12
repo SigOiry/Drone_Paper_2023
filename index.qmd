@@ -1418,7 +1418,7 @@ The model was applied to all flights at both 12 and 120 m of altitude. In situ i
 
 ## Variable Importance Plots (VIP)
 
-Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model (@WEI2015399).
+Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
 
 ## Impact of the percent cover on the prediction
 
@@ -3096,6 +3096,192 @@ knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png")
 ```
 
 ## Validation
+
+### Reflectance comparison between the two different altitudes
+```{r Reflectance_Validation 2 height}
+#| cache: true
+#| echo: false
+#| eval: false
+#| warning: false
+
+# high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
+#   rast()
+# 
+# # low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
+# #   rast() 
+# 
+# low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
+#   rast() %>% 
+#   resample(high_alt, method = "med")
+# 
+# 
+# low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
+#   rast() 
+# 
+# mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
+#   vect()
+#   
+# high_alt_masked<-crop(high_alt,mask)
+# high_alt_masked<-mask(high_alt_masked,mask)
+# 
+# low_alt_masked<-crop(low_alt,mask)
+# low_alt_masked<-mask(low_alt_masked,mask)
+# 
+# low_alt_pred_masked<-crop(low_alt_pred,mask)
+# low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
+# 
+# 
+# stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
+#   as.data.frame()
+# 
+# names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
+#               "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
+#               "pred")
+# 
+# stk_long<-stk %>% 
+#   mutate(px_ID = c(1:nrow(stk))) %>% 
+#   pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
+#   mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
+#                          str_detect(Bands, "high") ~ "High",
+#                          TRUE ~ "NA"),
+#          Bands = gsub("_high","",Bands),
+#          Bands = gsub("_low","",Bands))
+# 
+# 
+# stk_summarized<-stk_long %>% 
+#   # group_by(px_ID,alt) %>% 
+#   # reframe(Value = mean(Value),
+#   #         pred = unique(pred)) %>% 
+#   pivot_wider(names_from = "alt", values_from = "Value")
+# 
+# df<-stk_summarized %>% 
+#   ungroup() %>% 
+#   group_by(Bands) %>% 
+#   filter(Low<10000,
+#          High < 10000,
+#          Low < quantile(Low,probs = 0.99),
+#          High < quantile(High,probs = 0.99),
+#          Low > quantile(Low,probs = 0.01),
+#          High > quantile(High,probs = 0.01),
+#          !pred %in% c(7,9,3,10)) %>%
+#   ungroup()
+ 
+
+RAW <- read.csv("Data/CompareReflectance/Compare_ref_raw.csv")%>%  
+  mutate(Low = Low /10000,
+         High = High/10000)
+
+RMSE_raw <- sqrt(mean((RAW$Low - RAW$High)^2))
+lm_raw <- lm(RAW$High ~ RAW$Low)
+
+STD <- read.csv("Data/CompareReflectance/Compare_ref_std.csv")
+
+RMSE_STD <- sqrt(mean((STD$Low - STD$High)^2))
+lm_STD <- lm(STD$High ~ STD$Low)
+
+plot_RAW <- RAW %>%  
+  ggplot(aes(x=Low, y=High))+
+  # geom_point(aes(color = as.factor(pred)))
+  ggpointdensity::geom_pointdensity(adjust = .03)+
+  viridis::scale_color_viridis(limits = c(0,6000),
+                               breaks = c(0,2000,4000,6000),
+                               labels = c("1","2000","4000","6000"))+
+  # geom_smooth(method = "loess")+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  theme_Bede()+
+  ylim(c(0.05,0.6))+
+  xlim(c(0.05,0.6))+
+  ylab("Reflectance of the 120m flight")+
+  xlab("Reflectance of the 12m flight")+
+  labs(color = "Pixel density")+
+  theme(
+    legend.position = "top",
+        legend.key.width = unit(3,"line"))
+
+plot_STD <- STD %>%  
+    ggplot(aes(x=Low, y=High))+
+  # geom_point(aes(color = as.factor(pred)))
+  ggpointdensity::geom_pointdensity(adjust = .03)+
+  viridis::scale_color_viridis(limits = c(1,2000),
+                               breaks = c(1,1000,2000),
+                               labels = c("1","1000","2000"))+
+  # scale_color_gradient(na.value = 1)+
+  # geom_smooth(method = "loess")+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  theme_Bede()+
+  ylim(c(0.05,1))+
+  xlim(c(0.05,1))+
+  ylab("Standardised reflectance of the 120m flight")+
+  xlab("Standardised reflectance of the 12m flight")+
+  labs(color = "Pixel density")+
+  theme(
+    legend.position = "top",
+        legend.key.width = unit(3,"line"))
+
+ggsave("./Figures/High_res/Compare_reflectance.png",plot_RAW, width= 472*4, height=402*4, units = "px")
+ggsave("./Figures/High_res/Compare_reflectance_std.png",plot_STD, width= 472*4, height=402*4, units = "px")
+  
+
+```
+
+```{r ref_compare_building}
+#| cache: true
+#| echo: false
+#| eval: false
+#| warning: false
+
+RAW <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
+
+STD <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance_std.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
+
+
+plot <- RAW+STD
+
+ggsave("./Figures/High_res/Compare_reflectance_both.png",plot,width= 1920*4, height=1129*4, units = "px")
+```
+
+```{r RefComapare}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardized data (@eq-std). 
+#| label: fig-CompareRef
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/High_res/Compare_reflectance_both.png")
+
+```
+
+
+In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enabled precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude. @fig-CompareRef depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. Overall there was a good agreement between the two altitudes. There was however a slight underestimation for raw reflectance values in the high-altitude flight, particularly for higher values (@fig-CompareRef A). Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum. This different is not present anymore when reflectance values of both flights have been standardized (@eq-std ; @fig-CompareRef B). 
+
+### Neural network classification validation
 
 ```{r Global Accuracy assesment}
 #| cache: true
@@ -5628,190 +5814,7 @@ Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021
 
 ## Spectral Spatial Temporal Resolution impact on the prediction
 
-```{r Reflectance_Validation 2 height}
-#| cache: true
-#| echo: false
-#| eval: false
-#| warning: false
-
-# high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
-#   rast()
-# 
-# # low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
-# #   rast() 
-# 
-# low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
-#   rast() %>% 
-#   resample(high_alt, method = "med")
-# 
-# 
-# low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
-#   rast() 
-# 
-# mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
-#   vect()
-#   
-# high_alt_masked<-crop(high_alt,mask)
-# high_alt_masked<-mask(high_alt_masked,mask)
-# 
-# low_alt_masked<-crop(low_alt,mask)
-# low_alt_masked<-mask(low_alt_masked,mask)
-# 
-# low_alt_pred_masked<-crop(low_alt_pred,mask)
-# low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
-# 
-# 
-# stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
-#   as.data.frame()
-# 
-# names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
-#               "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
-#               "pred")
-# 
-# stk_long<-stk %>% 
-#   mutate(px_ID = c(1:nrow(stk))) %>% 
-#   pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
-#   mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
-#                          str_detect(Bands, "high") ~ "High",
-#                          TRUE ~ "NA"),
-#          Bands = gsub("_high","",Bands),
-#          Bands = gsub("_low","",Bands))
-# 
-# 
-# stk_summarized<-stk_long %>% 
-#   # group_by(px_ID,alt) %>% 
-#   # reframe(Value = mean(Value),
-#   #         pred = unique(pred)) %>% 
-#   pivot_wider(names_from = "alt", values_from = "Value")
-# 
-# df<-stk_summarized %>% 
-#   ungroup() %>% 
-#   group_by(Bands) %>% 
-#   filter(Low<10000,
-#          High < 10000,
-#          Low < quantile(Low,probs = 0.99),
-#          High < quantile(High,probs = 0.99),
-#          Low > quantile(Low,probs = 0.01),
-#          High > quantile(High,probs = 0.01),
-#          !pred %in% c(7,9,3,10)) %>%
-#   ungroup()
- 
-
-RAW <- read.csv("Data/CompareReflectance/Compare_ref_raw.csv")%>%  
-  mutate(Low = Low /10000,
-         High = High/10000)
-
-RMSE_raw <- sqrt(mean((RAW$Low - RAW$High)^2))
-lm_raw <- lm(RAW$High ~ RAW$Low)
-
-STD <- read.csv("Data/CompareReflectance/Compare_ref_std.csv")
-
-RMSE_STD <- sqrt(mean((STD$Low - STD$High)^2))
-lm_STD <- lm(STD$High ~ STD$Low)
-
-plot_RAW <- RAW %>%  
-  ggplot(aes(x=Low, y=High))+
-  # geom_point(aes(color = as.factor(pred)))
-  ggpointdensity::geom_pointdensity(adjust = .03)+
-  viridis::scale_color_viridis(limits = c(0,6000),
-                               breaks = c(0,2000,4000,6000),
-                               labels = c("1","2000","4000","6000"))+
-  # geom_smooth(method = "loess")+
-  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
-  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
-  theme_Bede()+
-  ylim(c(0.05,0.6))+
-  xlim(c(0.05,0.6))+
-  ylab("Reflectance of the 120m flight")+
-  xlab("Reflectance of the 12m flight")+
-  labs(color = "Pixel density")+
-  theme(
-    legend.position = "top",
-        legend.key.width = unit(3,"line"))
-
-plot_STD <- STD %>%  
-    ggplot(aes(x=Low, y=High))+
-  # geom_point(aes(color = as.factor(pred)))
-  ggpointdensity::geom_pointdensity(adjust = .03)+
-  viridis::scale_color_viridis(limits = c(1,2000),
-                               breaks = c(1,1000,2000),
-                               labels = c("1","1000","2000"))+
-  # scale_color_gradient(na.value = 1)+
-  # geom_smooth(method = "loess")+
-  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
-  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
-  theme_Bede()+
-  ylim(c(0.05,1))+
-  xlim(c(0.05,1))+
-  ylab("Standardised reflectance of the 120m flight")+
-  xlab("Standardised reflectance of the 12m flight")+
-  labs(color = "Pixel density")+
-  theme(
-    legend.position = "top",
-        legend.key.width = unit(3,"line"))
-
-ggsave("./Figures/High_res/Compare_reflectance.png",plot_RAW, width= 472*4, height=402*4, units = "px")
-ggsave("./Figures/High_res/Compare_reflectance_std.png",plot_STD, width= 472*4, height=402*4, units = "px")
-  
-
-```
-
-```{r ref_compare_building}
-#| cache: true
-#| echo: false
-#| eval: false
-#| warning: false
-
-RAW <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance.png"))+
-  coord_equal()+
-  geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
-    theme_void()+
-  theme(axis.text = element_blank(), 
-        axis.title = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.ticks.length = unit(0, "pt"),
-        panel.grid.major=element_blank(), 
-        panel.grid.minor=element_blank(), 
-        plot.margin = margin(0, 0, 0, 0, "pt"))
-
-STD <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance_std.png"))+
-  coord_equal()+
-  geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
-    theme_void()+
-  theme(axis.text = element_blank(), 
-        axis.title = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.ticks.length = unit(0, "pt"),
-        panel.grid.major=element_blank(), 
-        panel.grid.minor=element_blank(), 
-        plot.margin = margin(0, 0, 0, 0, "pt"))
-
-
-plot <- RAW+STD
-
-ggsave("./Figures/High_res/Compare_reflectance_both.png",plot,width= 1920*4, height=1129*4, units = "px")
-```
-
-```{r RefComapare}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardised data. 
-#| label: fig-CompareRef
-#| fig-width: 10
-#| fig-height: 5
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/High_res/Compare_reflectance_both.png")
-
-```
-
-
-In this study, a key innovation lies in the utilization of two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enabled precise selection of pure pixels representing the classes used in the neural network model. This methodology implies a consistency between the reflectance of both altitude. @fig-CompareRef depicts the relationship between reflectance from a low-altitude flight and a high-altitude flight conducted over the same area. Overall there was a good agreement between the two altitudes. There was however a slight underestimation for raw reflectance values in the high-altitude flight, particularly for higher values (@fig-CompareRef A). Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum.
-
-The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible part of the electromagnetic spectra, where different pigmentation are associated to taxonomic dignostic features. This was a key feature in building a model that could reliably predict vegetation across geographical sites and seasons. It enabled consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
+While comparing the reflectance of both altitudes (12 m and 120 m), it was observed @fig-CompareRef that there is an underestimation of the infrared part of the spectra in the high-altitude dataset. The disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible part of the electromagnetic spectra, where different pigmentation are associated to taxonomic dignostic features. This was a key feature in building a model that could reliably predict vegetation across geographical sites and seasons. It enabled consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
 
 The @fig-upscaling demonstrates that a seagrass cover percentage of `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % is necessary for confident prediction of seagrass presence. This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset was composed exclusively of pure pixels, which has resulted in the model's reduced confidence when faced with lower percentages of seagrass cover. Intertidal seagrasses exhibit marked phenology, with varying pigment composition throughout the year[@bargain2013seasonal ; @legare2022remote]. Since the training dataset has been made using well developed seagrass meadows, outside of the biomass peak of seagrasses, this model may be less accurate. Further investigation is warranted to explore this aspect.
 
