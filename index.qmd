@@ -274,7 +274,7 @@ p1  <-
 
 
 
-ggsave("Figures/Figure1/Map_Drone_Sites.png",p1,width= 10, height=10)  
+ggsave("Figures/High_res/Figure1/Map_Drone_Sites.png",p1,width= 10, height=10)  
 
 
 ```
@@ -350,7 +350,7 @@ ggplot() +
         axis.text.y = element_text(size = 20))
 
 
-ggsave("Figures/Figure1/Map_Aveiro.png",aveiro_plot,width= 10, height=10)  
+ggsave("Figures/High_res/Figure1/Map_Aveiro.png",aveiro_plot,width= 10, height=10)  
 
 
 ```
@@ -426,7 +426,7 @@ BB_plot <- ggplot() +
         axis.text.y = element_text(size = 20))
 
 
-ggsave("Figures/Figure1/Map_BB.png",width= 10, height=10)  
+ggsave("Figures/High_res/Figure1/Map_BB.png",width= 10, height=10)  
 
 ```
 
@@ -495,7 +495,7 @@ Morbihan_plot<-ggplot() +
         axis.text.y = element_text(size = 20))
 
 
-  ggsave("Figures/Figure1/Map_Morbihan.png",width= 10, height=10)  
+  ggsave("Figures/High_res/Figure1/Map_Morbihan.png",width= 10, height=10)  
 
 
 ```
@@ -514,18 +514,15 @@ layout <- c(
 )
 # plot(layout)
 
-Tot <- magick::image_ggplot(magick::image_read("Figures/Figure1/Map_Drone_Sites.png"), interpolate = T)
-BB <- magick::image_ggplot(magick::image_read("Figures/Figure1/Map_BB.png"), interpolate = T)
-Mor <- magick::image_ggplot(magick::image_read("Figures/Figure1/Map_Morbihan.png"), interpolate = T)
-Av <- magick::image_ggplot(magick::image_read("Figures/Figure1/Map_Aveiro.png"), interpolate = T)
+Tot <- magick::image_ggplot(magick::image_read("Figures/High_res/Figure1/Map_Drone_Sites.png"), interpolate = T)
+BB <- magick::image_ggplot(magick::image_read("Figures/High_res/Figure1/Map_BB.png"), interpolate = T)
+Mor <- magick::image_ggplot(magick::image_read("Figures/High_res/Figure1/Map_Morbihan.png"), interpolate = T)
+Av <- magick::image_ggplot(magick::image_read("Figures/High_res/Figure1/Map_Aveiro.png"), interpolate = T)
 
 
 a<-Tot+Mor+BB+Av+patchwork::plot_layout(design=layout)
 
-ggsave("./Figures/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
-
-
-
+ggsave("./Figures/High_res/Figure1/Fig1_Map_Drone_Sites.png",a, width= 10, height=10, dpi = 800)
 ```
 
 ```{r Figure1}
@@ -629,7 +626,7 @@ flx1<-flextable(df)  %>%
 
 
 
-save_as_image(flx1, "Figures/table_flights.png", res = 300)
+save_as_image(flx1, "Figures/High_res/Table1/table_flights.png", res = 300)
 ```
 
 ```{r Table1}
@@ -639,7 +636,7 @@ save_as_image(flx1, "Figures/table_flights.png", res = 300)
 #| tbl-cap: List of drone flight, summarising the date, the altitude and the purpose of each flight. 12 m  and 120 m flights have a spatial resolution of 8 and 80 mm respectively.
 #| cache: true
 
-knitr::include_graphics("Figures/table_flights.png")
+knitr::include_graphics("Figures/High_res/Table1/table_flights.png")
 ```
 
 
@@ -656,41 +653,12 @@ Before each flight, targets used as Ground Control Points (GCPs) were distribute
 micasense<-list.files(pattern = "Wavelength_Micasense_DualMX.csv",recursive = T) %>% 
   read.delim(sep = ";")
 
-imglist<-
-  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         str_detect(path, "High") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          str_detect(path, "Arz") ~ "Arz",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          str_detect(path, "Pred") ~ "Pred",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".xml"),
-                !str_detect(path,".enp"))
-
-gaf_low_multi<- imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "ortho",
-         resampled == "FALSE",
-         folder == "Input") %>%
-  slice(1) %>% 
-  pull(path) %>%
+gaf_low_multi<- "./Data/BiCOME_Flights/Aveiro/Aveiro_MULTI_12m_ortho_1801.tif" %>% 
   rast() 
- names(gaf_low_multi)<-c(paste0("B",c(1:10)))
+ 
+names(gaf_low_multi)<-c(paste0("B",c(1:10)))
 
- Gafanha_low_pred<-"./Data/image/prediction/NewPreds/AveiroLowPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif" %>% 
+ Gafanha_low_pred<-"./Data/image/prediction/AveiroLowPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif" %>% 
      rast()
  names(Gafanha_low_pred)<-"pred"
 
@@ -769,9 +737,9 @@ spectra<-gaf %>%
         panel.background = element_blank(),
         axis.line = element_line(color="black"))
 
-ggsave("Figures/Spectral_shapes.png",spectra, bg = "transparent",  height = 2, width = 3, dpi = 2000)
+ggsave("Figures/High_res/Figure2/Spectral_shapes.png",spectra, bg = "transparent",  height = 2, width = 3, dpi = 2000)
 
-sp <- image_ggplot(magick::image_read("Figures/Spectral_shapes.png"), interpolate = T)
+sp <- image_ggplot(magick::image_read("Figures/High_res/Figure2/Spectral_shapes.png"), interpolate = T)
 
 # sp<-ggplot()+
 #   geom_spatraster_rgb(data = rast("Figures/Spectral_shapes.png"),maxcell = 4009008)+
@@ -964,7 +932,7 @@ plot<-Magno+
   sp+
   patchwork::plot_layout(design=layout1)
 
-ggsave("Figures/Spectral_shapes_total.png",plot, height = 7, width = 10, dpi = 800)
+ggsave("Figures/High_res/Figure2/Spectral_shapes_total.png",plot, height = 7, width = 10, dpi = 800)
 ```
 
 ```{r Figure2 Plot}

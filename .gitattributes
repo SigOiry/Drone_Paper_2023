@@ -1,3 +1,5 @@
 docs/index.embed.ipynb filter=lfs diff=lfs merge=lfs -text
 docs/index-meca.zip filter=lfs diff=lfs merge=lfs -text
 index.embed.ipynb filter=lfs diff=lfs merge=lfs -text
+Data/image/prediction/AveiroLowPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif filter=lfs diff=lfs merge=lfs -text
+Data/BiCOME_Flights/Aveiro/Aveiro_MULTI_12m_ortho_1801.tif filter=lfs diff=lfs merge=lfs -text
