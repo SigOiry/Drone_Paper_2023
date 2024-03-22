@@ -1386,7 +1386,7 @@ The model was applied to all flights at both 12 and 120 m of altitude. In situ i
 
 ## Variable Importance Plots (VIP)
 
-Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
+Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the 22 predictors utilized in this study, Variable Importance in Projection (VIP) was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
 
 ## Impact of the percent cover on the prediction
 
