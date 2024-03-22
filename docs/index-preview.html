@@ -506,7 +506,7 @@ L'objet suivant est masqué depuis 'package:stats':
 ✖ dplyr::lag()        masks stats::lag()
 ✖ yardstick::spec()   masks readr::spec()
 ✖ recipes::step()     masks stats::step()
-• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Utilities.Package) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -1809,7 +1809,7 @@ NDVI = \frac{R(840nm)-R(668nm)}{R(840nm)+R(668nm)}
 </section>
 <section id="variable-importance-plots-vip" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="variable-importance-plots-vip"><span class="header-section-number">2.5</span> Variable Importance Plots (VIP)</h2>
-<p>Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the 22 predictors utilized in this study, Variable Importance in Projection (VIP) was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model <span class="citation" data-cites="WEI2015399">(<a href="#ref-WEI2015399" role="doc-biblioref">Wei et al., 2015</a>)</span>.</p>
+<p>Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the twenty one predictors utilized in this study, Variable Importance in Projection (VIP) was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model <span class="citation" data-cites="WEI2015399">(<a href="#ref-WEI2015399" role="doc-biblioref">Wei et al., 2015</a>)</span>.</p>
 </section>
 <section id="impact-of-the-percent-cover-on-the-prediction" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="impact-of-the-percent-cover-on-the-prediction"><span class="header-section-number">2.6</span> Impact of the percent cover on the prediction</h2>
@@ -6815,7 +6815,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
