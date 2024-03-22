@@ -127,7 +127,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={PREPRINT -- Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery -- PREPRINT.},
+  pdftitle={DRAFT -- Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery -- DRAFT},
   pdfauthor={Simon Oiry; Bede Ffinian Rowe Davies; Ana I. Sousa; Philippe Rosa; Maria Laura Zoffoli; Guillaume Brunier; Pierre Gernez; Laurent Barillé},
   pdfkeywords={Drone, Remote Sensing, Seagrass, Coastal
 Ecosystems, Neural Network},
@@ -142,9 +142,9 @@ Ecosystems, Neural Network},
 \begin{document}
 
 \begin{frontmatter}
-\title{PREPRINT -- Discriminating Seagrasses From Green Macroalgae in
+\title{DRAFT -- Discriminating Seagrasses From Green Macroalgae in
 European Intertidal areas using high resolution multispectral drone
-imagery -- PREPRINT.}
+imagery -- DRAFT}
 \author[1]{Simon Oiry%
 \corref{cor1}%
 }
@@ -521,7 +521,7 @@ number of pixels used to train and validate each class}
 
 \centering{
 
-\includegraphics[width=6.63in,height=\textheight]{Figures/table_validation_px.png}
+\includegraphics[width=6.63in,height=\textheight]{Figures/High_res/table_validation_px.png}
 
 }
 
@@ -895,24 +895,6 @@ Magnoliopsida, 92 \% for Rhodophyceae and 97 \% for Bacillariophyceae.
 
 \subsection{Vegetation Discrimination}\label{vegetation-discrimination}
 
-\phantomsection\label{cell-fig-Pigm}
-\begin{figure}[H]
-
-\centering{
-
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Disc_Pigment_Table.png}
-
-}
-
-\caption{\label{fig-Pigm}Photosynthetic and carotenoid pigments present
-(Green) or absent (Red) in each taxonomic class present in the Neural
-Network Classifier, along with their absorption wavelength measured with
-spectroradiometer. Chl b: chlorophyll b, Chl c: chlorophyll c, Fuco:
-fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo:
-neoxanthin, PE: phycoerythrin, PC: phycocyanin.}
-
-\end{figure}%
-
 The primary objective of this study was to develop a method for the
 accurate classification of macrophytes on intertidal mudflats,
 specifically focusing on distinguishing between Chlorophyceae (green
@@ -933,15 +915,35 @@ these macrophytes. Besides chlorophyll-a that is common to all
 vegetation types, these two green macrophytes have in common other
 photosynthetic pigments such as chlorophyll-b, and accessory carotenoid
 pigments such as zeaxantin, lutein and neoxanthin
-(Figure~\ref{fig-Pigm}). This spectral overlap is further complicated by
-the intermingling of seagrasses and green macroalgae in the same spatial
-locations, posing a significant challenge for remote sensing aimed at
-accurately mapping and monitoring coastal ecosystems. Our study
-addresses these complexities by using high-resolution drone imagery with
-10 spectral bands. \citep{Davies2023} have shown that having at least
-eight spectral bands ranging between 500 nm to 850 nm including a green
-band at 530 nm and another one in the RedEdge region at 730 nm was
-crucial to accurately discriminate amoung green macrophytes.
+(Figure~\ref{fig-Pigm}).
+
+\phantomsection\label{cell-fig-Pigm}
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Disc_Pigment_Table.png}
+
+}
+
+\caption{\label{fig-Pigm}Photosynthetic and carotenoid pigments present
+(Green) or absent (Red) in each taxonomic class present in the Neural
+Network Classifier, along with their absorption wavelength measured with
+spectroradiometer. Chl b: chlorophyll b, Chl c: chlorophyll c, Fuco:
+fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo:
+neoxanthin, PE: phycoerythrin, PC: phycocyanin.}
+
+\end{figure}%
+
+This spectral overlap is further complicated by the intermingling of
+seagrasses and green macroalgae in the same spatial locations, posing a
+significant challenge for remote sensing aimed at accurately mapping and
+monitoring coastal ecosystems. Our study addresses these complexities by
+using high-resolution drone imagery with 10 spectral bands.
+\citep{Davies2023} have shown that having at least eight spectral bands
+ranging between 500 nm to 850 nm including a green band at 530 nm and
+another one in the RedEdge region at 730 nm was crucial to accurately
+discriminate amoung green macrophytes.
 
 \phantomsection\label{cell-fig-ValidationGreen}
 \begin{figure}[H]
@@ -973,9 +975,9 @@ The VIP analysis of the Neural Network model (Figure~\ref{fig-VIP})
 identified that the band at 531 nm was the most important one for
 accurately identifying Chlorophyceae. In fact, at this wavelength,
 Chlorophyceae exhibited the highest reflectance (raw and standardised)
-among all other classes, highlighting the difference in accessory
-pigments (i.e.~carotenoid) between seagrasses and green macroalgae
-\citep{repolho2017seagrass}.
+among all other classes, highlighting the potential differences in
+accessory pigment ratios (i.e.~carotenoid) between seagrasses and green
+macroalgae \citep{repolho2017seagrass}.
 
 Concerning Phaeophyceae, the thick cell walls of these macroalgae
 \citep{charrier2021growth} make it more reflective in the infrared part
@@ -1001,8 +1003,9 @@ in the blue and the red. The transparency of Bacillariophyceae makes the
 reflectance of the sediment part of the overall reflectance of
 Bacillariophyceae, further explaining the high reflectance in the blue.
 
-\subsection{Spectral Spatial Temporal Resolution impact on the
-prediction}\label{spectral-spatial-temporal-resolution-impact-on-the-prediction}
+\subsection{Impact of Spectral, Spatial, and Temporal Resolution on
+Predictive
+Accuracy}\label{impact-of-spectral-spatial-and-temporal-resolution-on-predictive-accuracy}
 
 While comparing the reflectance of both altitudes (12 m and 120 m), it
 was observed Figure~\ref{fig-CompareRef} that there is an
@@ -1071,8 +1074,8 @@ the genus \emph{Sargassum} \citep{louime2017sargassum}. Satellite remote
 sensing has proven to be a valuable tool for mapping the spatial and
 temporal extent of macroalgal blooms worldwide. However, due to its
 limitations in spatial resolution, it can only effectively map
-well-developed blooms \citetext{\citealp[
-]{rs13081408}; \citealp{klemas2012remote}}. High spatial resolution
+well-developed blooms \citetext{\citealp[ ]{rs13081408}; \citealp[
+]{klemas2012remote}; \citealp{HARO2023103451}}. High spatial resolution
 drone imagery, coupled with an accurate classification algorithm, could
 be utilized to map the early stages of macroalgal blooms in areas known
 to have regular blooms or in new sites. Indeed, this approach could
@@ -1086,15 +1089,12 @@ needs for monitoring coastal ecosystems
 Biodiversity Variables and Essential Ocean Variables through satellite
 observations is increasingly common, enabling comprehensive monitoring
 of entire ecosystems over extended time periods \citetext{\citealp[
-]{ratnarajah2023monitoring}; \citealp{ZOFFOLI2020112020}}. The
-significance of monitoring the coastal environment, particularly in
-light of the Water Framework Directive (WFD ; \citep{WFD2000}), cannot
-be overstated in environmental management and conservation efforts. The
-WFD mandates the achievement and maintenance of ``good ecological
-status'' for all European waters, which necessitates a comprehensive
-understanding and monitoring of aquatic ecosystems, including coastal
-habitats like seagrass beds \citetext{\citealp[
-]{foden2007angiosperms}; \citealp[
+]{ratnarajah2023monitoring}; \citealp{ZOFFOLI2020112020}}. The Water
+Framework Directive \citep[WFD :][]{WFD2000} mandates the achievement
+and maintenance of ``good ecological status'' for all European waters,
+which necessitates a comprehensive understanding and monitoring of
+aquatic ecosystems, including coastal habitats like seagrass beds
+\citetext{\citealp[ ]{foden2007angiosperms}; \citealp[
 ]{nordlund2024one}; \citealp{Zoffoli2021}}.
 
 Effective and efficient monitoring tools are essential for identifying
