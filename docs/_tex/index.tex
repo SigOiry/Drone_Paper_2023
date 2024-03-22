@@ -219,7 +219,7 @@ discriminating between seagrass and green macroalgae. Nine drone flights
 were conducted at two different altitudes (12m and 120m) across
 heterogeneous intertidal European habitats in France and Portugal. Low
 altitude flights were used to train a Deep Learning classifier based on
-Neural Networks to discrimintate among five taxonomic classes of
+Neural Networks to discriminate among five taxonomic classes of
 intertidal vegetation: Magnoliopsida (Seagrass), Chlorophyceae (Green
 macroalgae), Phaeophyceae (Brown algae), Rhodophyceae (Red macroalgae)
 and benthic Bacillariophyceae (Diatoms). Classification of drone imagery
@@ -263,13 +263,13 @@ competition with alien species, and reduction in water quality
 \citetext{\citealp[ ]{nguyen2021}; \citealp[ ]{soissons2018}; \citealp[
 ]{orth2006}; \citealp[ ]{lin2018}; \citealp[ ]{duffy2019}; \citealp[
 ]{rasheed2011long}; \citealp{chefaoui2018dramatic}}. Both habitat
-fragmentation and reduction, in turn, can severely copromise the
+fragmentation and reduction, in turn, can severely compromise the
 effectiveness of ecosystem services provided by seagrass meadows. While
 improvements in water quality have been recently reported in Europe,
 allowing an overall recovery of seagrass ecosystems at local scale, many
 coastal waters worldwide are still subjected to strong eutrophication
 processes \citetext{\citealp[ ]{deSantos2019}; \citealp{Zoffoli2021}}.
-Coastal eutrophication has been ass ociated to excessive accumulation of
+Coastal eutrophication has been associated to excessive accumulation of
 green macroalgae, so-called green tides (\citep{devlin2023nutrients}).
 Green tides produce shade and suffocation over seagrass individuals,
 thus threatening the health of seagrass ecosystems \citep{wang2022}.
@@ -310,8 +310,8 @@ Recently, using advanced machine-learning algorithms trained with a
 large hyperspectral library of more than 300 field reflectance spectra,
 \citep{Davies2023} demonstrated that it was possible to discriminate
 Magnoliopsida from Chlorophyceae using radiometric data acquired at
-Sentinel-2 's spectral resolution. However the application of this
-approach to satellite RS remains to be validated. Moreover patches of
+Sentinel-2 's spectral resolution. However, the application of this
+approach to satellite RS remains to be validated. Moreover, patches of
 green algae can develop at small spatial scales that are not observable
 using non-commercial satellite imagery \citep{tuya2013}, especially
 during the initial stage of a green tide.
@@ -321,7 +321,7 @@ measurements, due to their ability to provide spatially-explicit
 observations at very high spatial resolutions (pixel size from cm to mm)
 while capturing data at multi-spectral resolution \citetext{\citealp[
 ]{fairley2022drone}; \citealp{oh2017use}}. The versatility of drones
-allows for their application across a diverse thematic range , from
+allows for their application across a diverse thematic range, from
 coastal zone management \citetext{\citealp[ ]{adade2021}; \citealp[
 ]{casella2020}; \citealp{angnuureng2022}} to mapping species
 distribution \citetext{\citealp[ ]{joyce2023}; \citealp[
@@ -384,7 +384,7 @@ seagrass intermingle with red, brown and green macroalgae.
 }
 
 \caption{\label{fig-map}Location of drone flights in France and
-Portugal. A: Gulf of Morbihan (Two sites), B: Bourngeuf Bay (Two sites),
+Portugal. A: Gulf of Morbihan (Two sites), B: Bourgneuf Bay (Two sites),
 C: Ria de Aveiro Coastal Lagoon (Three sites). Green represents
 intertidal areas.}
 
@@ -395,22 +395,23 @@ intertidal areas.}
 \subsubsection{Drone acquisition}\label{drone-acquisition}
 
 At each location, a DJI Matrice 200 quadcopter drone equipped with a
-Micasense RedEdge Dual MX multispectral camera was flown to take 1.2
-million pixel reflectance photographs with ten spectral bands ranging
-from the blue to the near infrared (NIR): 444, 475, 531, 560, 650, 668,
-705, 717, 740 and 840 nm. To ensure consistent lighting conditions
-across flight paths, the drone's trajectory was aligned to maintain a
-solar azimuth angle of 90 degrees. An overlap of 70\% and 80\% (side and
-front respectively) between each image was set for each flight. A
-downwelling light sensor (DLS2) was used to acquire irradiance data
-concomitantly with the camera measurements. Raw data were calibrated in
-reflectance using a calibration panel reflective at \textasciitilde50\%
-provided by the manufacturer. Across all sites, flights were made at two
-different altitudes : 12 m or/and 120 m. (Table~\ref{tbl-flights}).
+Micasense RedEdge Dual MX multispectral camera was flown to take
+1.2-million-pixel reflectance photographs with ten spectral bands
+ranging from the blue to the near infrared (NIR): 444, 475, 531, 560,
+650, 668, 705, 717, 740 and 840 nm. To ensure consistent lighting
+conditions across flight paths, the drone's trajectory was aligned to
+maintain a solar azimuth angle of 90 degrees. An overlap of 70\% and
+80\% (side and front respectively) between each image was set for each
+flight. A downwelling light sensor (DLS2) was used to acquire irradiance
+data concomitantly with the camera measurements. Raw data were
+calibrated in reflectance using a calibration panel reflective at
+\textasciitilde50\% provided by the manufacturer. Across all sites,
+flights were made at two different altitudes : 12 m or/and 120 m.
+(Table~\ref{tbl-flights}).
 
 \begin{table}
 
-\caption{\label{tbl-flights}List of drone flight, summarising the date,
+\caption{\label{tbl-flights}List of drone flight, summarizing the date,
 the altitude and the purpose of each flight. 12 m and 120 m flights have
 a spatial resolution of 8 and 80 mm respectively.}
 
@@ -428,7 +429,7 @@ Before each flight, targets used as Ground Control Points (GCPs) were
 distributed over the study site and georeferenced with a Trimble © Geo
 XH 6000 differential GPS (dGPS). GCPs were used to correct
 georeferencing imprecision of orthomosaics with an horizontal and
-vertical accuracy of 10cm. dGPS was also used to georeference quadrats
+vertical accuracy of 10cm. dGPS was also used to georeferenced quadrats
 of 0.25 m² assessing the presence or absence of five key taxonomic
 classes of intertidal vegetation : Bacillariophyceae (Unicellular
 benthic diatoms forming biofilms at the sediment surface during low
@@ -517,7 +518,7 @@ building}\label{neural-network-model-building}
 \begin{table}
 
 \caption{\label{tbl-validationPX}Vegetation Classes of the model and the
-number of pixels used to train and validate each class}
+number of pixels used to train and validate each class.}
 
 \centering{
 
@@ -533,18 +534,18 @@ pixels were categorized into seven different classes, representing the
 various habitats encountered at the different study sites: Sediment,
 Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and
 Rhodophyceae. Only low-altitude flights (Table~\ref{tbl-flights}) were
-used for training because their 8 mm spatial resolution allowied to
-avoid spectral sub-pixel mixing and to accurately identify vegetation
-classes. More than 418,000 pixels at 8 mm resolution from the 3 training
-flights were used to train the model (Table~\ref{tbl-validationPX}).
-Twenty one variables were used by the model as predictors: the ten raw
-spectral bands of the Micasense RedEdge Dual MX multispectral camera
-(ranging from 444 nm to 840 nm), the same ten spectral bands
-standardized using a min/max transformation (Equation~\ref{eq-std} ;
-\citep{Cao2017}) and the Normalized difference vegetation index (NDVI,
-Equation~\ref{eq-ndvi}). Standardisation of spectral bands is commonly
-used to eliminate the scaling differences between spectra and to limit
-the effect of biomass on the spectra shape \citetext{\citealp[
+used for training because their 8 mm spatial resolution allowed to avoid
+spectral sub-pixel mixing and to accurately identify vegetation classes.
+More than 418,000 pixels at 8 mm resolution from the 3 training flights
+were used to train the model (Table~\ref{tbl-validationPX}). Twenty one
+variables were used by the model as predictors: the ten raw spectral
+bands of the Micasense RedEdge Dual MX multispectral camera (ranging
+from 444 nm to 840 nm), the same ten spectral bands standardized using a
+min/max transformation (Equation~\ref{eq-std} ; \citep{Cao2017}) and the
+Normalized difference vegetation index (NDVI, Equation~\ref{eq-ndvi}).
+Standardization of spectral bands is commonly used to eliminate the
+scaling differences between spectra and to limit the effect of biomass
+on the spectra shape \citetext{\citealp[
 ]{Douay2022}; \citealp{Davies2023}}.
 
 \begin{equation}\phantomsection\label{eq-std}{
@@ -583,8 +584,8 @@ validation dataset, polygons of each class were photo interpreted in
 order to increase the number of pixels of the validation dataset. A
 confusion matrix, along with precision metrics such as global accuracy,
 sensitivity, specificity, and Kappa coefficient, was generated for each
-sites. All validation matrices were then aggregated to create a unique
-matrix . Altogether, a total of 536,000 pixels was used to validate the
+site. All validation matrices were then aggregated to create a unique
+matrix. Altogether, a total of 536,000 pixels was used to validate the
 model, thus providing a geographically robust validation dataset.
 
 \subsection{Variable Importance Plots
@@ -651,7 +652,7 @@ size.}
 \end{figure}%
 
 The high-altitude flight over Gafanha covered a total area of
-approwimately 1 km² (Figure~\ref{fig-GafHigh}). A channel contouring a
+approximately 1 km² (Figure~\ref{fig-GafHigh}). A channel contouring a
 small island was masked in the prediction map. Most of the intertidal
 area was classified as Magnoliopsida by the model, including seagrass
 patches with discolored leaves. Only a few pixels were classified as
@@ -660,7 +661,7 @@ classified as Bacillariophyceae in the low-altitude flight remained
 mostly classified as such in the high-altitude flight, though some
 pixels were classified as Magnoliopsida. Patches of Rhodophyceae were
 correctly classified. In the northern part of the site and near the land
-eadges, patches of the schorre angiosperm \emph{Spartina sp.} were
+edges, patches of the schorre angiosperm \emph{Spartina sp.} were
 misclassified, either as Magnoliopsida or as Phaeophyceae.
 
 \phantomsection\label{cell-fig-GafHigh}
@@ -683,13 +684,13 @@ Figure~\ref{fig-GafLow}. The zoom covers an area equivalent to a
 
 \end{figure}%
 
-Amoung the high altitude flights, the one acquired over the inner lagoon
+Among the high altitude flights, the one acquired over the inner lagoon
 of the Ria de Aveiro covered the largest area with approximately 1.5 km²
 (Figure~\ref{fig-Boat}). This site was dominated by seagrass and the red
 macroalgae \emph{Gracilaria vermicullophyla}. The classification
 provided consistent results, with a patchy seagrass meadow mixed with
 red macroalgae on the eastern part of the site. As shown in the zoom
-(Figure~\ref{fig-Boat}), the edges of the meadow were colonised by green
+(Figure~\ref{fig-Boat}), the edges of the meadow were colonized by green
 macroalgae
 
 \phantomsection\label{cell-fig-Boat}
@@ -828,8 +829,8 @@ Magnoliopsida and Sediment.
 \caption{\label{fig-VIP}Variable Importance of the Neural Network
 Classifier for each taxonomic class. The bigger the slice, the more
 important the variable for prediction of each class. The right plot
-shows the drone raw and standardised reflectance spectra of each class.
-Each slice represents the VIP of both raw and standardised reflectance
+shows the drone raw and standardized reflectance spectra of each class.
+Each slice represents the VIP of both raw and standardized reflectance
 combined.}
 
 \end{figure}%
@@ -868,7 +869,7 @@ pixels of the same classes on the high altitude flight. Percent cover of
 classes was retrieved using the result of the classification of the low
 altitude flight of Gafanha, Portugal. The vertical dashed line shows the
 0.85 probability of the model. Everything on the right of this line has
-a probability higher then 0.85 and everything on the left of this line
+a probability higher than 0.85 and everything on the left of this line
 has a lower probability.}
 
 \end{figure}%
@@ -908,8 +909,8 @@ restoration efforts in coastal ecosystems. The discrimination of
 seagrasses from green macroalgae presents significant challenges
 \citetext{\citealp[ ]{oiry2021using}; \citealp[
 ]{bannari2022}; \citealp{veettil2020opportunities}}, primarily due to
-the similarities on their spectal signatures in the visible region of
-the eletromagnetic spectra due to shared pigment
+the similarities on their spectral signatures in the visible region of
+the electromagnetic spectra due to shared pigment
 , Figure~\ref{fig-Pigm}, but also by the frequent spatial mixing of
 these macrophytes. Besides chlorophyll-a that is common to all
 vegetation types, these two green macrophytes have in common other
@@ -943,7 +944,7 @@ using high-resolution drone imagery with 10 spectral bands.
 \citep{Davies2023} have shown that having at least eight spectral bands
 ranging between 500 nm to 850 nm including a green band at 530 nm and
 another one in the RedEdge region at 730 nm was crucial to accurately
-discriminate amoung green macrophytes.
+discriminate among green macrophytes.
 
 \phantomsection\label{cell-fig-ValidationGreen}
 \begin{figure}[H]
@@ -967,14 +968,14 @@ pigment composition of green macrophytes is similar, differences in the
 spectral shape can still be observed (Figure~\ref{fig-vegetation}).
 Several factors can explain these differences such has different
 concentration and/or pigment ratios \citep{bargain2013seasonal},
-different cellular organisation and the disposition of the plant over
+different cellular organization and the disposition of the plant over
 the sediment surface \citetext{\citealp[ ]{beach1997vivo}; \citealp[
 ]{kirk1994light}; \citealp{hedley2018influence}}.
 
 The VIP analysis of the Neural Network model (Figure~\ref{fig-VIP})
 identified that the band at 531 nm was the most important one for
 accurately identifying Chlorophyceae. In fact, at this wavelength,
-Chlorophyceae exhibited the highest reflectance (raw and standardised)
+Chlorophyceae exhibited the highest reflectance (raw and standardized)
 among all other classes, highlighting the potential differences in
 accessory pigment ratios (i.e.~carotenoid) between seagrasses and green
 macroalgae \citep{repolho2017seagrass}.
@@ -998,7 +999,7 @@ identified by the presence of fucoxanthin and chlorophyll c
 (Figure~\ref{fig-Pigm}), but it correspond to the absorption of
 diadinoxanthin an accessory pigment characteristic of this class
 \citep{meleder2003spectrometric}. Furthermore, it is the vegetation with
-the lowest concentration of chlorphyll-a, pigment absorbing light both
+the lowest concentration of chlorophyll-a, pigment absorbing light both
 in the blue and the red. The transparency of Bacillariophyceae makes the
 reflectance of the sediment part of the overall reflectance of
 Bacillariophyceae, further explaining the high reflectance in the blue.
@@ -1020,7 +1021,7 @@ predictors for the model (Equation~\ref{eq-std} ; \citep{Cao2017}). This
 approach allowed us to eliminate the slight reflectance difference
 between the flights (Figure~\ref{fig-CompareRef} B) and to focus on the
 shape of the spectra in the visible part of the electromagnetic spectra,
-where different pigmentation are associated to taxonomic dignostic
+where different pigmentation are associated to taxonomic diagnostic
 features. This was a key feature in building a model that could reliably
 predict vegetation across geographical sites and seasons. It enabled
 consistent prediction of vegetation classes across variations in biomass
