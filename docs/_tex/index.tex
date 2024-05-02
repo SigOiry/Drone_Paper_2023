@@ -444,7 +444,7 @@ uploaded online to the Global Biodiversity Information Facility (GBIF)
 platform \citep{BedeGbif}, a public open portal to store and share
 biodiversity data. Each photograph was also processed to estimate the
 percent cover of each type of vegetation using an image processing
-software \citep[ImageJ]{schneider2012nih}. Hyperspectral reflectance
+software \citep[ImageJ,][]{schneider2012nih}. Hyperspectral reflectance
 signatures of each vegetation class were recorded using an ASD FieldSpec
 HandHeld 2 spectroradiometer, which acquires reflectance between 325 and
 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures
@@ -468,21 +468,21 @@ at the spectral resolution of the Micasense RedEdge Dual MX.}
 
 \subsection{Drone Processing}\label{drone-processing}
 
-A structure-from-motion photogrammetry software (Agisoft Metashape) was
-used to process images to obtain multispectral orthomosaics of each
-flight. The process for orthomosaicking was identical for every flight.
-First, tying key points were detected inside of each image and between
-overlapping images in order to obtain a sparse point cloud. This cloud
-was cleaned using reprojection accuracy metric in order to remove noisy
-points. A dense point cloud was then produced using a structure from
-motion algorithm. A surface interpolation of this dense point cloud was
-made to obtain a digital surface model (DSM), used to reconstruct the
-multispectral ortho-image \citep{nebel2020review}. Low altitude drone
-flights produced ortho-images with a very high spatial resolution (8 mm
-per pixel), making it efficient to visually distinguish between the
-various types of vegetation. High altitude fights on the other hand
-allowed to cover large areas and produced images with a pixel size of 80
-mm (Table~\ref{tbl-flights}).
+A structure-from-motion photogrammetry software \citep[Agisoft
+Metashape,][]{agisoft}was used to process images to obtain multispectral
+orthomosaics of each flight. The process for orthomosaicking was
+identical for every flight. First, tying key points were detected inside
+of each image and between overlapping images in order to obtain a sparse
+point cloud. This cloud was cleaned using reprojection accuracy metric
+in order to remove noisy points. A dense point cloud was then produced
+using a structure from motion algorithm. A surface interpolation of this
+dense point cloud was made to obtain a digital surface model (DSM), used
+to reconstruct the multispectral ortho-image \citep{nebel2020review}.
+Low altitude drone flights produced ortho-images with a very high
+spatial resolution (8 mm per pixel), making it efficient to visually
+distinguish between the various types of vegetation. High altitude
+fights on the other hand allowed to cover large areas and produced
+images with a pixel size of 80 mm (Table~\ref{tbl-flights}).
 
 \subsection{General Workflow}\label{general-workflow}
 
@@ -565,6 +565,13 @@ NDVI = \frac{R(840nm)-R(668nm)}{R(840nm)+R(668nm)}
 where \(R(840nm)\) is the reflectance at 840 nm and \(R(668nm)\) is the
 reflectance at 668 nm.
 
+\subsubsection{Model building}\label{model-building}
+
+A neural network classification model was built using the fastai
+workflow \citep{howard2018fastai}. This model is composed by 2 hidden
+layers and have a total of 26 054 trainable parameters. Parameters have
+been find tune using 12 epoch to minimize the error rate.
+
 \subsubsection{Validation}\label{validation}
 
 The workflow of this study revolves around two distinct flight heights
@@ -583,27 +590,27 @@ collected during each flight was used to assess the model accuracy.
 These images were used to construct a validation dataset indicating the
 presence or absence of each class. Additionally to the quadrat-based
 validation dataset, polygons of each class were photo interpreted in
-order to increase the number of pixels of the validation dataset. A
-confusion matrix, along with precision metrics such as global accuracy,
-sensitivity, specificity, and Kappa coefficient, was generated for each
-sites. All validation matrices were then aggregated to create a unique
-matrix . Altogether, a total of 536,000 pixels was used to validate the
-model, thus providing a geographically robust validation dataset.
+order to increase the number of pixels of the validation dataset.A total
+of 536,000 pixels were used to validate the Neural Network classifier.
+The sites with the lowest and highest number of validation data were
+Gafanha Low (17316 pixels) and Marinha Lanzarote (159713 pixels),
+respectively.A confusion matrix, along with precision metrics such as
+global accuracy, sensitivity, specificity, and Kappa coefficient, was
+generated for each sites. All validation matrices were then aggregated
+to create an overall matrix .
 
-\subsection{Variable Importance Plots
-(VIP)}\label{variable-importance-plots-vip}
+\subsection{Variable Importance}\label{variable-importance}
 
 Variable Importance Plots (VIP) serve as a method to identify which
 predictors are important for predicting a specific class. Out of the
-twenty one predictors utilized in this study, Variable Importance in
-Projection (VIP) was computed only for the raw and standardized values
-of the 10 spectral bands captured by the MicaSense camera. This is
-achieved by repeatedly predicting the same dataset while shuffling one
-predictor at a time. The benchmark score obtained after each iteration
-is then compared to the benchmark score obtained without shuffling any
-variables. The greater the difference between these two benchmark
-values, the more important the variable is for the model
-\citep{WEI2015399}.
+twenty one predictors utilized in this study, Variable Importance was
+computed only for the raw and standardized values of the 10 spectral
+bands captured by the MicaSense camera. This is achieved by repeatedly
+predicting the same dataset while randomly shuffling one predictor at a
+time. The benchmark score obtained after each iteration is then compared
+to the benchmark score obtained without shuffling any variables. The
+greater the difference between these two benchmark values, the more
+important the variable is for the model \citep{WEI2015399}.
 
 \subsection{Impact of the percent cover on the
 prediction}\label{impact-of-the-percent-cover-on-the-prediction}
@@ -624,9 +631,9 @@ vegetation percent cover scenarios.
 \subsection{Classification}\label{classification}
 
 Each drone flight was used to produce a prediction map, as well as a
-probability map that indicates the likelihood of the selected class for
-every pixel. The low-altitude flight conducted in Gafanha, Portugal,
-represents the site with the highest complexity
+probability map that indicates the model derived likelihood of the
+selected class for every pixel. The low-altitude flight conducted in
+Gafanha, Portugal, represents the site with the highest complexity
 (Figure~\ref{fig-GafLow}). Among the five vegetation classes on which
 the model was trained, four were present on this site, with
 Chlorophyceae and Rhodophyceae mixed with the seagrass meadow. There was
@@ -681,7 +688,7 @@ misclassified, either as Magnoliopsida or as Phaeophyceae.
 (Right) of the high altitude flight of Gafanha, Portugal. The total
 extent of this flight was about 1 km² with a resolution of 80 mm per
 pixel. Background colors indicate intertidal area (Light Green), land
-area (Light Grey) and water (Light Blue). The yellow polygon shows the
+area (Light Grey) and water (Light Blue). The yellow outline shows the
 extent of the low altitude flight of Gafanha presented in
 Figure~\ref{fig-GafLow}. The zoom covers an area equivalent to a
 10-meter Sentinel-2 pixel size.}
@@ -690,12 +697,12 @@ Figure~\ref{fig-GafLow}. The zoom covers an area equivalent to a
 
 Amoung the high altitude flights, the one acquired over the inner lagoon
 of the Ria de Aveiro covered the largest area with approximately 1.5 km²
-(Figure~\ref{fig-Boat}). This site was dominated by seagrass and the red
-macroalgae \emph{Gracilaria vermicullophyla}. The classification
-provided consistent results, with a patchy seagrass meadow mixed with
-red macroalgae on the eastern part of the site. As shown in the zoom
-(Figure~\ref{fig-Boat}), the edges of the meadow were colonised by green
-macroalgae
+(Figure~\ref{fig-Boat}). This site was dominated by seagrass and red
+macroalgae. The classification provided consistent results, with a
+patchy seagrass meadow mixed with red macroalgae on the eastern part of
+the site. As shown in the zoom (Figure~\ref{fig-Boat}), the edges of the
+meadow visually appears to be colonised by green macroalgae, which the
+model agreed with.
 
 \phantomsection\label{cell-fig-Boat}
 \begin{figure}[H]
@@ -717,12 +724,12 @@ area equivalent to a 10 m Sentinel-2 pixel size.}
 
 The flight over L'Epine in Noirmoutier Island, France
 (Figure~\ref{fig-Dike}) was conducted near a dike, which crossed the
-northern part of the site from west to east. Alongside this dike, brown
-algae for the order Fucales (\emph{Fucus spp.}, \emph{Ascophyllum
-nodosum}) were attached to sparse rocks and stranded green algae
-(\emph{Ulva spp.}) could be observed Despite the high mixture between
-Chlorophyceae and Magnoliopsida these two classes were correctly
-discriminated by the classifier.
+northern part of the site from west to east. Alongside this dike, Fucale
+brown algae (\emph{Fucus spp.}, \emph{Ascophyllum nodosum}) were
+attached to sparse rocks and stranded green algae (\emph{Ulva spp.})
+could be observed. Despite the high mixture between Chlorophyceae and
+Magnoliopsida these two classes were correctly discriminated by the
+classifier.
 
 \phantomsection\label{cell-fig-Dike}
 \begin{figure}[H]
@@ -734,11 +741,10 @@ discriminated by the classifier.
 }
 
 \caption{\label{fig-Dike}RGB orthomosaic (Top) and Prediction (Bottom)
-of the Northern part of Noirmoutier Island, France. The total extent of
-this flight was about 28 000 m² with a resolution of 80 mm per pixel.
-Background colors indicate intertidal area (Light Green) and land area
-(Light Grey). The zoom covers an area equivalent to a 10-meter
-Sentinel-2 pixel size.}
+of L'Epine, France. The total extent of this flight was about 28 000 m²
+with a resolution of 80 mm per pixel. Background colors indicate
+intertidal area (Light Green) and land area (Light Grey). The zoom
+covers an area equivalent to a 10-meter Sentinel-2 pixel size.}
 
 \end{figure}%
 
@@ -749,12 +755,8 @@ altitudes}\label{reflectance-comparison-between-the-two-different-altitudes}
 
 In this study, a key innovation lies in the utilization of drone flights
 at two different altitudes (12m and 120m) for constructing the neural
-network model. The lower altitude flights (8mm spatial resolution)
-enabled precise selection of pure pixels to train the neural network
-model. This methodology implies a consistency between the reflectance
-measured from both altitudes. Figure~\ref{fig-CompareRef} depicts the
-relationship between reflectance from a low and a high-altitude flights
-conducted over the same area.
+network model. Overall there was a good agreement between the two
+altitudes (Figure~\ref{fig-CompareRef}).
 
 \phantomsection\label{cell-fig-CompareRef}
 \begin{figure}[H]
@@ -772,23 +774,19 @@ data and right (B) plots standardized data (Equation~\ref{eq-std}).}
 
 \end{figure}%
 
-Overall there was a good agreement between the two altitudes. There was
-however a slight underestimation for raw reflectance values in the
+There was a slight underestimation for raw reflectance values in the
 high-altitude flight, particularly for higher reflectance values
 (Figure~\ref{fig-CompareRef} A). Since both flights were conducted over
 vegetation areas, the highest reflectance values correspond to the
-infrared part of the spectrum. This different is not present anymore
-when reflectance values of both flights have been standardized
-(Equation~\ref{eq-std} ; Figure~\ref{fig-CompareRef} B).
+infrared part of the spectrum. This difference is not present when
+reflectance values have been standardized (Equation~\ref{eq-std} ;
+Figure~\ref{fig-CompareRef} B).
 
 \subsubsection{Neural network classification
 validation}\label{neural-network-classification-validation}
 
-A total of 536,000 pixels were used to validate the Neural Network
-classifier. The sites with the lowest and highest number of validation
-data were Gafanha Low (17316 pixels) and Marinha Lanzarote (159713
-pixels), respectively. Model global accuracy was 94.26\% with a Kappa
-coefficient of 0.92 (Figure~\ref{fig-Validation}).
+Model global accuracy was 94.26\% with a Kappa coefficient of 0.92
+(Figure~\ref{fig-Validation}).
 
 \phantomsection\label{cell-fig-Validation}
 \begin{figure}[H]
@@ -803,7 +801,7 @@ coefficient of 0.92 (Figure~\ref{fig-Validation}).
 derived from validation data across each flight, while a mosaic of
 confusion matrices from individual flights is presented on the right.
 The labels inside the matrices indicate the balanced accuracy for each
-class. The labels at the bottom of the matrices indicate the User's
+class. The labels at the bottom of the global matrix indicate the User's
 accuracy for each class, and those on the right indicate the Producer's
 Accuracy. The values adjacent to the names of each site represent the
 proportion of total pixels from that site contributing to the overall
@@ -819,10 +817,10 @@ whereas Mataducos was the site with the most accurate prediction (global
 accuracy of 98.05\%). Overall, the classes Phaeophyceae, Magnoliopsida,
 Sediment and Rhodophyceae were correctly classified with a balanced
 accuracy of 1, 0.96, 0.96 and 0.91 respectively. Bacillariophyceae was
-the least performing class (accuracy of 0.72 ) mainly due to the
-confusion with Magnoliopsida and Sediment.
+the least accurate class (accuracy of 0.72 ) mainly due to confusion
+with Magnoliopsida and Sediment.
 
-\subsection{Variable importance}\label{variable-importance}
+\subsection{Variable importance}\label{variable-importance-1}
 
 The computation of the variable importance made it possible to identify
 which bands were the most useful for class prediction
@@ -838,7 +836,7 @@ which bands were the most useful for class prediction
 }
 
 \caption{\label{fig-VIP}Variable Importance of the Neural Network
-Classifier for each taxonomic class. The bigger the slice, the more
+Classifier for each taxonomic class. The longer the slice, the more
 important the variable for prediction of each class. The right plot
 shows the drone raw and standardised reflectance spectra of each class.
 Each slice represents the VIP of both raw and standardised reflectance
@@ -851,8 +849,8 @@ not provide as important information to discriminate any of the
 vegetation classes. The band at 531 nm was the only important predictor
 for the classifier to accurately predict Chlorophyceae. In fact, at this
 wavelength, the Chlorophyceae spectra showed the highest reflectance
-among of all vegetation classes. The bands at 531 and 740 nm were the
-most important predictors for Phaeophyceae, corresponding to the lowest
+among all vegetation classes. The bands at 531 and 740 nm were the most
+important predictors for Phaeophyceae, corresponding to the lowest
 reflectance among all classes. Bands at 475 and 560 nm were the most
 important predictors for Bacillariophyceae and Rhodophyceae,
 respectively. Four predictors, ranging from the green (560 nm) to the
@@ -881,27 +879,24 @@ of pixel well classified based on the percent cover of the class in high
 altitude flight pixels of Gafanha, Portugal. Each subplot shows all the
 pixels of the same classes on the high altitude flight. Percent cover of
 classes was retrieved using the result of the classification of the low
-altitude flight of Gafanha, Portugal. The vertical dashed line shows the
-0.85 probability of the model. Everything on the right of this line has
-a probability higher then 0.85 and everything on the left of this line
-has a lower probability.}
+altitude flight of Gafanha, Portugal.}
 
 \end{figure}%
 
 When the percent cover of a given class was 100 \%, coarser high-flight
-pixels are well classified for all the classes except for Bare Sediment,
-which was only well classified 80\% of the time. This phenomenon is
-likely attributed to the time gap between the two flights, allowing for
-microphytobenthos migration to surface during low tide, consequently
-altering the model's classification from bare sediment to
+pixels were well classified for all the classes except for Bare
+Sediment, which was only well classified 80\% of the time. This
+phenomenon may be attributed to the time gap between the two flights,
+allowing for microphytobenthos migration to the surface during low tide,
+consequently altering the model's classification from bare sediment to
 Bacillariophyceae. A percent cover of at least 80\% was sufficient to
 have all the pixels of high altitude flights correctly classified, with
 the exception of Magnoliopsida that required a higher percent cover
 (\textgreater90 \%) to be well classified. Concerning the probability of
 each class, the highest percent cover was needed to confidently predict
-Bacillariophyceae. To predict Chlorophyceae with a confidence of 0.85, a
-percent cover of 93 \% was needed, 90 \% for Magnoliopsida, 92 \% for
-Rhodophyceae and 97 \% for Bacillariophyceae.
+Bacillariophyceae. To predict Chlorophyceae with a model likelihood of
+0.85, a percent cover of 93 \% was needed, 90 \% for Magnoliopsida, 92
+\% for Rhodophyceae and 97 \% for Bacillariophyceae.
 
 \section{Discussion}\label{discussion}
 
@@ -913,11 +908,12 @@ specifically focusing on distinguishing between Chlorophyceae (green
 macroalgae) and marine Magnoliopsida (seagrasses) using multispectral
 drone data. The ability to differentiate between various types of
 vegetation plays a critical role in ecological monitoring and coastal
-management. By distinguishing between seagrasses and macroalgae, our
-approach facilitates targeted conservation strategies, enabling more
-effective preservation and restoration efforts in coastal ecosystems.
-The discrimination of seagrasses from green macroalgae presents two main
-challenges \citetext{\citealp[ ]{oiry2021using}; \citealp[
+management \citep{WFD2000}. By distinguishing between seagrasses and
+macroalgae, our approach facilitates targeted conservation strategies,
+enabling more effective preservation and restoration efforts in coastal
+ecosystems. The discrimination of seagrasses from green macroalgae
+presents two main challenges \citetext{\citealp[
+]{oiry2021using}; \citealp[
 ]{bannari2022}; \citealp{veettil2020opportunities}}. First these two
 macrophytes have a similar pigment composition: chlorophyll-a (common to
 all vegetation types), chlorophyll-b (an additional photosynthetic
@@ -926,13 +922,13 @@ neoxanthin (Figure~\ref{fig-Pigm}). Second, seagrass and green
 macroalgae frequently co-occur in intertidal areas, and can intermingle
 within a remote sensing pixel if the spatial resolution is too low.
 Here, the issue of intra-pixel mixing was resolved thanks to the very
-high spatial resolution of the drone, and the risk of spetral confusion
+high spatial resolution of the drone, and the risk of spectral confusion
 was avoided thanks to the efficiency of the multispectral classifier.
-Our results confirm a recent study based on in situ radiometry, where it
-was demonstrated that a radiometer with at least eight spectral bands
-ranging from 500 to 850 nm and including a green band at 530 nm and a
-RedEdge band at 730 nm was crucial to accurately discriminate green
-macrophytes \citep{Davies2023}.
+Our results confirm a recent study based on \emph{in situ} radiometry,
+where it was demonstrated that a radiometer with at least eight spectral
+bands ranging from 500 to 850 nm and including a green band at 530 nm
+and a RedEdge band at 730 nm was crucial to accurately discriminate
+green macrophytes \citep{Davies2023}.
 
 \phantomsection\label{cell-fig-Pigm}
 \begin{figure}[H]
@@ -976,15 +972,15 @@ reflectance peak at 560 nm as well as a higher NIR plateau than seagrass
 (Figure~\ref{fig-vegetation}). Such differences were previously
 attributed to differences in pigments concentration and/or ratios
 \citep{bargain2013seasonal}, cellular structure as well as in the
-disposition of the plant over the sediment surface \citetext{\citealp[
+orientation of the plant over the sediment surface \citetext{\citealp[
 ]{beach1997vivo}; \citealp[
 ]{kirk1994light}; \citealp{hedley2018influence}}.
 
-The VIP analysis (Figure~\ref{fig-VIP}) identified that the band at 531
-nm was the most important for accurately identifying Chlorophyceae. In
-fact, at this wavelength, Chlorophyceae exhibited the highest
-reflectance among all other classes, highlighting the difference in
-carotenoids to chlorophyll-a ratios between seagrasses and green
+The variable importance analysis (Figure~\ref{fig-VIP}) identified that
+the band at 531 nm was the most important for accurately identifying
+Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibited the
+highest reflectance among all other classes, highlighting the difference
+in carotenoids to chlorophyll-a ratios between seagrasses and green
 macroalgae \citep{repolho2017seagrass}.
 
 Concerning Phaeophyceae, the thick cell walls of these macroalgae
@@ -995,9 +991,9 @@ and zeaxanthin result in a low reflectance in the visible region
 have been identified by the Neural Network as the two principal
 predictors to accurately identify brown algae (Figure~\ref{fig-VIP}).
 Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae
-contributes to the lowest reflectance among all classes in the spectral
+contribute to the lowest reflectance among all classes in the spectral
 range from 560 to 615 nm (Figure~\ref{fig-VIP}). Indeed the band at 560
-nm has been identified as important for identifying this class likely
+nm has been identified as important for identifying this class, likely
 due to phycoerythrin absorption at this wavelength. Regarding
 Bacillariophyceae, the VIP analysis (Figure~\ref{fig-VIP}) indicated
 that 475 nm was the most important predictor for this class. Indeed, the
@@ -1011,9 +1007,9 @@ macroalgae.
 Accuracy}\label{altitude-and-temporal-effects-on-vegetation-prediction-accuracy}
 
 While comparing the reflectance of both altitudes (12 m and 120 m), it
-was observed Figure~\ref{fig-CompareRef} that there is an
-underestimation of the infrared part of the spectra in the high-altitude
-dataset. Such disparity in infrared reflectance may stem from temporal
+was observed that there is an underestimation of the infrared part of
+the spectra in the high-altitude dataset (Figure~\ref{fig-CompareRef}).
+Such disparity in infrared reflectance may stem from temporal
 differences between the flights, possibly resulting in a slightly drier
 intertidal area and consequently higher infrared reflectance. This
 disparity poses an issue for the methodology followed in the present
@@ -1031,14 +1027,14 @@ and variability in light conditions \citetext{\citealp[
 ]{fyfe2003spatial}; \citealp[
 ]{COSTA2021107018}; \citealp{piaser2023impact}}.
 
-The Figure~\ref{fig-upscaling} demonstrates that at least 90 \% of
-seagrass cover is necessary for confident prediction of its presence.
-This highlights a limitation of the methodology used to construct the
-training dataset for the model. The dataset used to train our algorithm
-was composed exclusively of pure pixels, which has resulted in the
-model's reduced confidence when faced with lower percentages of seagrass
-cover. Also, intertidal seagrasses exhibit marked phenology, with
-varying pigment composition throughout the year\citetext{\citealp[
+We found 90 \% of seagrass cover is necessary for confident prediction
+of its presence (Figure~\ref{fig-upscaling}). This highlights a
+limitation of the methodology used to construct the training dataset for
+the model. The dataset used to train our algorithm was composed
+exclusively of pure pixels, which resulted in the model's reduced
+confidence when faced with lower percentages of seagrass cover. Also,
+intertidal seagrasses exhibit marked phenology, with varying pigment
+composition throughout the year \citetext{\citealp[
 ]{bargain2013seasonal}; \citealp{legare2022remote}}. Since the training
 dataset has been made using well developed seagrass meadows, this model
 may be less accurate outside of the seasonal seagrass peak of biomass.
@@ -1059,7 +1055,8 @@ higher\citetext{\citealp[ ]{muller2018satellite}; \citealp[
 particularly the improved discrimination of seagrass and green
 macroalgae from other intertidal vegetation classes, highlight the
 potential of drone-based remote sensing to support diverse applications,
-from biodiversity conservation to climate change adaptation strategies.
+from conservation of biodiversity to climate change adaptation
+strategies.
 
 Because of coastal eutrophication, macroalgal blooms are becoming
 increasingly common in many regions around the world \citetext{\citealp[
@@ -1070,7 +1067,7 @@ recreational activities \citetext{\citealp[
 ]{villares1999nitrogen}; \citealp{ye2011green}}. The first green tide
 events (i.e.~bloom of green macroalgae of the genus \emph{Ulva}) were
 reported in Brittany, France, back in the 1970s and have since been a
-concern for local policies and economic activities
+concern for local stakeholders and economic activities
 \citep{menesguen2018marees}. Some regions of the world have witnessed an
 increase in brown macroalgae blooms, predominantly involving algae of
 the genus \emph{Sargassum} washing along the Caribbean coastlines
@@ -1104,8 +1101,8 @@ aquatic ecosystems, including coastal habitats like seagrass beds
 
 Effective and efficient monitoring tools are essential for identifying
 the impacts of human activities and natural changes on coastal
-ecosystems. On-demand, multispectral drone observations at very
-high-resolution provide a novel and powerful tool to rapidly and
+ecosystems. On-demand, multispectral drone observations at very high
+spatial-resolution provide a novel and powerful tool to rapidly and
 accurately acquire ground truth satellite data. Spatially resolved data
 are indeed critical for calibrating and validating satellite remote
 sensing observations, thereby enhancing our capacity to monitor vast
@@ -1116,30 +1113,30 @@ operational at a coarser spatial resolution. The integration of drone
 technology facilitates a scalable approach to environmental
 surveillance, offering significant advancements in the spatial and
 temporal resolution of data collection. This, in turn, supports the
-directive's objectives by enabling more informed and timely management
+WFD's objectives by enabling more informed and timely management
 decisions for the conservation and restoration of aquatic ecosystems.
 
 \section{Conclusion}\label{conclusion}
 
-The utilization of very high-resolution drone-based remote sensing
-coupled with machine learning techniques has proven to be an effective
-method for the discrimination of seagrasses from green macroalgae with a
-multispectral resolution sensor. Standardized reflectance was
-incorporated in the Neural Network model allowing for a better
-discrimination of spectral features related to pigment absorption in the
-visible. There was a striking difference for the variable of importance
-to discriminate Magnoliopsida from Chlorophyceae. The latter was
-essentially identified with the 451 nm spectral band while more spectral
-bands were needed to identify the former, notably 650, 560, 668, and 705
-nm. As the spectral bands of the Micasense RedEdge Dual MX are very
-similar to those of Sentinel-2, we suggest that multispectral satellite
-data have the potential to perform this discrimination between green
-macrophytes. A sentinel-2 algorithm could be developed, using the output
-of this current workflow as training and validation data. The findings
-underscore the importance of adopting advanced remote sensing tools in
-ecological studies and environmental monitoring, providing a foundation
-for future research and policy implementation aimed at ecosystem
-conservation and restoration.
+The utilization of very high spatial-resolution drone-based remote
+sensing coupled with machine learning techniques has proven to be an
+effective method for the discrimination of seagrasses from green
+macroalgae with a multispectral resolution sensor. Standardized
+reflectance was incorporated in the Neural Network model allowing for a
+better discrimination of spectral features related to pigment absorption
+in the visible. There was a striking difference for the variable of
+importance to discriminate Magnoliopsida from Chlorophyceae. The latter
+was essentially identified with the 451 nm spectral band while more
+spectral bands were needed to identify the former, notably 650, 560,
+668, and 705 nm. As the spectral bands of the Micasense RedEdge Dual MX
+are very similar to those of Sentinel-2, we suggest that multispectral
+satellite data have the potential to perform this discrimination between
+green macrophytes. A sentinel-2 algorithm could be developed, using the
+output of this current workflow as training and validation data. The
+findings underscore the importance of adopting advanced remote sensing
+tools in ecological studies and environmental monitoring, providing a
+foundation for future research and policy implementation aimed at
+ecosystem conservation and restoration.
 
 
   \bibliography{library.bib}

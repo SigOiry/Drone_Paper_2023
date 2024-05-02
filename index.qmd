@@ -640,7 +640,7 @@ knitr::include_graphics("Figures/High_res/Table1/table_flights.png")
 
 ### Ground Control Points
 
-Before each flight, targets used as ground control points were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). Ground control points were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. A dGPS was also used to georeference quadrats of 0.25 m² ,which assessed the presence or absence of five key taxonomic classes of intertidal vegetation : Bacillariophyceae (Unicellular benthic diatoms forming biofilms at the sediment surface during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (dwarf seagrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red macroalgae) (@fig-vegetation). Pictures of each quadrat were uploaded online to the Global Biodiversity Information Facility (GBIF) platform [@BedeGbif], a public open portal to store and share biodiversity data. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software [@schneider2012nih, ImageJ]. Hyperspectral reflectance signatures of each vegetation class were recorded using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures served dual purposes: they validate the radiometric calibration of drone data and contribute to error reduction in photo interpretation.
+Before each flight, targets used as ground control points were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). Ground control points were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. A dGPS was also used to georeference quadrats of 0.25 m² ,which assessed the presence or absence of five key taxonomic classes of intertidal vegetation : Bacillariophyceae (Unicellular benthic diatoms forming biofilms at the sediment surface during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (dwarf seagrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red macroalgae) (@fig-vegetation). Pictures of each quadrat were uploaded online to the Global Biodiversity Information Facility (GBIF) platform [@BedeGbif], a public open portal to store and share biodiversity data. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software [ImageJ, @schneider2012nih]. Hyperspectral reflectance signatures of each vegetation class were recorded using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures served dual purposes: they validate the radiometric calibration of drone data and contribute to error reduction in photo interpretation.
 
 ```{r Figure2 Spectra Pictures}
 #| cache: true
@@ -946,7 +946,7 @@ knitr::include_graphics("Figures/Low_res/Spectral_shapes_total.png")
 
 ## Drone Processing
 
-A structure-from-motion photogrammetry software (Agisoft Metashape) was used to process images to obtain multispectral orthomosaics of each flight. The process for orthomosaicking was identical for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image [@nebel2020review]. Low altitude drone flights produced ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allowed to cover large areas and produced images with a pixel size of 80 mm (@tbl-flights).
+A structure-from-motion photogrammetry software [Agisoft Metashape, @agisoft]was used to process images to obtain multispectral orthomosaics of each flight. The process for orthomosaicking was identical for every flight. First, tying key points were detected inside of each image and between overlapping images in order to obtain a sparse point cloud. This cloud was cleaned using reprojection accuracy metric in order to remove noisy points. A dense point cloud was then produced using a structure from motion algorithm. A surface interpolation of this dense point cloud was made to obtain a digital surface model (DSM), used to reconstruct the multispectral ortho-image [@nebel2020review]. Low altitude drone flights produced ortho-images with a very high spatial resolution (8 mm per pixel), making it efficient to visually distinguish between the various types of vegetation. High altitude fights on the other hand allowed to cover large areas and produced images with a pixel size of 80 mm (@tbl-flights).
 
 ## General Workflow
 
@@ -1315,6 +1315,10 @@ $$ {#eq-ndvi}
 
 where $R(840nm)$ is the reflectance at 840 nm and $R(668nm)$ is the reflectance at 668 nm.
 
+### Model building
+
+A neural network classification model was built using the fastai workflow [@howard2018fastai]. This model is composed by 2 hidden layers and have a total of 26 054 trainable parameters. Parameters have been find tune using 12 epoch to minimize the error rate.
+
 ### Validation
 
 ```{r Validation Pixel Count}
@@ -1377,1879 +1381,6 @@ write.csv(count_validation_pixel,"Output/count_validation_pixel.csv", row.names 
 count_validation_pixel<-read.csv("Output/count_validation_pixel.csv") %>% 
   pull(x)
 ```
-
-The workflow of this study revolves around two distinct flight heights (12 m and 120 m, @fig-workflow) where ensuring consistency between reflectances at both heights is crucial. This comparison was conducted at sites where low and high altitude flights overlapped. The low altitude flights were resampled to the same spatial resolution and grid as the high flights using a median resampling method. Reflectance values were then extracted, and a scatterplot was generated. Subsequently, the slope of the linear model and the coefficient of determination (R²) were computed.
-
-The model was applied to all flights at both 12 and 120 m of altitude. In situ information on georeferenced class type and percent cover collected during each flight was used to assess the model accuracy. These images were used to construct a validation dataset indicating the presence or absence of each class. Additionally to the quadrat-based validation dataset, polygons of each class were photo interpreted in order to increase the number of pixels of the validation dataset. A confusion matrix, along with precision metrics such as global accuracy, sensitivity, specificity, and Kappa coefficient, was generated for each sites. All validation matrices were then aggregated to create a unique matrix . Altogether, a total of `r my_comma(round(count_validation_pixel,-3))` pixels was used to validate the model, thus providing a geographically robust validation dataset.
-
-## Variable Importance Plots (VIP)
-
-Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the twenty one predictors utilized in this study, Variable Importance in Projection (VIP) was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
-
-## Impact of the percent cover on the prediction
-
-The key aspect of the workflow adopted in the present study is the mapping of specific areas at two different altitudes (12m and 120m), resulting in two distinct resolutions for the same area (8mm and 80mm). The predictions made on the high-resolution flight can be used to estimate the percent cover of each vegetation class for every pixel of the lower resolution flight. Consequently, for each pixel of the high-altitude flights, percent covers of each vegetation class were obtained, and a kernel density plot was generated. This plot provides a visual representation of the behavior of the model in different vegetation percent cover scenarios.
-
-# Results
-
-## Classification
-
-Each drone flight was used to produce a prediction map, as well as a probability map that indicates the likelihood of the selected class for every pixel. The low-altitude flight conducted in Gafanha, Portugal, represents the site with the highest complexity (@fig-GafLow). Among the five vegetation classes on which the model was trained, four were present on this site, with Chlorophyceae and Rhodophyceae mixed with the seagrass meadow. There was also Bacillariophyceae forming biofilms on parts of sediment surface. Although the seagrass bed was solely composed of *Nanozostera noltei*, various colors of this specie could be observed from dark green (corresponding to healthy leaves) to whitish/brown (when leaves were discolored having lost their pigmentation). Regardless of color, Magnoliopsida pixels were accurately predicted by the model.
-
-```{r Figure 4 Gaf Low}
-#| cache: true
-#| echo: false
-#| warning: false
-#| eval: false
-
-
-imglist<-
-  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         col = case_when(str_detect(path, "colored") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".aux.xml"))
-
-shp_roi<-"Data/reflectance_calibration_low_&_high_flights/" %>%
-  list.files(pattern = ".shp", recursive = T, full.names = T) %>%
-  read_sf() %>%
-  mutate(ID = case_when(name == "Microphytobenthos" ~ 1,
-                        name == "ZOS" ~ 2,
-                        name == "BL" ~ 3,
-                        name == "SED" ~ 4,
-                        name == "GRE" ~ 5,
-                        name == "RED" ~ 6,
-                        name == "Xanthophyceae" ~ 7)) %>% 
-  as("Spatial") %>% 
-  vect()
-
-
-zoom_extent<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-background_GafHigh<-"Data/shp/Aveiro" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "background_Gafanha_high")) %>% 
-  pull(path) %>% 
-  read_sf()
-###### Preview ###########
-
-filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
-mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
-  read_sf()
-
-Flight_aveiro<-data.frame(
-  Name=c(
-  "Gafanha"
-  ) ,
-  Description = c("12m and 120m Flights"),
-  Long=c(-8.742485) ,
-  Lat=c(40.597599) 
-  )  %>% 
-  st_as_sf(coords=c("Long","Lat") )  %>% 
-  st_set_crs("EPSG:4326")  %>% 
-  st_transform(crs(mask_aveiro))  %>% 
-  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
-                lat = sf::st_coordinates(.) [,2]) %>% 
-  sf::st_set_geometry(NULL)
-
-
-p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
-
-p1<-ggplot() +
-  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
-  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
-  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
-
-      coord_sf(xlim=c(519749,535233) ,
-          ylim=c(4493310,4508794) )+
-  ggforce::geom_mark_ellipse(data=Flight_aveiro,
-                 aes(x=lon,
-                     y=lat,
-                     label = Name,
-                     group = Name),
-                     # description=Description),
-                 size=0.3,
-                 fill = "goldenrod",
-                 con.colour = "goldenrod4",
-                 show.legend=F,
-                 label.fontsize = 18,
-                 label.hjust = 0.5,
-                 con.size = 2,
-                 alpha=0.8,
-  expand = unit(2, "mm") , 
-  radius = unit(2, "mm") ,
-  label.fill = "grey90",
-  label.buffer = unit(5, "mm")) +
-    # theme_void()+
-  theme_Bede_Map()+
-  labs(x="Longitude",
-       y="Latitude")+
-  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
-  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
-  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
-        legend.position = "none",
-        axis.title = element_blank(),
-        axis.text.x = element_text(size = 20),
-        axis.text.y = element_text(size = 20))+
-  theme_void()
-######### RGB #########
- Gafanha_low_ortho<-imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "ortho",
-         resampled == "TRUE",
-         col == "TRUE") %>%
-  pull(path) %>% 
-  rast() 
- names(Gafanha_low_ortho)<-c("B1", "B3", "B5","alpha")
-
- values(Gafanha_low_ortho)[values(Gafanha_low_ortho$alpha) == 0] = NA
-  
- Gafanha_low_ortho_zoomed<-Gafanha_low_ortho %>% 
-   crop(zoom_extent)
- 
- 
- map_extent_full<- st_as_sf(as.polygons(ext(Gafanha_low_ortho)))
- sf::st_crs(map_extent_full)<-st_crs(Gafanha_low_ortho)
- 
-
-  map_extent_zommed<- st_as_sf(as.polygons(ext(Gafanha_low_ortho_zoomed)))
- sf::st_crs(map_extent_zommed)<-st_crs(Gafanha_low_ortho_zoomed)
- 
- 
- rgb_Gafanha_low_zoomed<-ggplot()+
-   tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho_zoomed, 
-                                  r = 3,
-                                  g = 2,
-                                  b = 1)+
-   theme_Bede_Map()+
-   geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
-   coord_sf(crs = 4326)+
-     theme_void()
-
-
-
- scale_labels<-data.frame(x = c(-8.74368, -8.743565,-8.74342),
-                          y = c(rep(40.59792,3)),
-                          text = c("0","10","20 m"))
- 
- 
- 
-  rgb_Gafanha_low<- ggplot()+
-  scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="grey30")+
-   tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho,
-         r = 1,
-         g = 2,
-         b = 3,
-         maxcell = 4010533
-         )+
-    ggspatial::annotation_scale(location = "tl",
-                                text_cex=2)+
-      annotation_custom(ggplotGrob(p1),
-                        xmin = -8.7430,
-                        xmax = -8.742702,
-                        ymin = 40.5970515, 
-                        ymax = 40.5974) +
-   theme_Bede_Map()+
-   geom_sf(data = zoom_extent, 
-           fill = "transparent",
-           colour = "black",
-           linetype = "dashed", 
-           linewidth = 1)+
-   coord_sf(crs = 4326)+
-  annotation_custom(ggplotGrob(rgb_Gafanha_low_zoomed),
-                    xmin = -8.7430,
-                    xmax=-8.7427,
-                    ymin = 40.5977) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
-                              y=c(40.5976275,40.5979,40.5975373,40.59771),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 20),
-        axis.text.x = element_text(size = 20, angle = 20, hjust = 1))+
-    scale_x_continuous(limits = c(-8.7437, -8.74275), breaks = -8.743)+
-    scale_y_continuous(limits = c(40.59715, 40.5979), breaks = 40.5975)
-
- 
- 
-  
-  
-
-ggsave("Figures/Gaf_Low_RGB.png",rgb_Gafanha_low , width = 1920*4, height = 1129*4, units = "px")
-
-zoom_extent<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-####### Zoomed map ########
-
-
-Gafanha_low_pred_zoomed<-imglist %>% 
-filter(site == "Gafanha",
-       alt == "low",
-       type == "Pred",
-       resampled == "FALSE",
-       folder == "Input",
-       new == "TRUE") %>% 
-  pull(path) %>% 
-  rast()
-names(Gafanha_low_pred_zoomed)<-"layer"
-
-Gafanha_low_pred_zoomed<-Gafanha_low_pred_zoomed %>% 
-  crop(zoom_extent)
-Gafanha_low_pred_zoomed<-as.factor(Gafanha_low_pred_zoomed)
-
-Gafanha_low_pred_map_zoomed<-ggplot()+
-  tidyterra::geom_spatraster(data = Gafanha_low_pred_zoomed, mapping = aes(fill = layer))+
-  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
-  coord_sf(crs = 4326)+
-  scale_fill_manual(values=c("#70543e", "#b3ff1a","#70543e", "#DAA520", "#389318","#873e23","#b3002d", NA, "#42c9bc"), na.value = NA)+
-  theme_void()+
-  # coord_equal()+
-  theme(axis.text.x = element_blank(),
-      axis.text.y = element_blank(),
-      axis.title = element_blank())+
-  theme(legend.position = "none")
- # Gafanha_low_pred_map_zoomed
-
-####  Overall map
-Gafanha_low_pred<-imglist %>% 
-filter(site == "Gafanha",
-       alt == "low",
-       type == "Pred",
-       # resampled == "TRUE",
-       new == "TRUE") %>% 
-  pull(path) %>% 
-  rast()
-names(Gafanha_low_pred)<-"layer"
-
-
-values(Gafanha_low_pred)[values(Gafanha_low_pred) == 0] = NA
-
-Gafanha_low_pred<-Gafanha_low_pred %>% 
-  as.factor()
-
-####### Pred ######
-
-
-Gafanha_low_pred_map <-
-  ggplot()+
-  scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="grey30")+
-  # geom_sf(data = background_GafHigh,
-  #         fill = "white",
-  #         show.legend = F, 
-  #         linewidth=0.05,
-  #         alpha=1,
-  #         colour="white")+
-   ggnewscale::new_scale("fill")+
-    tidyterra::geom_spatraster(data = Gafanha_low_pred, 
-                               mapping = aes(fill = layer),
-                               maxcell = 500832*8)+
-  geom_sf(data = zoom_extent, 
-          fill = "transparent", 
-          colour = "black",
-          linetype = "dashed", 
-          linewidth = 1)+
-  coord_sf(crs = 4326)+
-  annotation_custom(ggplotGrob(Gafanha_low_pred_map_zoomed), 
-                    xmin = -8.7430,
-                    xmax=-8.7427, 
-                    ymin = 40.5977) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
-                              y=c(40.5976275,40.5979,40.5975373,40.59771),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorophyceae",
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-  theme_Bede_Map()+
-  # coord_equal()+
-   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
-         # axis.text.y = element_text(size = 20),
-         axis.text.y = element_blank(),
-         axis.title = element_blank(),
-         legend.background = element_blank(),
-         legend.position = c(0.98,0.3),
-         legend.text = element_text(size = 20),
-         legend.key.size = unit(1,"cm"))+
-    scale_x_continuous(limits = c(-8.7437, -8.74275), breaks = -8.743)+
-    scale_y_continuous(limits = c(40.59715, 40.5979), breaks = 40.5975)
-
-
-ggsave("Figures/Gaf_Low_Pred.png",Gafanha_low_pred_map , width = 1920*4, height = 1129*4, units = "px")
-
-################# PLOT AND SAVING ###########
-
-plot_Gaf_Low<-rgb_Gafanha_low+
-  Gafanha_low_pred_map
- 
-
-
-
-ggsave("Figures/Maps Pred/FigX-Gaf_Low_Pred.png",plot_Gaf_Low , width = 1920*4, height = 1009*4, units = "px")
-```
-
-```{r Figure 4 Gaf Low plot}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the low altitude flight of Gafanha, Portugal. The total extent of this flight was 3000m² with a resolution of 8 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
-#| label: fig-GafLow
-#| fig-width: 10
-#| fig-height: 8
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_Low_Pred.png")
-
-```
-
-```{r Figure 4 V2}
-#| cache: true
-#| echo: false
-#| warning: false
-#| eval: false
-imglist<-
-  data.frame("Data",
-             path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         str_detect(path, "High") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          str_detect(path,"AveiroHigh")~"Gafanha",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
-                         str_detect(path, "NewPreds") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         col = case_when(str_detect(path, "colored") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".aux.xml"))
-
-########## ZOOM #############
-
-zoom_extent<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-mask_low<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"mask_Gafanha_low")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-Gafanha_low_ortho_zoomed<-imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "ortho",
-         resampled == "TRUE",
-         col == "TRUE") %>%
-  pull(path) %>% 
-  rast() %>% 
-  crop(zoom_extent)
-
-names(Gafanha_low_ortho_zoomed)<-c("B1", "B3", "B5","alpha")
-
- Gafanha_low_pred_zoomed<-imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "Pred",
-         # resampled == "TRUE",
-         new == "TRUE") %>% 
-  pull(path) %>% 
-  rast() %>% 
-  crop(zoom_extent) %>% 
-  mask(mask_low, inverse = T) %>% 
-   as.factor()
-   
-names(Gafanha_low_pred_zoomed)<-"layer"
-
-zoomed_low_map<-ggplot()+
-  tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho_zoomed,
-                                 r = 1,
-                                 g = 2,
-                                 b = 3)+
-  tidyterra::geom_spatraster(data = Gafanha_low_pred_zoomed, mapping = aes(fill = layer), show.legend = F)+
-  
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA), 
-                    na.value = NA,
-                    name = "", 
-                    labels = c("Sediment", 
-                               "Chlorophyceae", 
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 2)+
-  theme(legend.position = "none")+
-  theme_void()
-
-
-
-#############
-
- Gafanha_low_ortho<-imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "ortho",
-         resampled == "TRUE",
-         col == "TRUE") %>%
-  pull(path) %>% 
-  rast() 
- names(Gafanha_low_ortho)<-c("B1", "B3", "B5","alpha")
-values(Gafanha_low_ortho)[values(Gafanha_low_ortho$alpha) == 0] = NA
-
- 
- Gafanha_low_pred<-imglist %>% 
-  filter(site == "Gafanha",
-         alt == "low",
-         type == "Pred",
-         # resampled == "TRUE",
-         new == "TRUE") %>% 
-  pull(path) %>% 
-  rast()
-names(Gafanha_low_pred)<-"layer"
-
-Gafanha_low_pred_masked<-Gafanha_low_pred %>% 
-  # crop(mask_low) %>% 
-  mask(mask_low, inverse = T)
-
-values(Gafanha_low_pred_masked)[values(Gafanha_low_pred_masked) == 0] = NA
-
-Gafanha_low_pred_masked<-Gafanha_low_pred_masked %>% 
-  as.factor()
-
-rgb_Gafanha_low <- ggplot()+
-  tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho,
-                                 r = 1,
-                                 g = 2,
-                                 b = 3)+
-  tidyterra::geom_spatraster(data = Gafanha_low_pred_masked, mapping = aes(fill = layer))+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA), 
-                    na.value = NA,
-                    name = "", 
-                    labels = c("Sediment", 
-                               "Chlorophyceae", 
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-  ggspatial::annotation_scale(location = "bl",text_cex=2)+
-  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
-
-  geom_segment(aes(x = -8.7434247325, y=40.5977530006, xend = -8.7430558162, yend = 40.5972152706), linetype ="dashed" ,linewidth=2)+
-  annotation_custom(ggplotGrob(zoomed_low_map), xmin = -8.743725, xmax = -8.7434057328, ymin = 40.5977200450, ymax = 40.59798) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.74336194,-8.74371,-8.743243794,-8.7434057328), y=c(40.59762751,40.5977400850,40.59762725,40.5977200450),grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  theme_Bede_Map()+
-  coord_sf(crs = 4326)+
-  theme(axis.title = element_blank(),
-        axis.text.y = element_text(size = 20),
-        axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
-        legend.position=c(0.3, 0.3))+
-  # ggtitle("a ")+
-  scale_x_continuous(breaks=seq(-8.7437, -8.7430, 0.0002))
-rgb_Gafanha_low
-
-ggsave("Figures/Gaf_Low_RGB_Pred_V2.png",rgb_Gafanha_low , width = 890*4, height = 1120*4, units = "px")
-
-
-```
-
-The high-altitude flight over Gafanha covered a total area of \~1 km² (@fig-GafHigh). A channel contouring a small island was masked in the prediction map. Most of the intertidal area was classified as Magnoliopsida by the model, including seagrass patches with discolored leaves. Only a few pixels were classified as Chlorophyceae at this spatial scale. Furthermore, the area that was classified as Bacillariophyceae in the low-altitude flight remained mostly classified as such in the high-altitude flight, though some pixels were classified as Magnoliopsida. Patches of Rhodophyceae were correctly classified. In the northern part of the site and near the land eadges, patches of the schorre angiosperm *Spartina sp.* were misclassified, either as Magnoliopsida or as Phaeophyceae.
-
-```{r Figure 5 Gaf High}
-#| cache: true
-#| echo: false
-#| warning: false
-#| eval: false
-
-imglist<-
-  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         str_detect(path, "High") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          str_detect(path, "AveiroHigh") ~ "Gafanha",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "Preds") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
-                         str_detect(path, "NewPreds") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         col = case_when(str_detect(path, "colored") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".aux.xml"))
-
-#### Preview ####
-
-filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
-mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
-  read_sf()
-
-Flight_aveiro<-data.frame(
-  Name=c(
-  "Gafanha"
-  ) ,
-  Description = c("12m and 120m Flights"),
-  Long=c(-8.742485) ,
-  Lat=c(40.597599) 
-  )  %>% 
-  st_as_sf(coords=c("Long","Lat") )  %>% 
-  st_set_crs("EPSG:4326")  %>% 
-  st_transform(crs(mask_aveiro))  %>% 
-  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
-                lat = sf::st_coordinates(.) [,2]) %>% 
-  sf::st_set_geometry(NULL)
-
-p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
-
-p1<-ggplot() +
-  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
-  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
-  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
-      coord_sf(xlim=c(519749,535233) ,
-          ylim=c(4493310,4508794) )+
-  ggforce::geom_mark_ellipse(data=Flight_aveiro,
-                 aes(x=lon,
-                     y=lat,
-                     label = Name,
-                     group = Name),
-                     # description=Description),
-                 size=0.3,
-                 fill = "goldenrod",
-                 con.colour = "goldenrod4",
-                 show.legend=F,
-                 label.fontsize = 20,
-                 label.hjust = 0.5,
-                 con.size = 2,
-                 alpha=0.8,
-  expand = unit(2, "mm") , 
-  radius = unit(2, "mm") ,
-  label.fill = "grey90",
-  label.buffer = unit(5, "mm")) +
-    # theme_void()+
-  theme_Bede_Map()+
-  labs(x="Longitude",
-       y="Latitude")+
-  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
-  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
-  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
-        legend.position = "none",
-        axis.title = element_blank(),
-        axis.text.x = element_text(size = 20),
-        axis.text.y = element_text(size = 20))+
-  theme_void()
-
-#####
-
-land_mask_GafHigh<-"Data/shp/Aveiro" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "mask_Gafanha_high1")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-background_GafHigh<-"Data/shp/Aveiro" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "background_Gafanha_high")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-GafHigh_ortho<-imglist %>% 
-  dplyr::filter(site == "Gafanha",
-                type == "ortho",
-                alt=="high",
-                col == "TRUE") %>%
-  pull(path) %>% 
-  rast()
-names(GafHigh_ortho)<-c("B1","B3", "B5", "alpha")
-
-# values(GafHigh_ortho)[values(GafHigh_ortho$B1) == 0] = NA
-
-GafHigh_ortho_masked<-GafHigh_ortho %>% 
-  mask(land_mask_GafHigh, inverse = F) %>% 
-  crop(land_mask_GafHigh)
-
-GafHigh_ortho_masked<-na.omit(GafHigh_ortho_masked, field=NA, geom=FALSE)
-
-
-###### RGB ########
-zoom_gaf_high_sf<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_High_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-Gaflow_extent<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"GafLow_extent.shp")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-rgb_Gafanha_High_zoomed<-GafHigh_ortho_masked %>% 
-  crop(zoom_gaf_high_sf)
-
-rgb_Gafanha_High_zoomed<-
-  ggplot()+
-  tidyterra::geom_spatraster_rgb(data = rgb_Gafanha_High_zoomed,
-         r = 1,
-         g = 2,
-         b = 3)+
-     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
-  theme_void()
-
-  
-  
-
-rgb_Gafanha_High <- ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-   tidyterra::geom_spatraster_rgb(data = GafHigh_ortho_masked,
-         r = 1,
-         g = 2,
-         b = 3,
-         maxcell = 5007120)+
-    ggspatial::annotation_scale(location = "bl",
-                                text_cex=2)+
-    annotation_custom(ggplotGrob(p1), 
-                      xmin = -8.744, 
-                      xmax = -8.7412,
-                      ymin = 40.5923,
-                      ymax = 40.595) +
-    geom_sf(data = zoom_gaf_high_sf,
-            fill = "transparent", 
-            colour = "black",
-            linetype = "dashed", 
-            linewidth = 1)+
-    geom_sf(data = Gaflow_extent,
-            fill = "transparent", 
-            colour = "red",
-            linetype = "dashed", 
-            linewidth = 2)+
-    geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
-                              y=c(40.5983781677,40.5995,40.598377893,40.5995),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", 
-            linewidth = 1)+
-  annotation_custom(ggplotGrob(rgb_Gafanha_High_zoomed),
-                    xmin = -8.7479, 
-                    xmax = -8.7452, 
-                    ymin = 40.5979,
-                    ymax = 40.603) +
-   theme_Bede_Map()+
-   coord_sf(crs = 4326)+
-   # xlim(c(-8.748, -8.741))+
-  # ylim(c(40.593,40.601))+
-  theme(axis.title = element_blank(),
-         axis.text.x = element_text(size = 20, angle = 20, hjust = 1),
-         axis.text.y = element_text(size = 20))+
-  scale_x_continuous(limits = c(-8.747576, -8.741465),breaks =  -8.745)+
-  scale_y_continuous(limits = c(40.59297,40.60109),breaks =  40.595)
-# rgb_Gafanha_High
-
-ggsave("Figures/Gaf_High_RGB.png",rgb_Gafanha_High , width = 712*4, height = 1120*4, units = "px")
-
-
-
-
-######### Pred #######
-Gafanha_high_pred<-imglist %>% 
-filter(site == "Gafanha",
-       alt == "high",
-       type == "Pred",
-       new == "TRUE",
-       !str_detect(path, "Probs")) %>% 
-  pull(path) %>% 
-  rast()
-names(Gafanha_high_pred)<-"layer"
-
-GafHigh_pred_masked<-Gafanha_high_pred %>% 
-  mask(land_mask_GafHigh, inverse = F) %>% 
-  crop(land_mask_GafHigh)
-
-GafHigh_pred_masked<-na.omit(GafHigh_pred_masked, field=NA, geom=FALSE) 
-
-values(GafHigh_pred_masked)[values(GafHigh_pred_masked) == 0] = NA
-values(GafHigh_pred_masked)[values(GafHigh_pred_masked) == 3] = 1
-
-GafHigh_pred_masked<-GafHigh_pred_masked %>% 
-  as.factor()
-
-Gafanha_High_zoomed_pred<-GafHigh_pred_masked %>% 
-  crop(zoom_gaf_high_sf)
-
-Gafanha_High_zoomed_pred<-
-  ggplot()+
-   tidyterra::geom_spatraster(data = Gafanha_High_zoomed_pred, mapping = aes(fill = layer),
-                            show.legend = F,
-                             maxcell = 5007120)+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorophyceae",
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
-  theme_void()
-
-Gafanha_high_pred_map<-ggplot()+
-  geom_sf(data = background_GafHigh, 
-          mapping = aes(fill = Type),
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-    scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  ggnewscale::new_scale("fill")+
-  tidyterra::geom_spatraster(data = GafHigh_pred_masked, 
-                             # show.legend = F,
-                             mapping = aes(fill = layer),
-                             maxcell = 5010420)+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorophyceae",
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-       geom_sf(data = zoom_gaf_high_sf, 
-               fill = "transparent", 
-               colour = "black",
-               linetype = "dashed", 
-               linewidth = 1)+
-    geom_sf(data = Gaflow_extent,
-            fill = "transparent", 
-            colour = "red",
-            linetype = "dashed", 
-            linewidth = 2)+
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
-                              y=c(40.5983781677,40.5995,40.598377893,40.5995),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  annotation_custom(ggplotGrob(Gafanha_High_zoomed_pred), 
-                    xmin = -8.7479, 
-                    xmax = -8.7452, 
-                    ymin = 40.5979,
-                    ymax = 40.603) +
-  coord_sf(crs = 4326)+
-  theme_Bede_Map()+
-   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
-         axis.title = element_blank(),
-        # axis.text.y = element_text(size = 20),
-        axis.text.y = element_blank(),
-         legend.background = element_blank(),
-         legend.position = c(0.96,0.23),
-         legend.text = element_text(size = 23),
-         legend.key.size = unit(1.2,"cm"))+
-  scale_x_continuous(limits = c(-8.747576, -8.741465),breaks =  -8.745)+
-  scale_y_continuous(limits = c(40.59297,40.60109),breaks =  40.595)
-# Gafanha_high_pred_map
-
-ggsave("Figures/Gaf_High_Pred.png",Gafanha_high_pred_map , width = 712*4, height = 1120*4, units = "px")
-
-################# PLOT AND SAVING ###########
-plot_GafHigh<-rgb_Gafanha_High+
-  Gafanha_high_pred_map
-
-ggsave("Figures/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width = 2105*4, height = 1363*4, units = "px")
-
-
-#########
-
-
-```
-
-```{r Figure 5 Gaf High plot}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The yellow polygon shows the extent of the low altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
-#| label: fig-GafHigh
-#| fig-width: 10
-#| fig-height: 8
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png")
-
-```
-
-Amoung the high altitude flights, the one acquired over the inner lagoon of the Ria de Aveiro covered the largest area with approximately 1.5 km² (@fig-Boat). This site was dominated by seagrass and the red macroalgae *Gracilaria vermicullophyla*. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow were colonised by green macroalgae
-
-```{r Figure 6 Boat}
-#| cache: true
-#| echo: false
-#| warning: false
-#| eval: false
-
-imglist<-
-  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         str_detect(path, "High") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          str_detect(path, "AveiroHigh") ~ "Gafanha",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "Preds") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
-                         str_detect(path, "NewPreds") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         col = case_when(str_detect(path, "colored") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".aux.xml"))
-########### PREVIEW #############
-filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
-mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
-  read_sf()
-
-Flight_aveiro<-data.frame(
-  Name=c(
-  "Marinha Lanzarote"
-  ) ,
-  Description = c(
-                  "120m Flight"),
-  Long=c( 
-         -8.690677) ,
-  Lat=c(
-        40.665120) 
-  )  %>% 
-  st_as_sf(coords=c("Long","Lat") )  %>% 
-  st_set_crs("EPSG:4326")  %>% 
-  st_transform(crs(mask_aveiro))  %>% 
-  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
-                lat = sf::st_coordinates(.) [,2]) %>% 
-  sf::st_set_geometry(NULL)
-
-
-p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
-
-p1<-ggplot() +
-  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
-  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
-  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,show.legend = F,colour="grey30")+
-      coord_sf(xlim=c(519749,535233) ,
-          ylim=c(4493310,4508794) )+
-  ggforce::geom_mark_ellipse(data=Flight_aveiro,
-                 aes(x=lon,
-                     y=lat,
-                     label = Name,
-                     group = Name),
-                     # description=Description),
-                 size=0.3,
-                 fill = "goldenrod",
-                 con.colour = "goldenrod4",
-                 show.legend=F,
-                 label.fontsize = 10,
-                 label.hjust = 0.5,
-                 con.size = 2,
-                 alpha=0.8,
-  expand = unit(2, "mm") , 
-  radius = unit(2, "mm") ,
-  label.fill = "grey90",
-  label.buffer = unit(5, "mm")) +
-    # theme_void()+
-  theme_Bede_Map()+
-  labs(x="Longitude",
-       y="Latitude")+
-  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
-  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
-  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
-        legend.position = "none",
-        axis.title = element_blank(),
-        axis.text.x = element_text(size = 20),
-        axis.text.y = element_text(size = 20))+
-  theme_void()
-##### ZOOM and masking #####
-
-Boat_rgb<-imglist %>% 
-  filter(str_detect(path,"Boat_high_RGB_merged.tif")) %>% 
-  pull(path) %>% 
-  rast()
-names(Boat_rgb)<-c("B1","B3","B5")
-values(Boat_rgb)[values(Boat_rgb) == 0] = NA
-
-mask_boat<-"Data/shp/Aveiro" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "boat")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-background_Boat<-"Data/shp/Aveiro" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "background_Boat")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-zoom_boat_high_sf<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Boat_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-zoom_boat_high_sf_2<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Boat_2_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-rgb_Boat_zoomed<-Boat_rgb %>% 
-  crop(zoom_boat_high_sf)
-
-rgb_Boat_zoomed_2<-Boat_rgb %>% 
-  crop(zoom_boat_high_sf_2)
-
-Boat_rgb_mask<-Boat_rgb %>% 
-  mask(mask_boat, inverse = T)
-
- 
-rgb_Boat_zoomed_map<- ggplot()+
-  geom_spatraster_rgb(data = rgb_Boat_zoomed,
-                      r = 3,
-                      g = 2,
-                      b = 1,
-                      max_col_value = 4000)+
-  geom_sf(data = zoom_boat_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
-
-  theme_void()
-
-rgb_Boat_zoomed_map_2
-ggplot()+
-  geom_spatraster_rgb(data = rgb_Boat_zoomed_2,
-                      r = 3,
-                      g = 2,
-                      b = 1,
-                      interpolate = F,
-                      max_col_value = 4000)+
-  geom_sf(data = zoom_boat_high_sf_2, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
-
-  theme_void()
-
-####### RGB ############
-
-RGB_Boat_map<-
-ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_Boat,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Boat,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
-  tidyterra::geom_spatraster_rgb(data = Boat_rgb_mask,
-                      r = 3,
-                      g = 2,
-                      b = 1,
-                      # maxcell = 5000,
-                      maxcell = 500832*8,
-                      max_col_value = 5000)+
-  geom_sf(data = zoom_boat_high_sf,
-          fill = "transparent",
-          colour = "black", 
-          linewidth = 1)+
-  geom_sf(data = zoom_boat_high_sf_2,
-          fill = "transparent",
-          colour = "black", 
-          linewidth = 1)+
-  annotation_custom(ggplotGrob(rgb_Boat_zoomed_map),
-                    xmin = -8.6975,
-                    xmax = -8.69,
-                    ymin = 40.6666,
-                    ymax = 40.6711) +
-  annotation_custom(ggplotGrob(rgb_Boat_zoomed_map_2),
-                    xmin = -8.6975+0.007,
-                    xmax = -8.69+0.007,
-                    ymin = 40.6666,
-                    ymax = 40.6711) +
-  annotation_custom(ggplotGrob(p1),
-                    xmin = -8.6795,
-                    xmax = -8.6736,
-                    ymin = 40.6585,
-                    ymax = 40.6625) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.69452127,-8.6965,-8.69440039,-8.69105), 
-                              y=c(40.66244282,40.66673,40.66244282,40.66673),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", 
-            linewidth = 1)+
-    geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
-                              y=c(40.6652874,40.66675,40.6652874,40.66673),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", 
-            linewidth = 1)+
-  ggspatial::annotation_scale(location = "bl",
-                              text_cex=2)+
-  scale_x_continuous(limits = c(-8.6965,-8.675),
-                     breaks =  -8.685)+
-  scale_y_continuous(limits = c(40.659,40.6704),
-                     breaks =  40.664)+
-  theme_Bede_Map()+
-  theme(axis.title = element_blank(),
-        # axis.text.x = element_text(size = 20, angle = 20 , hjust = 1),
-        axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 20))+
-   coord_sf(crs = 4326)
-
-
-####### Pred ######## 
-Boat1_pred<-imglist %>% 
-  filter(str_detect(path,"AveiroBoat1_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif")) %>% 
-  pull(path) %>% 
-  rast()
-names(Boat1_pred)<-"layer"
-
-Boat2_pred<-imglist %>% 
-  filter(str_detect(path,"AveiroBoat2_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif")) %>% 
-  pull(path) %>% 
-  rast()
-names(Boat2_pred)<-"layer"
-
-values(Boat1_pred)[values(Boat1_pred) == 0] = NA
-values(Boat2_pred)[values(Boat2_pred) == 0] = NA
-
-
-B1_overextent<-ext(Boat1_pred)
-B1_overextent[2]<-ext(Boat2_pred)[2]
-B1_overextent[4]<-ext(Boat2_pred)[4]
-B1_overextent <- rast(B1_overextent)
-res(B1_overextent)<-res(Boat1_pred)
-# terra::writeRaster(B1$B1,"B1.tif")
-# terra::writeRaster(B2$B2,"B2.tif")
-
-B2_resampled <- terra::resample(Boat2_pred,B1_overextent, method = "near",threads = T)
-# terra::writeRaster(B2_resampled$B1,"B2_resampled.tif", overwrite = T)
-
-Boat_pred<-merge(Boat1_pred,B2_resampled)
-
-Boat_pred_aggregate<-terra::aggregate(Boat_pred,fact = 6, fun ="modal") 
-
-masked_pred<-Boat_pred_aggregate %>% 
-  mask(mask_boat,inverse=TRUE)%>% 
-  as.factor()
-
-Boat_pred_zoom<-Boat1_pred %>% 
-  crop(zoom_boat_high_sf) %>% 
-  as.factor()
-
-Boat_pred_zoom_2<-Boat2_pred %>% 
-  crop(zoom_boat_high_sf_2) %>% 
-  as.factor()
-
-Boat_Pred_zoomed_map<- ggplot()+
-  tidyterra::geom_spatraster(data = Boat_pred_zoom, 
-                             mapping = aes(fill = layer), 
-                             show.legend = F,
-                             maxcell = 5010420)+
-  scale_fill_manual(values=c("#70543e","#b3ff1a","#389318","#873e23"),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorphyceae",
-                               "Magnoliopsida"))+
-  geom_sf(data = zoom_boat_high_sf, 
-          fill = "transparent", 
-          linetype = "dashed",
-          colour = "black", 
-          linewidth = 1)+
-  theme_void()
-
-Boat_Pred_zoomed_map_2<- ggplot()+
-  tidyterra::geom_spatraster(data = Boat_pred_zoom_2, 
-                             mapping = aes(fill = layer), 
-                             show.legend = F,
-                             maxcell = 5010420)+
-  scale_fill_manual(values=c("#70543e","#389318","#873e23","#b3002d"),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae"))+
-  geom_sf(data = zoom_boat_high_sf_2, 
-          fill = "transparent", 
-          linetype = "dashed",
-          colour = "black", 
-          linewidth = 1)+
-  theme_void()
-
-
-Boat_pred_map<-ggplot()+
-  geom_sf(data = background_Boat, 
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Boat,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
-    scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  ggnewscale::new_scale("fill")+
-  tidyterra::geom_spatraster(data = masked_pred, 
-                             mapping = aes(fill = layer),
-                             # show.legend = F,
-                             maxcell = 5010420,
-                             )+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorophyceae",
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-  ggnewscale::new_scale("fill")+
-  geom_sf(data = zoom_boat_high_sf, 
-               fill = "transparent", 
-               colour = "black",
-               linetype = "dashed", 
-               linewidth = 1)+
-  geom_sf(data = zoom_boat_high_sf_2, 
-               fill = "transparent", 
-               colour = "black",
-               linetype = "dashed", 
-               linewidth = 1)+
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.69452127,-8.6965,-8.69440039,-8.69105), 
-                              y=c(40.66244282,40.66673,40.66244282,40.66673),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", 
-            linewidth = 1)+
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
-                              y=c(40.6652874,40.66675,40.6652874,40.66673),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", 
-            linewidth = 1)+
-  annotation_custom(ggplotGrob(Boat_Pred_zoomed_map),
-                    xmin = -8.6975,
-                    xmax = -8.69,
-                    ymin = 40.6666,
-                    ymax = 40.6711) +
-  annotation_custom(ggplotGrob(Boat_Pred_zoomed_map_2),
-                    xmin = -8.6975+0.007,
-                    xmax = -8.69+0.007,
-                    ymin = 40.6666,
-                    ymax = 40.6711) +
-  coord_sf(crs = 4326)+
-  theme_Bede_Map()+
-   theme(
-     # axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
-     axis.text.x = element_blank(),
-         axis.title = element_blank(),
-        axis.text.y = element_text(size = 20),
-         legend.background = element_blank(),
-         legend.position = c(0.98,0.38),
-         legend.text = element_text(size = 18),
-         legend.key.size = unit(0.8,"cm"))+
-  scale_x_continuous(limits = c(-8.6965,-8.675),
-                     breaks =  -8.685)+
-  scale_y_continuous(limits = c(40.659,40.6704),
-                     breaks =  40.664)
-################# PLOT AND SAVING ###########
-plot_Boat<-RGB_Boat_map/
-  Boat_pred_map
-
-ggsave("Figures/Maps Pred/FigX-Boat_Pred.png",plot_Boat , width = 1000*4, height = 1120*4, units = "px")
-
-
-```
-
-```{r Figure 6 Boat plot}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: RGB orthomosaic (Top) and Prediction (Bottom) of the flight made in the inner part of Ria de Aveiro Lagoon, Portugal. The total extent of this flight was about 1.5 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). Each cover an area equivalent to a 10 m Sentinel-2 pixel size.
-#| label: fig-Boat
-#| fig-width: 10
-#| fig-height: 4
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Boat_Pred.png")
-
-```
-
-The flight over L'Epine in Noirmoutier Island, France (@fig-Dike) was conducted near a dike, which crossed the northern part of the site from west to east. Alongside this dike, brown algae for the order Fucales (*Fucus spp.*, *Ascophyllum nodosum*) were attached to sparse rocks and stranded green algae (*Ulva spp.*) could be observed Despite the high mixture between Chlorophyceae and Magnoliopsida these two classes were correctly discriminated by the classifier.
-
-```{r Figure 7 North Dike}
-#| cache: true
-#| echo: false
-#| warning: false
-#| eval: false
-
-imglist<-
-  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
-  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
-                            TRUE ~ "Output"),
-         alt = case_when(str_detect(path, "high") ~ "high",
-                         str_detect(path, "High") ~ "high",
-                         TRUE ~ "low"),
-         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
-                          str_detect(path, "AveiroHigh") ~ "Gafanha",
-                          TRUE ~ "Duer"),
-         type = case_when(str_detect(path, "pred") ~ "Pred",
-                          str_detect(path, "Preds") ~ "Pred",
-                          str_detect(path, "NDVI") ~ "NDVI",
-                          TRUE ~ "ortho"),
-         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
-                         str_detect(path, "NewPreds") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         col = case_when(str_detect(path, "colored") ~ "TRUE",
-                          TRUE ~ "FALSE"),
-         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
-                          str_detect(path, "corrected.tif") ~ "lm_all",
-                          TRUE ~ "NA")) %>% 
-  dplyr::filter(alt != "NA",
-                !str_detect(path,".aux.xml"))
-
-##### Preview #####
-
-filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
-mask_BB <- filelist[str_detect(filelist,"mask_land_intertidal_BB")] %>% 
-  read_sf()
-
-Flight_BB<-data.frame(
-  Name=c(
-  "L'Epine"
-  ) ,
-  Description = c(
-                  "120m Flight"),
-  Long=c(
-         -2.228239) ,
-  Lat=c( 
-        46.989515) 
-  )  %>% 
-  st_as_sf(coords=c("Long","Lat") )  %>% 
-  st_set_crs("EPSG:4326")  %>% 
-  st_transform(crs(mask_BB))  %>% 
-  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
-                lat = sf::st_coordinates(.) [,2]) %>% 
-  sf::st_set_geometry(NULL)
-
-p1 <- ggplot() +
-  scale_fill_manual("", labels = c("Intertidal area", "Land mask"),
-                    values = c("#7DC27D", "#BDBDBD"))+
-  geom_sf(data = mask_BB, mapping = aes(fill = Type), linewidth=0.05,alpha=0.93, show.legend = F,colour="grey30")+
-      coord_sf(xlim=c(550609,579539) ,
-          ylim=c(5189447,5218377) )+
-  ggforce::geom_mark_ellipse(data=Flight_BB,
-                 aes(x=lon,
-                     y=lat,
-                     label = Name,
-                     group = Name),
-                     # description=Description),
-                 size=0.3,
-                 fill = "goldenrod",
-                 con.colour = "goldenrod4",
-                 show.legend=F,
-                 con.size = 2,
-                 label.fontsize = 10,
-                 label.hjust = 0.5,
-                 alpha=0.8,
-  expand = unit(2, "mm") , 
-  radius = unit(2, "mm") ,
-  label.fill = "grey90",
-  label.buffer = unit(5, "mm")) +
-  # theme_Bede_Map()+
-  labs(x="Longitude",
-       y="Latitude")+
-  # geom_label(aes(x = 553460, y = 5216442, label = "B"), size = 20)+
-  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
-        legend.position = c(0.95,0.2),
-        legend.key.size =  unit(1, "cm"),
-        legend.text = element_text(size = 20),
-        legend.title=element_blank(),
-        legend.background = element_rect(linewidth = 0.5, 
-                                         fill = "white",
-                                         linetype="solid", 
-                                  colour ="black"),
-        # panel.background = element_rect(fill = "#FFFFFF90"),
-        axis.title = element_blank(),
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank())+
-  theme_void()
-
-##### RGB ######
-
-Dike_rgb<-imglist %>% 
-  filter(str_detect(path,"NorthDike_high_multi_4326_colored.tif")) %>% 
-  pull(path) %>% 
-  rast()
-names(Dike_rgb)<-c("B1","B3","B5","alpha")
-values(Dike_rgb)[values(Dike_rgb$alpha) == 0] = NA
-
-mask_Dike<-"Data/shp/Bourgneuf" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "mask_NorthDike")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-background_Dike<-"Data/shp/Bourgneuf" %>% 
-  list.files(".shp", full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path, "background")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-zoom_Dike_high_sf<-"Data/shp" %>% 
-  list.files(".shp",recursive = T,full.names = T) %>% 
-  as.data.frame() %>% 
-  rename(path = ".") %>% 
-  dplyr::filter(str_detect(path,"zoom_extent_map_Dike_comparison")) %>% 
-  pull(path) %>% 
-  read_sf()
-
-Dike_rgb_masked<-Dike_rgb %>% 
-  crop(mask_Dike) %>%
-  mask(mask_Dike)
-
-
-zoom_rgb_dike<-Dike_rgb_masked %>% 
-  crop(zoom_Dike_high_sf)
-
-zoom_rgb_dike_map<-ggplot()+
-  geom_spatraster_rgb(data = zoom_rgb_dike,
-                      r = 3,
-                      g = 2,
-                      b = 1)+
-  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
-  coord_sf(crs = 32630)+
-  theme_void()
-
-
-RGB_Dike_map <- ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_Dike,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Dike,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
-  tidyterra::geom_spatraster_rgb(data = Dike_rgb_masked,
-                      r = 3,
-                      g = 2,
-                      b = 1,
-                      # maxcell = 500,
-                      maxcell = 500832*8
-                      )+
-  geom_sf(data = zoom_Dike_high_sf, 
-          fill = "transparent", 
-          linetype = "dashed",
-          colour = "black", 
-          linewidth = 1)+
-  annotation_custom(ggplotGrob(zoom_rgb_dike_map), 
-                    xmin = -2.226, 
-                    ymin = 46.9888,
-                    ymax = 46.9893) +
-  annotation_custom(ggplotGrob(p1),
-                    xmin = -2.226,
-                    ymin = 46.9875) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
-                              y=c(46.9886439,46.9892105,46.9885538,46.988805),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  ggspatial::annotation_scale(location = "tl",text_cex=2)+
-  scale_x_continuous(limits = c(-2.2293,-2.2253),
-                     breaks =  -2.228)+
-  scale_y_continuous(limits = c(46.9882,46.98935),
-                     breaks =  46.9890)+
-  theme_Bede_Map()+
-  theme(
-    # axis.text.x =element_text(size = 20, angle = 20, hjust = 1),
-    axis.text.x =element_blank(),
-        axis.title = element_blank(),
-        axis.text.y = element_text(size = 20))+
-   coord_sf(crs = 4326)
-
-
-##### Pred ######
-
-Dike_Pred<-imglist %>% 
-  filter(str_detect(path,"Noirmoutier_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7_4326.tif")) %>% 
-  pull(path) %>% 
-  rast()
-names(Dike_Pred)<-c("layer")
-values(Dike_Pred)[values(Dike_Pred) == 0] = NA
-
-Dike_Pred_masked<-Dike_Pred %>% 
-  crop(mask_Dike) %>% 
-  mask(mask_Dike) %>% 
-  as.factor()
-
-zoom_Pred_dike<-Dike_Pred_masked %>% 
-  crop(zoom_Dike_high_sf)
-
-zoom_Pred_dike_map<-ggplot()+
-  tidyterra::geom_spatraster(data = zoom_Pred_dike, mapping = aes(fill = layer), show.legend = F)+
-  scale_fill_manual(values=c("#70543e","#b3ff1a","#389318","#873e23","#42c9bc"),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorphyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Water"))+
-  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
-  theme_void()
-
-
-Dike_pred_map<-ggplot()+
-  geom_sf(data = background_Dike, 
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_Dike,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-    scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  ggnewscale::new_scale("fill")+
-  tidyterra::geom_spatraster(data = Dike_Pred_masked, 
-                             mapping = aes(fill = layer),
-                             maxcell = 5010420,
-                             )+
-  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
-                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
-                    na.value = NA,
-                    name = "",
-                    labels = c("Sediment",
-                               "Chlorophyceae",
-                               "Bacillariophyceae",
-                               "Magnoliopsida",
-                               "Phaeophyceae",
-                               "Rhodophyceae",
-                               "Water"))+
-  ggnewscale::new_scale("fill")+
-  geom_sf(data = zoom_Dike_high_sf, 
-          fill = "transparent", 
-          colour = "black",
-          linetype = "dashed", 
-          linewidth = 1)+
-  annotation_custom(ggplotGrob(zoom_Pred_dike_map), 
-                    xmin = -2.226, 
-                    ymin = 46.9888,
-                    ymax = 46.9893) +
-  geom_path(aes(x,y,group=grp),
-            data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
-                              y=c(46.9886439,46.9892105,46.9885538,46.988805),
-                              grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
-  # annotation_custom(ggplotGrob(Boat_Pred_zoomed_map), xmin = -8.697, xmax = -8.692, ymin = 40.667,ymax = 40.6705) +
-  coord_sf(crs = 4326)+
-  theme_Bede_Map()+
-   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
-         axis.title = element_blank(),
-        axis.text.y = element_text(size = 20),
-         legend.background = element_blank(),
-         legend.position = c(1,0.50),
-         legend.text = element_text(size = 18),
-         legend.key.size = unit(0.8,"cm"))+
-  scale_x_continuous(limits = c(-2.2293,-2.2253),
-                     breaks =  -2.228)+
-  scale_y_continuous(limits = c(46.9882,46.98935),
-                     breaks =  46.9890)
-
-################# PLOT AND SAVING ###########
-
-plot_Dike<-RGB_Dike_map/
-  Dike_pred_map
-  
-ggsave("Figures/Maps Pred/FigX-Dike_Pred.png",plot_Dike , width = 1200*4, height = 900*4, units = "px")
-
-
-```
-
-```{r Figure 7 North Dike plot}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: RGB orthomosaic (Top) and Prediction (Bottom) of the Northern part of Noirmoutier Island, France. The total extent of this flight was about 28 000 m² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
-#| label: fig-Dike
-#| fig-width: 10
-#| fig-height: 7
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png")
-```
-
-## Validation
-
-### Reflectance comparison between the two different altitudes
-
-```{r Reflectance_Validation 2 height}
-#| cache: true
-#| echo: false
-#| eval: false
-#| warning: false
-
-# high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
-#   rast()
-# 
-# # low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
-# #   rast() 
-# 
-# low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
-#   rast() %>% 
-#   resample(high_alt, method = "med")
-# 
-# 
-# low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
-#   rast() 
-# 
-# mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
-#   vect()
-#   
-# high_alt_masked<-crop(high_alt,mask)
-# high_alt_masked<-mask(high_alt_masked,mask)
-# 
-# low_alt_masked<-crop(low_alt,mask)
-# low_alt_masked<-mask(low_alt_masked,mask)
-# 
-# low_alt_pred_masked<-crop(low_alt_pred,mask)
-# low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
-# 
-# 
-# stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
-#   as.data.frame()
-# 
-# names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
-#               "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
-#               "pred")
-# 
-# stk_long<-stk %>% 
-#   mutate(px_ID = c(1:nrow(stk))) %>% 
-#   pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
-#   mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
-#                          str_detect(Bands, "high") ~ "High",
-#                          TRUE ~ "NA"),
-#          Bands = gsub("_high","",Bands),
-#          Bands = gsub("_low","",Bands))
-# 
-# 
-# stk_summarized<-stk_long %>% 
-#   # group_by(px_ID,alt) %>% 
-#   # reframe(Value = mean(Value),
-#   #         pred = unique(pred)) %>% 
-#   pivot_wider(names_from = "alt", values_from = "Value")
-# 
-# df<-stk_summarized %>% 
-#   ungroup() %>% 
-#   group_by(Bands) %>% 
-#   filter(Low<10000,
-#          High < 10000,
-#          Low < quantile(Low,probs = 0.99),
-#          High < quantile(High,probs = 0.99),
-#          Low > quantile(Low,probs = 0.01),
-#          High > quantile(High,probs = 0.01),
-#          !pred %in% c(7,9,3,10)) %>%
-#   ungroup()
- 
-
-RAW <- read.csv("Data/CompareReflectance/Compare_ref_raw.csv")%>%  
-  mutate(Low = Low /10000,
-         High = High/10000)
-
-RMSE_raw <- sqrt(mean((RAW$Low - RAW$High)^2))
-lm_raw <- lm(RAW$High ~ RAW$Low)
-
-STD <- read.csv("Data/CompareReflectance/Compare_ref_std.csv")
-
-RMSE_STD <- sqrt(mean((STD$Low - STD$High)^2))
-lm_STD <- lm(STD$High ~ STD$Low)
-
-plot_RAW <- RAW %>%  
-  ggplot(aes(x=Low, y=High))+
-  # geom_point(aes(color = as.factor(pred)))
-  ggpointdensity::geom_pointdensity(adjust = .03)+
-  viridis::scale_color_viridis(limits = c(0,6000),
-                               breaks = c(0,2000,4000,6000),
-                               labels = c("1","2000","4000","6000"))+
-  # geom_smooth(method = "loess")+
-  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
-  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
-  theme_Bede()+
-  ylim(c(0.05,0.6))+
-  xlim(c(0.05,0.6))+
-  ylab("Reflectance of the 120m flight")+
-  xlab("Reflectance of the 12m flight")+
-  labs(color = "Pixel density")+
-  theme(
-    legend.position = "top",
-        legend.key.width = unit(3,"line"))
-
-plot_STD <- STD %>%  
-    ggplot(aes(x=Low, y=High))+
-  # geom_point(aes(color = as.factor(pred)))
-  ggpointdensity::geom_pointdensity(adjust = .03)+
-  viridis::scale_color_viridis(limits = c(1,2000),
-                               breaks = c(1,1000,2000),
-                               labels = c("1","1000","2000"))+
-  # scale_color_gradient(na.value = 1)+
-  # geom_smooth(method = "loess")+
-  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
-  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
-  theme_Bede()+
-  ylim(c(0.05,1))+
-  xlim(c(0.05,1))+
-  ylab("Standardised reflectance of the 120m flight")+
-  xlab("Standardised reflectance of the 12m flight")+
-  labs(color = "Pixel density")+
-  theme(
-    legend.position = "top",
-        legend.key.width = unit(3,"line"))
-
-ggsave("./Figures/High_res/Compare_reflectance.png",plot_RAW, width= 472*4, height=402*4, units = "px")
-ggsave("./Figures/High_res/Compare_reflectance_std.png",plot_STD, width= 472*4, height=402*4, units = "px")
-  
-
-```
-
-```{r ref_compare_building}
-#| cache: true
-#| echo: false
-#| eval: false
-#| warning: false
-
-RAW <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance.png"))+
-  coord_equal()+
-  geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
-    theme_void()+
-  theme(axis.text = element_blank(), 
-        axis.title = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.ticks.length = unit(0, "pt"),
-        panel.grid.major=element_blank(), 
-        panel.grid.minor=element_blank(), 
-        plot.margin = margin(0, 0, 0, 0, "pt"))
-
-STD <- ggplot()+
-  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance_std.png"))+
-  coord_equal()+
-  geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
-    theme_void()+
-  theme(axis.text = element_blank(), 
-        axis.title = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.ticks.length = unit(0, "pt"),
-        panel.grid.major=element_blank(), 
-        panel.grid.minor=element_blank(), 
-        plot.margin = margin(0, 0, 0, 0, "pt"))
-
-
-plot <- RAW+STD
-
-ggsave("./Figures/High_res/Compare_reflectance_both.png",plot,width= 1920*4, height=1129*4, units = "px")
-```
-
-In this study, a key innovation lies in the utilization of drone flights at two different altitudes (12m and 120m) for constructing the neural network model. The lower altitude flights (8mm spatial resolution) enabled precise selection of pure pixels to train the neural network model. This methodology implies a consistency between the reflectance measured from both altitudes. @fig-CompareRef depicts the relationship between reflectance from a low and a high-altitude flights conducted over the same area.
-
-```{r RefComapare}
-#| cache: false
-#| echo: false
-#| warning: false
-#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardized data (@eq-std). 
-#| label: fig-CompareRef
-#| fig-width: 10
-#| fig-height: 5
-#| out-width: "100%"
-
-knitr::include_graphics("./Figures/High_res/Compare_reflectance_both.png")
-
-```
-
-Overall there was a good agreement between the two altitudes. There was however a slight underestimation for raw reflectance values in the high-altitude flight, particularly for higher reflectance values (@fig-CompareRef A). Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum. This different is not present anymore when reflectance values of both flights have been standardized (@eq-std ; @fig-CompareRef B).
-
-### Neural network classification validation
 
 ```{r Global Accuracy assesment}
 #| cache: true
@@ -4831,13 +2962,1886 @@ ggsave("./Figures/High_res/Validation/ConfusionMatrixGreen.png", plot_green, wid
 
 ```
 
-A total of `r my_comma(round(count_validation_pixel,-3))` pixels were used to validate the Neural Network classifier. The sites with the lowest and highest number of validation data were `r df_summarize[which(df_summarize$n == min(df_summarize$n)),]$Site` (`r min(df_summarize$n)` pixels) and `r df_summarize[which(df_summarize$n == max(df_summarize$n)),]$Site` (`r max(df_summarize$n)` pixels), respectively. Model global accuracy was `r round(validation_metrics$overall[[1]]*100,2)`% with a Kappa coefficient of `r round(validation_metrics$overall[[2]],2)` (@fig-Validation).
+The workflow of this study revolves around two distinct flight heights (12 m and 120 m, @fig-workflow) where ensuring consistency between reflectances at both heights is crucial. This comparison was conducted at sites where low and high altitude flights overlapped. The low altitude flights were resampled to the same spatial resolution and grid as the high flights using a median resampling method. Reflectance values were then extracted, and a scatterplot was generated. Subsequently, the slope of the linear model and the coefficient of determination (R²) were computed.
+
+The model was applied to all flights at both 12 and 120 m of altitude. In situ information on georeferenced class type and percent cover collected during each flight was used to assess the model accuracy. These images were used to construct a validation dataset indicating the presence or absence of each class. Additionally to the quadrat-based validation dataset, polygons of each class were photo interpreted in order to increase the number of pixels of the validation dataset.A total of `r my_comma(round(count_validation_pixel,-3))` pixels were used to validate the Neural Network classifier. The sites with the lowest and highest number of validation data were `r df_summarize[which(df_summarize$n == min(df_summarize$n)),]$Site` (`r min(df_summarize$n)` pixels) and `r df_summarize[which(df_summarize$n == max(df_summarize$n)),]$Site` (`r max(df_summarize$n)` pixels), respectively.A confusion matrix, along with precision metrics such as global accuracy, sensitivity, specificity, and Kappa coefficient, was generated for each sites. All validation matrices were then aggregated to create an overall matrix .
+
+## Variable Importance
+
+Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the twenty one predictors utilized in this study, Variable Importance was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while randomly shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
+
+## Impact of the percent cover on the prediction
+
+The key aspect of the workflow adopted in the present study is the mapping of specific areas at two different altitudes (12m and 120m), resulting in two distinct resolutions for the same area (8mm and 80mm). The predictions made on the high-resolution flight can be used to estimate the percent cover of each vegetation class for every pixel of the lower resolution flight. Consequently, for each pixel of the high-altitude flights, percent covers of each vegetation class were obtained, and a kernel density plot was generated. This plot provides a visual representation of the behavior of the model in different vegetation percent cover scenarios.
+
+# Results
+
+## Classification
+
+Each drone flight was used to produce a prediction map, as well as a probability map that indicates the model derived likelihood of the selected class for every pixel. The low-altitude flight conducted in Gafanha, Portugal, represents the site with the highest complexity (@fig-GafLow). Among the five vegetation classes on which the model was trained, four were present on this site, with Chlorophyceae and Rhodophyceae mixed with the seagrass meadow. There was also Bacillariophyceae forming biofilms on parts of sediment surface. Although the seagrass bed was solely composed of *Nanozostera noltei*, various colors of this specie could be observed from dark green (corresponding to healthy leaves) to whitish/brown (when leaves were discolored having lost their pigmentation). Regardless of color, Magnoliopsida pixels were accurately predicted by the model.
+
+```{r Figure 4 Gaf Low}
+#| cache: true
+#| echo: false
+#| warning: false
+#| eval: false
+
+
+imglist<-
+  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
+  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
+                            TRUE ~ "Output"),
+         alt = case_when(str_detect(path, "high") ~ "high",
+                         TRUE ~ "low"),
+         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
+                          TRUE ~ "Duer"),
+         type = case_when(str_detect(path, "pred") ~ "Pred",
+                          str_detect(path, "NDVI") ~ "NDVI",
+                          TRUE ~ "ortho"),
+         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         col = case_when(str_detect(path, "colored") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
+                          str_detect(path, "corrected.tif") ~ "lm_all",
+                          TRUE ~ "NA")) %>% 
+  dplyr::filter(alt != "NA",
+                !str_detect(path,".aux.xml"))
+
+shp_roi<-"Data/reflectance_calibration_low_&_high_flights/" %>%
+  list.files(pattern = ".shp", recursive = T, full.names = T) %>%
+  read_sf() %>%
+  mutate(ID = case_when(name == "Microphytobenthos" ~ 1,
+                        name == "ZOS" ~ 2,
+                        name == "BL" ~ 3,
+                        name == "SED" ~ 4,
+                        name == "GRE" ~ 5,
+                        name == "RED" ~ 6,
+                        name == "Xanthophyceae" ~ 7)) %>% 
+  as("Spatial") %>% 
+  vect()
+
+
+zoom_extent<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+background_GafHigh<-"Data/shp/Aveiro" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "background_Gafanha_high")) %>% 
+  pull(path) %>% 
+  read_sf()
+###### Preview ###########
+
+filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
+mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
+  read_sf()
+
+Flight_aveiro<-data.frame(
+  Name=c(
+  "Gafanha"
+  ) ,
+  Description = c("12m and 120m Flights"),
+  Long=c(-8.742485) ,
+  Lat=c(40.597599) 
+  )  %>% 
+  st_as_sf(coords=c("Long","Lat") )  %>% 
+  st_set_crs("EPSG:4326")  %>% 
+  st_transform(crs(mask_aveiro))  %>% 
+  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
+                lat = sf::st_coordinates(.) [,2]) %>% 
+  sf::st_set_geometry(NULL)
+
+
+p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
+
+p1<-ggplot() +
+  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
+                    values = c("#7DC27D", "#BDBDBD"))+
+  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
+  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
+
+      coord_sf(xlim=c(519749,535233) ,
+          ylim=c(4493310,4508794) )+
+  ggforce::geom_mark_ellipse(data=Flight_aveiro,
+                 aes(x=lon,
+                     y=lat,
+                     label = Name,
+                     group = Name),
+                     # description=Description),
+                 size=0.3,
+                 fill = "goldenrod",
+                 con.colour = "goldenrod4",
+                 show.legend=F,
+                 label.fontsize = 18,
+                 label.hjust = 0.5,
+                 con.size = 2,
+                 alpha=0.8,
+  expand = unit(2, "mm") , 
+  radius = unit(2, "mm") ,
+  label.fill = "grey90",
+  label.buffer = unit(5, "mm")) +
+    # theme_void()+
+  theme_Bede_Map()+
+  labs(x="Longitude",
+       y="Latitude")+
+  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
+  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
+  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20))+
+  theme_void()
+######### RGB #########
+ Gafanha_low_ortho<-imglist %>% 
+  filter(site == "Gafanha",
+         alt == "low",
+         type == "ortho",
+         resampled == "TRUE",
+         col == "TRUE") %>%
+  pull(path) %>% 
+  rast() 
+ names(Gafanha_low_ortho)<-c("B1", "B3", "B5","alpha")
+
+ values(Gafanha_low_ortho)[values(Gafanha_low_ortho$alpha) == 0] = NA
+  
+ Gafanha_low_ortho_zoomed<-Gafanha_low_ortho %>% 
+   crop(zoom_extent)
+ 
+ 
+ map_extent_full<- st_as_sf(as.polygons(ext(Gafanha_low_ortho)))
+ sf::st_crs(map_extent_full)<-st_crs(Gafanha_low_ortho)
+ 
+
+  map_extent_zommed<- st_as_sf(as.polygons(ext(Gafanha_low_ortho_zoomed)))
+ sf::st_crs(map_extent_zommed)<-st_crs(Gafanha_low_ortho_zoomed)
+ 
+ 
+ rgb_Gafanha_low_zoomed<-ggplot()+
+   tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho_zoomed, 
+                                  r = 3,
+                                  g = 2,
+                                  b = 1)+
+   theme_Bede_Map()+
+   geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+   coord_sf(crs = 4326)+
+     theme_void()
+
+
+
+ scale_labels<-data.frame(x = c(-8.74368, -8.743565,-8.74342),
+                          y = c(rep(40.59792,3)),
+                          text = c("0","10","20 m"))
+ 
+ 
+ 
+  rgb_Gafanha_low<- ggplot()+
+  scale_fill_manual("", 
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  geom_sf(data = background_GafHigh,
+          fill = "white",
+          show.legend = F,
+          linewidth=0.05,
+          alpha=0.4,
+          colour="white")+
+  geom_sf(data = background_GafHigh,
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="grey30")+
+   tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho,
+         r = 1,
+         g = 2,
+         b = 3,
+         maxcell = 4010533
+         )+
+    ggspatial::annotation_scale(location = "tl",
+                                text_cex=2)+
+      annotation_custom(ggplotGrob(p1),
+                        xmin = -8.7430,
+                        xmax = -8.742702,
+                        ymin = 40.5970515, 
+                        ymax = 40.5974) +
+   theme_Bede_Map()+
+   geom_sf(data = zoom_extent, 
+           fill = "transparent",
+           colour = "black",
+           linetype = "dashed", 
+           linewidth = 1)+
+   coord_sf(crs = 4326)+
+  annotation_custom(ggplotGrob(rgb_Gafanha_low_zoomed),
+                    xmin = -8.7430,
+                    xmax=-8.7427,
+                    ymin = 40.5977) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
+                              y=c(40.5976275,40.5979,40.5975373,40.59771),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 20),
+        axis.text.x = element_text(size = 20, angle = 20, hjust = 1))+
+    scale_x_continuous(limits = c(-8.7437, -8.74275), breaks = -8.743)+
+    scale_y_continuous(limits = c(40.59715, 40.5979), breaks = 40.5975)
+
+ 
+ 
+  
+  
+
+ggsave("Figures/Gaf_Low_RGB.png",rgb_Gafanha_low , width = 1920*4, height = 1129*4, units = "px")
+
+zoom_extent<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+####### Zoomed map ########
+
+
+Gafanha_low_pred_zoomed<-imglist %>% 
+filter(site == "Gafanha",
+       alt == "low",
+       type == "Pred",
+       resampled == "FALSE",
+       folder == "Input",
+       new == "TRUE") %>% 
+  pull(path) %>% 
+  rast()
+names(Gafanha_low_pred_zoomed)<-"layer"
+
+Gafanha_low_pred_zoomed<-Gafanha_low_pred_zoomed %>% 
+  crop(zoom_extent)
+Gafanha_low_pred_zoomed<-as.factor(Gafanha_low_pred_zoomed)
+
+Gafanha_low_pred_map_zoomed<-ggplot()+
+  tidyterra::geom_spatraster(data = Gafanha_low_pred_zoomed, mapping = aes(fill = layer))+
+  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+  coord_sf(crs = 4326)+
+  scale_fill_manual(values=c("#70543e", "#b3ff1a","#70543e", "#DAA520", "#389318","#873e23","#b3002d", NA, "#42c9bc"), na.value = NA)+
+  theme_void()+
+  # coord_equal()+
+  theme(axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.title = element_blank())+
+  theme(legend.position = "none")
+ # Gafanha_low_pred_map_zoomed
+
+####  Overall map
+Gafanha_low_pred<-imglist %>% 
+filter(site == "Gafanha",
+       alt == "low",
+       type == "Pred",
+       # resampled == "TRUE",
+       new == "TRUE") %>% 
+  pull(path) %>% 
+  rast()
+names(Gafanha_low_pred)<-"layer"
+
+
+values(Gafanha_low_pred)[values(Gafanha_low_pred) == 0] = NA
+
+Gafanha_low_pred<-Gafanha_low_pred %>% 
+  as.factor()
+
+####### Pred ######
+
+
+Gafanha_low_pred_map <-
+  ggplot()+
+  scale_fill_manual("", 
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  geom_sf(data = background_GafHigh,
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="grey30")+
+  # geom_sf(data = background_GafHigh,
+  #         fill = "white",
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=1,
+  #         colour="white")+
+   ggnewscale::new_scale("fill")+
+    tidyterra::geom_spatraster(data = Gafanha_low_pred, 
+                               mapping = aes(fill = layer),
+                               maxcell = 500832*8)+
+  geom_sf(data = zoom_extent, 
+          fill = "transparent", 
+          colour = "black",
+          linetype = "dashed", 
+          linewidth = 1)+
+  coord_sf(crs = 4326)+
+  annotation_custom(ggplotGrob(Gafanha_low_pred_map_zoomed), 
+                    xmin = -8.7430,
+                    xmax=-8.7427, 
+                    ymin = 40.5977) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
+                              y=c(40.5976275,40.5979,40.5975373,40.59771),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorophyceae",
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+  theme_Bede_Map()+
+  # coord_equal()+
+   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+         # axis.text.y = element_text(size = 20),
+         axis.text.y = element_blank(),
+         axis.title = element_blank(),
+         legend.background = element_blank(),
+         legend.position = c(0.98,0.3),
+         legend.text = element_text(size = 20),
+         legend.key.size = unit(1,"cm"))+
+    scale_x_continuous(limits = c(-8.7437, -8.74275), breaks = -8.743)+
+    scale_y_continuous(limits = c(40.59715, 40.5979), breaks = 40.5975)
+
+
+ggsave("Figures/Gaf_Low_Pred.png",Gafanha_low_pred_map , width = 1920*4, height = 1129*4, units = "px")
+
+################# PLOT AND SAVING ###########
+
+plot_Gaf_Low<-rgb_Gafanha_low+
+  Gafanha_low_pred_map
+ 
+
+
+
+ggsave("Figures/Maps Pred/FigX-Gaf_Low_Pred.png",plot_Gaf_Low , width = 1920*4, height = 1009*4, units = "px")
+```
+
+```{r Figure 4 Gaf Low plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the low altitude flight of Gafanha, Portugal. The total extent of this flight was 3000m² with a resolution of 8 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
+#| label: fig-GafLow
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_Low_Pred.png")
+
+```
+
+```{r Figure 4 V2}
+#| cache: true
+#| echo: false
+#| warning: false
+#| eval: false
+imglist<-
+  data.frame("Data",
+             path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
+  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
+                            TRUE ~ "Output"),
+         alt = case_when(str_detect(path, "high") ~ "high",
+                         str_detect(path, "High") ~ "high",
+                         TRUE ~ "low"),
+         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
+                          str_detect(path,"AveiroHigh")~"Gafanha",
+                          TRUE ~ "Duer"),
+         type = case_when(str_detect(path, "pred") ~ "Pred",
+                          str_detect(path, "NDVI") ~ "NDVI",
+                          TRUE ~ "ortho"),
+         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
+                         str_detect(path, "NewPreds") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         col = case_when(str_detect(path, "colored") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
+                          str_detect(path, "corrected.tif") ~ "lm_all",
+                          TRUE ~ "NA")) %>% 
+  dplyr::filter(alt != "NA",
+                !str_detect(path,".aux.xml"))
+
+########## ZOOM #############
+
+zoom_extent<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+mask_low<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"mask_Gafanha_low")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+Gafanha_low_ortho_zoomed<-imglist %>% 
+  filter(site == "Gafanha",
+         alt == "low",
+         type == "ortho",
+         resampled == "TRUE",
+         col == "TRUE") %>%
+  pull(path) %>% 
+  rast() %>% 
+  crop(zoom_extent)
+
+names(Gafanha_low_ortho_zoomed)<-c("B1", "B3", "B5","alpha")
+
+ Gafanha_low_pred_zoomed<-imglist %>% 
+  filter(site == "Gafanha",
+         alt == "low",
+         type == "Pred",
+         # resampled == "TRUE",
+         new == "TRUE") %>% 
+  pull(path) %>% 
+  rast() %>% 
+  crop(zoom_extent) %>% 
+  mask(mask_low, inverse = T) %>% 
+   as.factor()
+   
+names(Gafanha_low_pred_zoomed)<-"layer"
+
+zoomed_low_map<-ggplot()+
+  tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho_zoomed,
+                                 r = 1,
+                                 g = 2,
+                                 b = 3)+
+  tidyterra::geom_spatraster(data = Gafanha_low_pred_zoomed, mapping = aes(fill = layer), show.legend = F)+
+  
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA), 
+                    na.value = NA,
+                    name = "", 
+                    labels = c("Sediment", 
+                               "Chlorophyceae", 
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 2)+
+  theme(legend.position = "none")+
+  theme_void()
+
+
+
+#############
+
+ Gafanha_low_ortho<-imglist %>% 
+  filter(site == "Gafanha",
+         alt == "low",
+         type == "ortho",
+         resampled == "TRUE",
+         col == "TRUE") %>%
+  pull(path) %>% 
+  rast() 
+ names(Gafanha_low_ortho)<-c("B1", "B3", "B5","alpha")
+values(Gafanha_low_ortho)[values(Gafanha_low_ortho$alpha) == 0] = NA
+
+ 
+ Gafanha_low_pred<-imglist %>% 
+  filter(site == "Gafanha",
+         alt == "low",
+         type == "Pred",
+         # resampled == "TRUE",
+         new == "TRUE") %>% 
+  pull(path) %>% 
+  rast()
+names(Gafanha_low_pred)<-"layer"
+
+Gafanha_low_pred_masked<-Gafanha_low_pred %>% 
+  # crop(mask_low) %>% 
+  mask(mask_low, inverse = T)
+
+values(Gafanha_low_pred_masked)[values(Gafanha_low_pred_masked) == 0] = NA
+
+Gafanha_low_pred_masked<-Gafanha_low_pred_masked %>% 
+  as.factor()
+
+rgb_Gafanha_low <- ggplot()+
+  tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho,
+                                 r = 1,
+                                 g = 2,
+                                 b = 3)+
+  tidyterra::geom_spatraster(data = Gafanha_low_pred_masked, mapping = aes(fill = layer))+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA), 
+                    na.value = NA,
+                    name = "", 
+                    labels = c("Sediment", 
+                               "Chlorophyceae", 
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+  ggspatial::annotation_scale(location = "bl",text_cex=2)+
+  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+
+  geom_segment(aes(x = -8.7434247325, y=40.5977530006, xend = -8.7430558162, yend = 40.5972152706), linetype ="dashed" ,linewidth=2)+
+  annotation_custom(ggplotGrob(zoomed_low_map), xmin = -8.743725, xmax = -8.7434057328, ymin = 40.5977200450, ymax = 40.59798) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.74336194,-8.74371,-8.743243794,-8.7434057328), y=c(40.59762751,40.5977400850,40.59762725,40.5977200450),grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  theme_Bede_Map()+
+  coord_sf(crs = 4326)+
+  theme(axis.title = element_blank(),
+        axis.text.y = element_text(size = 20),
+        axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+        legend.position=c(0.3, 0.3))+
+  # ggtitle("a ")+
+  scale_x_continuous(breaks=seq(-8.7437, -8.7430, 0.0002))
+rgb_Gafanha_low
+
+ggsave("Figures/Gaf_Low_RGB_Pred_V2.png",rgb_Gafanha_low , width = 890*4, height = 1120*4, units = "px")
+
+
+```
+
+The high-altitude flight over Gafanha covered a total area of \~1 km² (@fig-GafHigh). A channel contouring a small island was masked in the prediction map. Most of the intertidal area was classified as Magnoliopsida by the model, including seagrass patches with discolored leaves. Only a few pixels were classified as Chlorophyceae at this spatial scale. Furthermore, the area that was classified as Bacillariophyceae in the low-altitude flight remained mostly classified as such in the high-altitude flight, though some pixels were classified as Magnoliopsida. Patches of Rhodophyceae were correctly classified. In the northern part of the site and near the land eadges, patches of the schorre angiosperm *Spartina sp.* were misclassified, either as Magnoliopsida or as Phaeophyceae.
+
+```{r Figure 5 Gaf High}
+#| cache: true
+#| echo: false
+#| warning: false
+#| eval: false
+
+imglist<-
+  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
+  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
+                            TRUE ~ "Output"),
+         alt = case_when(str_detect(path, "high") ~ "high",
+                         str_detect(path, "High") ~ "high",
+                         TRUE ~ "low"),
+         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
+                          str_detect(path, "AveiroHigh") ~ "Gafanha",
+                          TRUE ~ "Duer"),
+         type = case_when(str_detect(path, "pred") ~ "Pred",
+                          str_detect(path, "Preds") ~ "Pred",
+                          str_detect(path, "NDVI") ~ "NDVI",
+                          TRUE ~ "ortho"),
+         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
+                         str_detect(path, "NewPreds") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         col = case_when(str_detect(path, "colored") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
+                          str_detect(path, "corrected.tif") ~ "lm_all",
+                          TRUE ~ "NA")) %>% 
+  dplyr::filter(alt != "NA",
+                !str_detect(path,".aux.xml"))
+
+#### Preview ####
+
+filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
+mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
+  read_sf()
+
+Flight_aveiro<-data.frame(
+  Name=c(
+  "Gafanha"
+  ) ,
+  Description = c("12m and 120m Flights"),
+  Long=c(-8.742485) ,
+  Lat=c(40.597599) 
+  )  %>% 
+  st_as_sf(coords=c("Long","Lat") )  %>% 
+  st_set_crs("EPSG:4326")  %>% 
+  st_transform(crs(mask_aveiro))  %>% 
+  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
+                lat = sf::st_coordinates(.) [,2]) %>% 
+  sf::st_set_geometry(NULL)
+
+p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
+
+p1<-ggplot() +
+  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
+                    values = c("#7DC27D", "#BDBDBD"))+
+  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
+  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
+      coord_sf(xlim=c(519749,535233) ,
+          ylim=c(4493310,4508794) )+
+  ggforce::geom_mark_ellipse(data=Flight_aveiro,
+                 aes(x=lon,
+                     y=lat,
+                     label = Name,
+                     group = Name),
+                     # description=Description),
+                 size=0.3,
+                 fill = "goldenrod",
+                 con.colour = "goldenrod4",
+                 show.legend=F,
+                 label.fontsize = 20,
+                 label.hjust = 0.5,
+                 con.size = 2,
+                 alpha=0.8,
+  expand = unit(2, "mm") , 
+  radius = unit(2, "mm") ,
+  label.fill = "grey90",
+  label.buffer = unit(5, "mm")) +
+    # theme_void()+
+  theme_Bede_Map()+
+  labs(x="Longitude",
+       y="Latitude")+
+  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
+  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
+  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20))+
+  theme_void()
+
+#####
+
+land_mask_GafHigh<-"Data/shp/Aveiro" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "mask_Gafanha_high1")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+background_GafHigh<-"Data/shp/Aveiro" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "background_Gafanha_high")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+GafHigh_ortho<-imglist %>% 
+  dplyr::filter(site == "Gafanha",
+                type == "ortho",
+                alt=="high",
+                col == "TRUE") %>%
+  pull(path) %>% 
+  rast()
+names(GafHigh_ortho)<-c("B1","B3", "B5", "alpha")
+
+# values(GafHigh_ortho)[values(GafHigh_ortho$B1) == 0] = NA
+
+GafHigh_ortho_masked<-GafHigh_ortho %>% 
+  mask(land_mask_GafHigh, inverse = F) %>% 
+  crop(land_mask_GafHigh)
+
+GafHigh_ortho_masked<-na.omit(GafHigh_ortho_masked, field=NA, geom=FALSE)
+
+
+###### RGB ########
+zoom_gaf_high_sf<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Gafanha_High_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+Gaflow_extent<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"GafLow_extent.shp")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+rgb_Gafanha_High_zoomed<-GafHigh_ortho_masked %>% 
+  crop(zoom_gaf_high_sf)
+
+rgb_Gafanha_High_zoomed<-
+  ggplot()+
+  tidyterra::geom_spatraster_rgb(data = rgb_Gafanha_High_zoomed,
+         r = 1,
+         g = 2,
+         b = 3)+
+     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+  theme_void()
+
+  
+  
+
+rgb_Gafanha_High <- ggplot()+
+  scale_fill_manual("",  
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  geom_sf(data = background_GafHigh,
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.93,
+          colour="grey30")+
+  geom_sf(data = background_GafHigh,
+          fill = "white",
+          show.legend = F,
+          linewidth=0.05,
+          alpha=0.4,
+          colour="white")+
+   tidyterra::geom_spatraster_rgb(data = GafHigh_ortho_masked,
+         r = 1,
+         g = 2,
+         b = 3,
+         maxcell = 5007120)+
+    ggspatial::annotation_scale(location = "bl",
+                                text_cex=2)+
+    annotation_custom(ggplotGrob(p1), 
+                      xmin = -8.744, 
+                      xmax = -8.7412,
+                      ymin = 40.5923,
+                      ymax = 40.595) +
+    geom_sf(data = zoom_gaf_high_sf,
+            fill = "transparent", 
+            colour = "black",
+            linetype = "dashed", 
+            linewidth = 1)+
+    geom_sf(data = Gaflow_extent,
+            fill = "transparent", 
+            colour = "red",
+            linetype = "dashed", 
+            linewidth = 2)+
+    geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
+                              y=c(40.5983781677,40.5995,40.598377893,40.5995),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", 
+            linewidth = 1)+
+  annotation_custom(ggplotGrob(rgb_Gafanha_High_zoomed),
+                    xmin = -8.7479, 
+                    xmax = -8.7452, 
+                    ymin = 40.5979,
+                    ymax = 40.603) +
+   theme_Bede_Map()+
+   coord_sf(crs = 4326)+
+   # xlim(c(-8.748, -8.741))+
+  # ylim(c(40.593,40.601))+
+  theme(axis.title = element_blank(),
+         axis.text.x = element_text(size = 20, angle = 20, hjust = 1),
+         axis.text.y = element_text(size = 20))+
+  scale_x_continuous(limits = c(-8.747576, -8.741465),breaks =  -8.745)+
+  scale_y_continuous(limits = c(40.59297,40.60109),breaks =  40.595)
+# rgb_Gafanha_High
+
+ggsave("Figures/Gaf_High_RGB.png",rgb_Gafanha_High , width = 712*4, height = 1120*4, units = "px")
+
+
+
+
+######### Pred #######
+Gafanha_high_pred<-imglist %>% 
+filter(site == "Gafanha",
+       alt == "high",
+       type == "Pred",
+       new == "TRUE",
+       !str_detect(path, "Probs")) %>% 
+  pull(path) %>% 
+  rast()
+names(Gafanha_high_pred)<-"layer"
+
+GafHigh_pred_masked<-Gafanha_high_pred %>% 
+  mask(land_mask_GafHigh, inverse = F) %>% 
+  crop(land_mask_GafHigh)
+
+GafHigh_pred_masked<-na.omit(GafHigh_pred_masked, field=NA, geom=FALSE) 
+
+values(GafHigh_pred_masked)[values(GafHigh_pred_masked) == 0] = NA
+values(GafHigh_pred_masked)[values(GafHigh_pred_masked) == 3] = 1
+
+GafHigh_pred_masked<-GafHigh_pred_masked %>% 
+  as.factor()
+
+Gafanha_High_zoomed_pred<-GafHigh_pred_masked %>% 
+  crop(zoom_gaf_high_sf)
+
+Gafanha_High_zoomed_pred<-
+  ggplot()+
+   tidyterra::geom_spatraster(data = Gafanha_High_zoomed_pred, mapping = aes(fill = layer),
+                            show.legend = F,
+                             maxcell = 5007120)+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorophyceae",
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+  theme_void()
+
+Gafanha_high_pred_map<-ggplot()+
+  geom_sf(data = background_GafHigh, 
+          mapping = aes(fill = Type),
+          show.legend = F,
+          linewidth=0.05,
+          alpha=0.93,
+          colour="grey30")+
+  geom_sf(data = background_GafHigh,
+          fill = "white",
+          show.legend = F,
+          linewidth=0.05,
+          alpha=0.4,
+          colour="white")+
+    scale_fill_manual("", 
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  ggnewscale::new_scale("fill")+
+  tidyterra::geom_spatraster(data = GafHigh_pred_masked, 
+                             # show.legend = F,
+                             mapping = aes(fill = layer),
+                             maxcell = 5010420)+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorophyceae",
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+       geom_sf(data = zoom_gaf_high_sf, 
+               fill = "transparent", 
+               colour = "black",
+               linetype = "dashed", 
+               linewidth = 1)+
+    geom_sf(data = Gaflow_extent,
+            fill = "transparent", 
+            colour = "red",
+            linetype = "dashed", 
+            linewidth = 2)+
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
+                              y=c(40.5983781677,40.5995,40.598377893,40.5995),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  annotation_custom(ggplotGrob(Gafanha_High_zoomed_pred), 
+                    xmin = -8.7479, 
+                    xmax = -8.7452, 
+                    ymin = 40.5979,
+                    ymax = 40.603) +
+  coord_sf(crs = 4326)+
+  theme_Bede_Map()+
+   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+         axis.title = element_blank(),
+        # axis.text.y = element_text(size = 20),
+        axis.text.y = element_blank(),
+         legend.background = element_blank(),
+         legend.position = c(0.96,0.23),
+         legend.text = element_text(size = 23),
+         legend.key.size = unit(1.2,"cm"))+
+  scale_x_continuous(limits = c(-8.747576, -8.741465),breaks =  -8.745)+
+  scale_y_continuous(limits = c(40.59297,40.60109),breaks =  40.595)
+# Gafanha_high_pred_map
+
+ggsave("Figures/Gaf_High_Pred.png",Gafanha_high_pred_map , width = 712*4, height = 1120*4, units = "px")
+
+################# PLOT AND SAVING ###########
+plot_GafHigh<-rgb_Gafanha_High+
+  Gafanha_high_pred_map
+
+ggsave("Figures/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width = 2105*4, height = 1363*4, units = "px")
+
+
+#########
+
+
+```
+
+```{r Figure 5 Gaf High plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The yellow outline shows the extent of the low altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
+#| label: fig-GafHigh
+#| fig-width: 10
+#| fig-height: 8
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png")
+
+```
+
+Amoung the high altitude flights, the one acquired over the inner lagoon of the Ria de Aveiro covered the largest area with approximately 1.5 km² (@fig-Boat). This site was dominated by seagrass and red macroalgae. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow visually appears to be colonised by green macroalgae, which the model agreed with.
+
+```{r Figure 6 Boat}
+#| cache: true
+#| echo: false
+#| warning: false
+#| eval: false
+
+imglist<-
+  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
+  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
+                            TRUE ~ "Output"),
+         alt = case_when(str_detect(path, "high") ~ "high",
+                         str_detect(path, "High") ~ "high",
+                         TRUE ~ "low"),
+         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
+                          str_detect(path, "AveiroHigh") ~ "Gafanha",
+                          TRUE ~ "Duer"),
+         type = case_when(str_detect(path, "pred") ~ "Pred",
+                          str_detect(path, "Preds") ~ "Pred",
+                          str_detect(path, "NDVI") ~ "NDVI",
+                          TRUE ~ "ortho"),
+         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
+                         str_detect(path, "NewPreds") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         col = case_when(str_detect(path, "colored") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
+                          str_detect(path, "corrected.tif") ~ "lm_all",
+                          TRUE ~ "NA")) %>% 
+  dplyr::filter(alt != "NA",
+                !str_detect(path,".aux.xml"))
+########### PREVIEW #############
+filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
+mask_aveiro <- filelist[str_detect(filelist,"mask_land_intertidal_Aveiro")] %>% 
+  read_sf()
+
+Flight_aveiro<-data.frame(
+  Name=c(
+  "Marinha Lanzarote"
+  ) ,
+  Description = c(
+                  "120m Flight"),
+  Long=c( 
+         -8.690677) ,
+  Lat=c(
+        40.665120) 
+  )  %>% 
+  st_as_sf(coords=c("Long","Lat") )  %>% 
+  st_set_crs("EPSG:4326")  %>% 
+  st_transform(crs(mask_aveiro))  %>% 
+  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
+                lat = sf::st_coordinates(.) [,2]) %>% 
+  sf::st_set_geometry(NULL)
+
+
+p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
+
+p1<-ggplot() +
+  scale_fill_manual("", labels = c("Intertidal area", "Land area"),
+                    values = c("#7DC27D", "#BDBDBD"))+
+  geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
+  geom_sf(data = mask_aveiro, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,show.legend = F,colour="grey30")+
+      coord_sf(xlim=c(519749,535233) ,
+          ylim=c(4493310,4508794) )+
+  ggforce::geom_mark_ellipse(data=Flight_aveiro,
+                 aes(x=lon,
+                     y=lat,
+                     label = Name,
+                     group = Name),
+                     # description=Description),
+                 size=0.3,
+                 fill = "goldenrod",
+                 con.colour = "goldenrod4",
+                 show.legend=F,
+                 label.fontsize = 10,
+                 label.hjust = 0.5,
+                 con.size = 2,
+                 alpha=0.8,
+  expand = unit(2, "mm") , 
+  radius = unit(2, "mm") ,
+  label.fill = "grey90",
+  label.buffer = unit(5, "mm")) +
+    # theme_void()+
+  theme_Bede_Map()+
+  labs(x="Longitude",
+       y="Latitude")+
+  # geom_label(aes(x = 521000, y = 4507794, label = "C"), size = 20)+
+  scale_x_continuous(breaks = seq(-8.75, -8.6, by = 0.1))+
+  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20))+
+  theme_void()
+##### ZOOM and masking #####
+
+Boat_rgb<-imglist %>% 
+  filter(str_detect(path,"Boat_high_RGB_merged.tif")) %>% 
+  pull(path) %>% 
+  rast()
+names(Boat_rgb)<-c("B1","B3","B5")
+values(Boat_rgb)[values(Boat_rgb) == 0] = NA
+
+mask_boat<-"Data/shp/Aveiro" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "boat")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+background_Boat<-"Data/shp/Aveiro" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "background_Boat")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+zoom_boat_high_sf<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Boat_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+zoom_boat_high_sf_2<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Boat_2_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+rgb_Boat_zoomed<-Boat_rgb %>% 
+  crop(zoom_boat_high_sf)
+
+rgb_Boat_zoomed_2<-Boat_rgb %>% 
+  crop(zoom_boat_high_sf_2)
+
+Boat_rgb_mask<-Boat_rgb %>% 
+  mask(mask_boat, inverse = T)
+
+ 
+rgb_Boat_zoomed_map<- ggplot()+
+  geom_spatraster_rgb(data = rgb_Boat_zoomed,
+                      r = 3,
+                      g = 2,
+                      b = 1,
+                      max_col_value = 4000)+
+  geom_sf(data = zoom_boat_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+
+  theme_void()
+
+rgb_Boat_zoomed_map_2
+ggplot()+
+  geom_spatraster_rgb(data = rgb_Boat_zoomed_2,
+                      r = 3,
+                      g = 2,
+                      b = 1,
+                      interpolate = F,
+                      max_col_value = 4000)+
+  geom_sf(data = zoom_boat_high_sf_2, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+
+  theme_void()
+
+####### RGB ############
+
+RGB_Boat_map<-
+ggplot()+
+  scale_fill_manual("",  
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  geom_sf(data = background_Boat,
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.93,
+          colour="transparent")+
+  geom_sf(data = background_Boat,
+          fill = "white",
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="transparent")+
+  tidyterra::geom_spatraster_rgb(data = Boat_rgb_mask,
+                      r = 3,
+                      g = 2,
+                      b = 1,
+                      # maxcell = 5000,
+                      maxcell = 500832*8,
+                      max_col_value = 5000)+
+  geom_sf(data = zoom_boat_high_sf,
+          fill = "transparent",
+          colour = "black", 
+          linewidth = 1)+
+  geom_sf(data = zoom_boat_high_sf_2,
+          fill = "transparent",
+          colour = "black", 
+          linewidth = 1)+
+  annotation_custom(ggplotGrob(rgb_Boat_zoomed_map),
+                    xmin = -8.6975,
+                    xmax = -8.69,
+                    ymin = 40.6666,
+                    ymax = 40.6711) +
+  annotation_custom(ggplotGrob(rgb_Boat_zoomed_map_2),
+                    xmin = -8.6975+0.007,
+                    xmax = -8.69+0.007,
+                    ymin = 40.6666,
+                    ymax = 40.6711) +
+  annotation_custom(ggplotGrob(p1),
+                    xmin = -8.6795,
+                    xmax = -8.6736,
+                    ymin = 40.6585,
+                    ymax = 40.6625) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.69452127,-8.6965,-8.69440039,-8.69105), 
+                              y=c(40.66244282,40.66673,40.66244282,40.66673),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", 
+            linewidth = 1)+
+    geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
+                              y=c(40.6652874,40.66675,40.6652874,40.66673),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", 
+            linewidth = 1)+
+  ggspatial::annotation_scale(location = "bl",
+                              text_cex=2)+
+  scale_x_continuous(limits = c(-8.6965,-8.675),
+                     breaks =  -8.685)+
+  scale_y_continuous(limits = c(40.659,40.6704),
+                     breaks =  40.664)+
+  theme_Bede_Map()+
+  theme(axis.title = element_blank(),
+        # axis.text.x = element_text(size = 20, angle = 20 , hjust = 1),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 20))+
+   coord_sf(crs = 4326)
+
+
+####### Pred ######## 
+Boat1_pred<-imglist %>% 
+  filter(str_detect(path,"AveiroBoat1_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif")) %>% 
+  pull(path) %>% 
+  rast()
+names(Boat1_pred)<-"layer"
+
+Boat2_pred<-imglist %>% 
+  filter(str_detect(path,"AveiroBoat2_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7.tif")) %>% 
+  pull(path) %>% 
+  rast()
+names(Boat2_pred)<-"layer"
+
+values(Boat1_pred)[values(Boat1_pred) == 0] = NA
+values(Boat2_pred)[values(Boat2_pred) == 0] = NA
+
+
+B1_overextent<-ext(Boat1_pred)
+B1_overextent[2]<-ext(Boat2_pred)[2]
+B1_overextent[4]<-ext(Boat2_pred)[4]
+B1_overextent <- rast(B1_overextent)
+res(B1_overextent)<-res(Boat1_pred)
+# terra::writeRaster(B1$B1,"B1.tif")
+# terra::writeRaster(B2$B2,"B2.tif")
+
+B2_resampled <- terra::resample(Boat2_pred,B1_overextent, method = "near",threads = T)
+# terra::writeRaster(B2_resampled$B1,"B2_resampled.tif", overwrite = T)
+
+Boat_pred<-merge(Boat1_pred,B2_resampled)
+
+Boat_pred_aggregate<-terra::aggregate(Boat_pred,fact = 6, fun ="modal") 
+
+masked_pred<-Boat_pred_aggregate %>% 
+  mask(mask_boat,inverse=TRUE)%>% 
+  as.factor()
+
+Boat_pred_zoom<-Boat1_pred %>% 
+  crop(zoom_boat_high_sf) %>% 
+  as.factor()
+
+Boat_pred_zoom_2<-Boat2_pred %>% 
+  crop(zoom_boat_high_sf_2) %>% 
+  as.factor()
+
+Boat_Pred_zoomed_map<- ggplot()+
+  tidyterra::geom_spatraster(data = Boat_pred_zoom, 
+                             mapping = aes(fill = layer), 
+                             show.legend = F,
+                             maxcell = 5010420)+
+  scale_fill_manual(values=c("#70543e","#b3ff1a","#389318","#873e23"),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorphyceae",
+                               "Magnoliopsida"))+
+  geom_sf(data = zoom_boat_high_sf, 
+          fill = "transparent", 
+          linetype = "dashed",
+          colour = "black", 
+          linewidth = 1)+
+  theme_void()
+
+Boat_Pred_zoomed_map_2<- ggplot()+
+  tidyterra::geom_spatraster(data = Boat_pred_zoom_2, 
+                             mapping = aes(fill = layer), 
+                             show.legend = F,
+                             maxcell = 5010420)+
+  scale_fill_manual(values=c("#70543e","#389318","#873e23","#b3002d"),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae"))+
+  geom_sf(data = zoom_boat_high_sf_2, 
+          fill = "transparent", 
+          linetype = "dashed",
+          colour = "black", 
+          linewidth = 1)+
+  theme_void()
+
+
+Boat_pred_map<-ggplot()+
+  geom_sf(data = background_Boat, 
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.93,
+          colour="transparent")+
+  geom_sf(data = background_Boat,
+          fill = "white",
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="transparent")+
+    scale_fill_manual("", 
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  ggnewscale::new_scale("fill")+
+  tidyterra::geom_spatraster(data = masked_pred, 
+                             mapping = aes(fill = layer),
+                             # show.legend = F,
+                             maxcell = 5010420,
+                             )+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorophyceae",
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+  ggnewscale::new_scale("fill")+
+  geom_sf(data = zoom_boat_high_sf, 
+               fill = "transparent", 
+               colour = "black",
+               linetype = "dashed", 
+               linewidth = 1)+
+  geom_sf(data = zoom_boat_high_sf_2, 
+               fill = "transparent", 
+               colour = "black",
+               linetype = "dashed", 
+               linewidth = 1)+
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.69452127,-8.6965,-8.69440039,-8.69105), 
+                              y=c(40.66244282,40.66673,40.66244282,40.66673),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", 
+            linewidth = 1)+
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
+                              y=c(40.6652874,40.66675,40.6652874,40.66673),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", 
+            linewidth = 1)+
+  annotation_custom(ggplotGrob(Boat_Pred_zoomed_map),
+                    xmin = -8.6975,
+                    xmax = -8.69,
+                    ymin = 40.6666,
+                    ymax = 40.6711) +
+  annotation_custom(ggplotGrob(Boat_Pred_zoomed_map_2),
+                    xmin = -8.6975+0.007,
+                    xmax = -8.69+0.007,
+                    ymin = 40.6666,
+                    ymax = 40.6711) +
+  coord_sf(crs = 4326)+
+  theme_Bede_Map()+
+   theme(
+     # axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+     axis.text.x = element_blank(),
+         axis.title = element_blank(),
+        axis.text.y = element_text(size = 20),
+         legend.background = element_blank(),
+         legend.position = c(0.98,0.38),
+         legend.text = element_text(size = 18),
+         legend.key.size = unit(0.8,"cm"))+
+  scale_x_continuous(limits = c(-8.6965,-8.675),
+                     breaks =  -8.685)+
+  scale_y_continuous(limits = c(40.659,40.6704),
+                     breaks =  40.664)
+################# PLOT AND SAVING ###########
+plot_Boat<-RGB_Boat_map/
+  Boat_pred_map
+
+ggsave("Figures/Maps Pred/FigX-Boat_Pred.png",plot_Boat , width = 1000*4, height = 1120*4, units = "px")
+
+
+```
+
+```{r Figure 6 Boat plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: RGB orthomosaic (Top) and Prediction (Bottom) of the flight made in the inner part of Ria de Aveiro Lagoon, Portugal. The total extent of this flight was about 1.5 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). Each cover an area equivalent to a 10 m Sentinel-2 pixel size.
+#| label: fig-Boat
+#| fig-width: 10
+#| fig-height: 4
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Boat_Pred.png")
+
+```
+
+The flight over L'Epine in Noirmoutier Island, France (@fig-Dike) was conducted near a dike, which crossed the northern part of the site from west to east. Alongside this dike, Fucale brown algae (*Fucus spp.*, *Ascophyllum nodosum*) were attached to sparse rocks and stranded green algae (*Ulva spp.*) could be observed. Despite the high mixture between Chlorophyceae and Magnoliopsida these two classes were correctly discriminated by the classifier.
+
+```{r Figure 7 North Dike}
+#| cache: true
+#| echo: false
+#| warning: false
+#| eval: false
+
+imglist<-
+  data.frame(path = list.files(pattern = ".tif", recursive = T, full.names = T)) %>% 
+  mutate(folder = case_when(str_detect(path, "Data") ~ "Input",
+                            TRUE ~ "Output"),
+         alt = case_when(str_detect(path, "high") ~ "high",
+                         str_detect(path, "High") ~ "high",
+                         TRUE ~ "low"),
+         site = case_when(str_detect(path, "Gafanha") ~ "Gafanha",
+                          str_detect(path, "AveiroHigh") ~ "Gafanha",
+                          TRUE ~ "Duer"),
+         type = case_when(str_detect(path, "pred") ~ "Pred",
+                          str_detect(path, "Preds") ~ "Pred",
+                          str_detect(path, "NDVI") ~ "NDVI",
+                          TRUE ~ "ortho"),
+         resampled = case_when(str_detect(path, "resampled") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         new = case_when(str_detect(path, "no_Xantho") ~ "TRUE",
+                         str_detect(path, "NewPreds") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         col = case_when(str_detect(path, "colored") ~ "TRUE",
+                          TRUE ~ "FALSE"),
+         correction = case_when(str_detect(path, "corrected_per_bands") ~ "Bands",
+                          str_detect(path, "corrected.tif") ~ "lm_all",
+                          TRUE ~ "NA")) %>% 
+  dplyr::filter(alt != "NA",
+                !str_detect(path,".aux.xml"))
+
+##### Preview #####
+
+filelist<-list.files("Data/shp/", pattern = ".shp", recursive = T,full.names = T)
+mask_BB <- filelist[str_detect(filelist,"mask_land_intertidal_BB")] %>% 
+  read_sf()
+
+Flight_BB<-data.frame(
+  Name=c(
+  "L'Epine"
+  ) ,
+  Description = c(
+                  "120m Flight"),
+  Long=c(
+         -2.228239) ,
+  Lat=c( 
+        46.989515) 
+  )  %>% 
+  st_as_sf(coords=c("Long","Lat") )  %>% 
+  st_set_crs("EPSG:4326")  %>% 
+  st_transform(crs(mask_BB))  %>% 
+  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
+                lat = sf::st_coordinates(.) [,2]) %>% 
+  sf::st_set_geometry(NULL)
+
+p1 <- ggplot() +
+  scale_fill_manual("", labels = c("Intertidal area", "Land mask"),
+                    values = c("#7DC27D", "#BDBDBD"))+
+  geom_sf(data = mask_BB, mapping = aes(fill = Type), linewidth=0.05,alpha=0.93, show.legend = F,colour="grey30")+
+      coord_sf(xlim=c(550609,579539) ,
+          ylim=c(5189447,5218377) )+
+  ggforce::geom_mark_ellipse(data=Flight_BB,
+                 aes(x=lon,
+                     y=lat,
+                     label = Name,
+                     group = Name),
+                     # description=Description),
+                 size=0.3,
+                 fill = "goldenrod",
+                 con.colour = "goldenrod4",
+                 show.legend=F,
+                 con.size = 2,
+                 label.fontsize = 10,
+                 label.hjust = 0.5,
+                 alpha=0.8,
+  expand = unit(2, "mm") , 
+  radius = unit(2, "mm") ,
+  label.fill = "grey90",
+  label.buffer = unit(5, "mm")) +
+  # theme_Bede_Map()+
+  labs(x="Longitude",
+       y="Latitude")+
+  # geom_label(aes(x = 553460, y = 5216442, label = "B"), size = 20)+
+  theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") ,
+        legend.position = c(0.95,0.2),
+        legend.key.size =  unit(1, "cm"),
+        legend.text = element_text(size = 20),
+        legend.title=element_blank(),
+        legend.background = element_rect(linewidth = 0.5, 
+                                         fill = "white",
+                                         linetype="solid", 
+                                  colour ="black"),
+        # panel.background = element_rect(fill = "#FFFFFF90"),
+        axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())+
+  theme_void()
+
+##### RGB ######
+
+Dike_rgb<-imglist %>% 
+  filter(str_detect(path,"NorthDike_high_multi_4326_colored.tif")) %>% 
+  pull(path) %>% 
+  rast()
+names(Dike_rgb)<-c("B1","B3","B5","alpha")
+values(Dike_rgb)[values(Dike_rgb$alpha) == 0] = NA
+
+mask_Dike<-"Data/shp/Bourgneuf" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "mask_NorthDike")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+background_Dike<-"Data/shp/Bourgneuf" %>% 
+  list.files(".shp", full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path, "background")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+zoom_Dike_high_sf<-"Data/shp" %>% 
+  list.files(".shp",recursive = T,full.names = T) %>% 
+  as.data.frame() %>% 
+  rename(path = ".") %>% 
+  dplyr::filter(str_detect(path,"zoom_extent_map_Dike_comparison")) %>% 
+  pull(path) %>% 
+  read_sf()
+
+Dike_rgb_masked<-Dike_rgb %>% 
+  crop(mask_Dike) %>%
+  mask(mask_Dike)
+
+
+zoom_rgb_dike<-Dike_rgb_masked %>% 
+  crop(zoom_Dike_high_sf)
+
+zoom_rgb_dike_map<-ggplot()+
+  geom_spatraster_rgb(data = zoom_rgb_dike,
+                      r = 3,
+                      g = 2,
+                      b = 1)+
+  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  coord_sf(crs = 32630)+
+  theme_void()
+
+
+RGB_Dike_map <- ggplot()+
+  scale_fill_manual("",  
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  geom_sf(data = background_Dike,
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.93,
+          colour="transparent")+
+  geom_sf(data = background_Dike,
+          fill = "white",
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="transparent")+
+  tidyterra::geom_spatraster_rgb(data = Dike_rgb_masked,
+                      r = 3,
+                      g = 2,
+                      b = 1,
+                      # maxcell = 500,
+                      maxcell = 500832*8
+                      )+
+  geom_sf(data = zoom_Dike_high_sf, 
+          fill = "transparent", 
+          linetype = "dashed",
+          colour = "black", 
+          linewidth = 1)+
+  annotation_custom(ggplotGrob(zoom_rgb_dike_map), 
+                    xmin = -2.226, 
+                    ymin = 46.9888,
+                    ymax = 46.9893) +
+  annotation_custom(ggplotGrob(p1),
+                    xmin = -2.226,
+                    ymin = 46.9875) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
+                              y=c(46.9886439,46.9892105,46.9885538,46.988805),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  ggspatial::annotation_scale(location = "tl",text_cex=2)+
+  scale_x_continuous(limits = c(-2.2293,-2.2253),
+                     breaks =  -2.228)+
+  scale_y_continuous(limits = c(46.9882,46.98935),
+                     breaks =  46.9890)+
+  theme_Bede_Map()+
+  theme(
+    # axis.text.x =element_text(size = 20, angle = 20, hjust = 1),
+    axis.text.x =element_blank(),
+        axis.title = element_blank(),
+        axis.text.y = element_text(size = 20))+
+   coord_sf(crs = 4326)
+
+
+##### Pred ######
+
+Dike_Pred<-imglist %>% 
+  filter(str_detect(path,"Noirmoutier_highPrediction_nnNewStanRawMetrics_Preds_NoXantho_7_4326.tif")) %>% 
+  pull(path) %>% 
+  rast()
+names(Dike_Pred)<-c("layer")
+values(Dike_Pred)[values(Dike_Pred) == 0] = NA
+
+Dike_Pred_masked<-Dike_Pred %>% 
+  crop(mask_Dike) %>% 
+  mask(mask_Dike) %>% 
+  as.factor()
+
+zoom_Pred_dike<-Dike_Pred_masked %>% 
+  crop(zoom_Dike_high_sf)
+
+zoom_Pred_dike_map<-ggplot()+
+  tidyterra::geom_spatraster(data = zoom_Pred_dike, mapping = aes(fill = layer), show.legend = F)+
+  scale_fill_manual(values=c("#70543e","#b3ff1a","#389318","#873e23","#42c9bc"),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorphyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Water"))+
+  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  theme_void()
+
+
+Dike_pred_map<-ggplot()+
+  geom_sf(data = background_Dike, 
+          mapping = aes(fill = Type),
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.93,
+          colour="grey30")+
+  geom_sf(data = background_Dike,
+          fill = "white",
+          show.legend = F, 
+          linewidth=0.05,
+          alpha=0.4,
+          colour="white")+
+    scale_fill_manual("",  
+                    labels = c("Intertidal area", "Land area", "water"),
+                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  ggnewscale::new_scale("fill")+
+  tidyterra::geom_spatraster(data = Dike_Pred_masked, 
+                             mapping = aes(fill = layer),
+                             maxcell = 5010420,
+                             )+
+  scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
+                    values=c("#70543e", "#b3ff1a", "#DAA520", "#389318","#873e23","#b3002d", "#42c9bc",NA,NA,NA,NA),
+                    na.value = NA,
+                    name = "",
+                    labels = c("Sediment",
+                               "Chlorophyceae",
+                               "Bacillariophyceae",
+                               "Magnoliopsida",
+                               "Phaeophyceae",
+                               "Rhodophyceae",
+                               "Water"))+
+  ggnewscale::new_scale("fill")+
+  geom_sf(data = zoom_Dike_high_sf, 
+          fill = "transparent", 
+          colour = "black",
+          linetype = "dashed", 
+          linewidth = 1)+
+  annotation_custom(ggplotGrob(zoom_Pred_dike_map), 
+                    xmin = -2.226, 
+                    ymin = 46.9888,
+                    ymax = 46.9893) +
+  geom_path(aes(x,y,group=grp),
+            data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
+                              y=c(46.9886439,46.9892105,46.9885538,46.988805),
+                              grp=c(1,1,2,2)),
+            linetype = "dashed", linewidth = 1)+
+  # annotation_custom(ggplotGrob(Boat_Pred_zoomed_map), xmin = -8.697, xmax = -8.692, ymin = 40.667,ymax = 40.6705) +
+  coord_sf(crs = 4326)+
+  theme_Bede_Map()+
+   theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+         axis.title = element_blank(),
+        axis.text.y = element_text(size = 20),
+         legend.background = element_blank(),
+         legend.position = c(1,0.50),
+         legend.text = element_text(size = 18),
+         legend.key.size = unit(0.8,"cm"))+
+  scale_x_continuous(limits = c(-2.2293,-2.2253),
+                     breaks =  -2.228)+
+  scale_y_continuous(limits = c(46.9882,46.98935),
+                     breaks =  46.9890)
+
+################# PLOT AND SAVING ###########
+
+plot_Dike<-RGB_Dike_map/
+  Dike_pred_map
+  
+ggsave("Figures/Maps Pred/FigX-Dike_Pred.png",plot_Dike , width = 1200*4, height = 900*4, units = "px")
+
+
+```
+
+```{r Figure 7 North Dike plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: "RGB orthomosaic (Top) and Prediction (Bottom) of L'Epine, France. The total extent of this flight was about 28 000 m² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size."
+#| label: fig-Dike
+#| fig-width: 10
+#| fig-height: 7
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png")
+```
+
+## Validation
+
+### Reflectance comparison between the two different altitudes
+
+```{r Reflectance_Validation 2 height}
+#| cache: true
+#| echo: false
+#| eval: false
+#| warning: false
+
+# high_alt<- "Data/image/micasense/Gafanha_high_multi.tif" %>% 
+#   rast()
+# 
+# # low_alt<- "Data/image/micasense/Gafanha_Low_Multi_rsp.tif" %>% 
+# #   rast() 
+# 
+# low_alt<- "Data/image/micasense/Gafanha_low_multi.tif" %>% 
+#   rast() %>% 
+#   resample(high_alt, method = "med")
+# 
+# 
+# low_alt_pred<- "Data/image/prediction/NewPreds/Gafanha_Low_Pred_rsp.tif" %>% 
+#   rast() 
+# 
+# mask<-"Data/shp/Mask_Alt_Compare_All.shp" %>% 
+#   vect()
+#   
+# high_alt_masked<-crop(high_alt,mask)
+# high_alt_masked<-mask(high_alt_masked,mask)
+# 
+# low_alt_masked<-crop(low_alt,mask)
+# low_alt_masked<-mask(low_alt_masked,mask)
+# 
+# low_alt_pred_masked<-crop(low_alt_pred,mask)
+# low_alt_pred_masked<-mask(low_alt_pred_masked,mask)
+# 
+# 
+# stk<-rast(list(c(high_alt_masked,low_alt_masked,low_alt_pred_masked)))%>% 
+#   as.data.frame()
+# 
+# names(stk)<-c("B1_high","B2_high","B3_high","B4_high","B5_high","B6_high","B7_high","B8_high","B9_high","B10_high",
+#               "B1_low","B2_low","B3_low","B4_low","B5_low","B6_low","B7_low","B8_low","B9_low","B10_low",
+#               "pred")
+# 
+# stk_long<-stk %>% 
+#   mutate(px_ID = c(1:nrow(stk))) %>% 
+#   pivot_longer(-c(px_ID,pred),values_to = "Value",names_to = "Bands") %>% 
+#   mutate(alt = case_when(str_detect(Bands, "low") ~ "Low",
+#                          str_detect(Bands, "high") ~ "High",
+#                          TRUE ~ "NA"),
+#          Bands = gsub("_high","",Bands),
+#          Bands = gsub("_low","",Bands))
+# 
+# 
+# stk_summarized<-stk_long %>% 
+#   # group_by(px_ID,alt) %>% 
+#   # reframe(Value = mean(Value),
+#   #         pred = unique(pred)) %>% 
+#   pivot_wider(names_from = "alt", values_from = "Value")
+# 
+# df<-stk_summarized %>% 
+#   ungroup() %>% 
+#   group_by(Bands) %>% 
+#   filter(Low<10000,
+#          High < 10000,
+#          Low < quantile(Low,probs = 0.99),
+#          High < quantile(High,probs = 0.99),
+#          Low > quantile(Low,probs = 0.01),
+#          High > quantile(High,probs = 0.01),
+#          !pred %in% c(7,9,3,10)) %>%
+#   ungroup()
+ 
+
+RAW <- read.csv("Data/CompareReflectance/Compare_ref_raw.csv")%>%  
+  mutate(Low = Low /10000,
+         High = High/10000)
+
+RMSE_raw <- sqrt(mean((RAW$Low - RAW$High)^2))
+lm_raw <- lm(RAW$High ~ RAW$Low)
+
+STD <- read.csv("Data/CompareReflectance/Compare_ref_std.csv")
+
+RMSE_STD <- sqrt(mean((STD$Low - STD$High)^2))
+lm_STD <- lm(STD$High ~ STD$Low)
+
+plot_RAW <- RAW %>%  
+  ggplot(aes(x=Low, y=High))+
+  # geom_point(aes(color = as.factor(pred)))
+  ggpointdensity::geom_pointdensity(adjust = .03)+
+  viridis::scale_color_viridis(limits = c(0,6000),
+                               breaks = c(0,2000,4000,6000),
+                               labels = c("1","2000","4000","6000"))+
+  # geom_smooth(method = "loess")+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  theme_Bede()+
+  ylim(c(0.05,0.6))+
+  xlim(c(0.05,0.6))+
+  ylab("Reflectance of the 120m flight")+
+  xlab("Reflectance of the 12m flight")+
+  labs(color = "Pixel density")+
+  theme(
+    legend.position = "top",
+        legend.key.width = unit(3,"line"))
+
+plot_STD <- STD %>%  
+    ggplot(aes(x=Low, y=High))+
+  # geom_point(aes(color = as.factor(pred)))
+  ggpointdensity::geom_pointdensity(adjust = .03)+
+  viridis::scale_color_viridis(limits = c(1,2000),
+                               breaks = c(1,1000,2000),
+                               labels = c("1","1000","2000"))+
+  # scale_color_gradient(na.value = 1)+
+  # geom_smooth(method = "loess")+
+  geom_abline(intercept = 0, slope = 1, linewidth = 1, linetype = "dashed", color = "black" )+
+  # geom_smooth(method = "lm", color = "red", linetype = "dashed",linewidth = 1)+
+  theme_Bede()+
+  ylim(c(0.05,1))+
+  xlim(c(0.05,1))+
+  ylab("Standardised reflectance of the 120m flight")+
+  xlab("Standardised reflectance of the 12m flight")+
+  labs(color = "Pixel density")+
+  theme(
+    legend.position = "top",
+        legend.key.width = unit(3,"line"))
+
+ggsave("./Figures/High_res/Compare_reflectance.png",plot_RAW, width= 472*4, height=402*4, units = "px")
+ggsave("./Figures/High_res/Compare_reflectance_std.png",plot_STD, width= 472*4, height=402*4, units = "px")
+  
+
+```
+
+```{r ref_compare_building}
+#| cache: true
+#| echo: false
+#| eval: false
+#| warning: false
+
+RAW <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "A") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
+
+STD <- ggplot()+
+  geom_spatraster_rgb(data = rast("./Figures/High_res/Compare_reflectance_std.png"))+
+  coord_equal()+
+  geom_label(aes(x = 300,y= 1200, label = "B") ,size = 10)+
+    theme_void()+
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(), 
+        axis.ticks = element_blank(), 
+        axis.ticks.length = unit(0, "pt"),
+        panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "pt"))
+
+
+plot <- RAW+STD
+
+ggsave("./Figures/High_res/Compare_reflectance_both.png",plot,width= 1920*4, height=1129*4, units = "px")
+```
+
+In this study, a key innovation lies in the utilization of drone flights at two different altitudes (12m and 120m) for constructing the neural network model. Overall there was a good agreement between the two altitudes (@fig-CompareRef).
+
+```{r RefComapare}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: Comparison of reflectance retrieved from both low-altitude and high-altitude flights over a common area. The black dashed line represents a 1 to 1 relationship. Left (A) plots raw data and right (B) plots standardized data (@eq-std). 
+#| label: fig-CompareRef
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: "100%"
+
+knitr::include_graphics("./Figures/High_res/Compare_reflectance_both.png")
+
+```
+
+There was a slight underestimation for raw reflectance values in the high-altitude flight, particularly for higher reflectance values (@fig-CompareRef A). Since both flights were conducted over vegetation areas, the highest reflectance values correspond to the infrared part of the spectrum. This difference is not present when reflectance values have been standardized (@eq-std ; @fig-CompareRef B).
+
+### Neural network classification validation
+
+Model global accuracy was `r round(validation_metrics$overall[[1]]*100,2)`% with a Kappa coefficient of `r round(validation_metrics$overall[[2]],2)` (@fig-Validation).
 
 ```{r Global Accuracy assesment Plot}
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: A global confusion matrix on the left is derived from validation data across each flight, while a mosaic of confusion matrices from individual flights is presented on the right. The labels inside the matrices indicate the balanced accuracy for each class. The labels at the bottom of the matrices indicate the User's accuracy for each class, and those on the right indicate the Producer's Accuracy. The values adjacent to the names of each site represent the proportion of total pixels from that site contributing to the overall matrix. Grey lines within the mosaic indicate the absence of validation data for the class at that site. The table at the bottom summarizes the Sensitivity, Specificity, and Accuracy for each class and for the overall model.
+#| fig-cap: A global confusion matrix on the left is derived from validation data across each flight, while a mosaic of confusion matrices from individual flights is presented on the right. The labels inside the matrices indicate the balanced accuracy for each class. The labels at the bottom of the global matrix indicate the User's accuracy for each class, and those on the right indicate the Producer's Accuracy. The values adjacent to the names of each site represent the proportion of total pixels from that site contributing to the overall matrix. Grey lines within the mosaic indicate the absence of validation data for the class at that site. The table at the bottom summarizes the Sensitivity, Specificity, and Accuracy for each class and for the overall model.
 #| label: fig-Validation
 #| fig-width: 10
 #| fig-height: 7
@@ -4847,7 +4851,7 @@ knitr::include_graphics("./Figures/Low_res/Validation/ConfusionMatrixGlobal.png"
 
 ```
 
-The lowest performing site was `r BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == min(value)) %>% pull(Site)` (global accuracy of `r round(BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == min(value)) %>% pull(value)*100,2)`%) whereas `r BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == max(value)) %>% pull(Site)` was the site with the most accurate prediction (global accuracy of `r round(BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == max(value)) %>% pull(value)*100,2)`%). Overall, the classes Phaeophyceae, Magnoliopsida, Sediment and Rhodophyceae were correctly classified with a balanced accuracy of `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Phaeophyceae") %>% pull(value),2)`, `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Magnoliopsida") %>% pull(value),2)`, `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Sediment") %>% pull(value),2)` and `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Rhodophyceae") %>% pull(value),2)` respectively. `r Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(value == min(value)) %>% pull(Class)` was the least performing class (accuracy of `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(value == min(value)) %>% pull(value),2)` ) mainly due to the confusion with Magnoliopsida and Sediment.
+The lowest performing site was `r BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == min(value)) %>% pull(Site)` (global accuracy of `r round(BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == min(value)) %>% pull(value)*100,2)`%) whereas `r BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == max(value)) %>% pull(Site)` was the site with the most accurate prediction (global accuracy of `r round(BySite_Metrics %>% filter(metric == "Accuracy") %>% filter(value == max(value)) %>% pull(value)*100,2)`%). Overall, the classes Phaeophyceae, Magnoliopsida, Sediment and Rhodophyceae were correctly classified with a balanced accuracy of `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Phaeophyceae") %>% pull(value),2)`, `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Magnoliopsida") %>% pull(value),2)`, `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Sediment") %>% pull(value),2)` and `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(Class == "Rhodophyceae") %>% pull(value),2)` respectively. `r Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(value == min(value)) %>% pull(Class)` was the least accurate class (accuracy of `r round(Overall_metrics_ByClass %>% filter(metric == "Balanced Accuracy") %>% filter(value == min(value)) %>% pull(value),2)` ) mainly due to confusion with Magnoliopsida and Sediment.
 
 ## Variable importance
 
@@ -5038,7 +5042,7 @@ The computation of the variable importance made it possible to identify which ba
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: Variable Importance of the Neural Network Classifier for each taxonomic class. The bigger the slice, the more important the variable for prediction of each class. The right plot shows the drone raw and standardised reflectance spectra of each class. Each slice represents the VIP of both raw and standardised reflectance combined.      
+#| fig-cap: Variable Importance of the Neural Network Classifier for each taxonomic class. The longer the slice, the more important the variable for prediction of each class. The right plot shows the drone raw and standardised reflectance spectra of each class. Each slice represents the VIP of both raw and standardised reflectance combined.      
 #| label: fig-VIP
 #| fig-width: 10
 #| fig-height: 7
@@ -5048,7 +5052,7 @@ knitr::include_graphics("Figures/Low_res/VIP/Fig_VIP.png")
 
 ```
 
-The spectral bands at 444, 717 and 842 nm of the Micasense camera did not provide as important information to discriminate any of the vegetation classes. The band at 531 nm was the only important predictor for the classifier to accurately predict Chlorophyceae. In fact, at this wavelength, the Chlorophyceae spectra showed the highest reflectance among of all vegetation classes. The bands at 531 and 740 nm were the most important predictors for Phaeophyceae, corresponding to the lowest reflectance among all classes. Bands at 475 and 560 nm were the most important predictors for Bacillariophyceae and Rhodophyceae, respectively. Four predictors, ranging from the green (560 nm) to the RedEdge (705 nm) bands were important to accurately predict Magnoliopsida.
+The spectral bands at 444, 717 and 842 nm of the Micasense camera did not provide as important information to discriminate any of the vegetation classes. The band at 531 nm was the only important predictor for the classifier to accurately predict Chlorophyceae. In fact, at this wavelength, the Chlorophyceae spectra showed the highest reflectance among all vegetation classes. The bands at 531 and 740 nm were the most important predictors for Phaeophyceae, corresponding to the lowest reflectance among all classes. Bands at 475 and 560 nm were the most important predictors for Bacillariophyceae and Rhodophyceae, respectively. Four predictors, ranging from the green (560 nm) to the RedEdge (705 nm) bands were important to accurately predict Magnoliopsida.
 
 ## Effect of the percent cover on the prediction
 
@@ -5544,7 +5548,7 @@ Using the very high resolution low altitude flight (8 mm pixels), we determined 
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: Kernel density plot showing the proportion of pixel well classified based on the percent cover of the class in high altitude flight pixels of Gafanha, Portugal. Each subplot shows all the pixels of the same classes on the high altitude flight. Percent cover of classes was retrieved using the result of the classification of the low altitude flight of Gafanha, Portugal. The vertical dashed line shows the 0.85 probability of the model. Everything on the right of this line has a probability higher then 0.85 and everything on the left of this line has a lower probability.
+#| fig-cap: Kernel density plot showing the proportion of pixel well classified based on the percent cover of the class in high altitude flight pixels of Gafanha, Portugal. Each subplot shows all the pixels of the same classes on the high altitude flight. Percent cover of classes was retrieved using the result of the classification of the low altitude flight of Gafanha, Portugal. 
 #| label: fig-upscaling
 #| fig-width: 10
 #| fig-height: 7
@@ -5554,7 +5558,7 @@ knitr::include_graphics("Figures/Low_res/Upscaling/density_vs_Proportion.png")
 
 ```
 
-When the percent cover of a given class was 100 %, coarser high-flight pixels are well classified for all the classes except for Bare Sediment, which was only well classified 80% of the time. This phenomenon is likely attributed to the time gap between the two flights, allowing for microphytobenthos migration to surface during low tide, consequently altering the model's classification from bare sediment to Bacillariophyceae. A percent cover of at least 80% was sufficient to have all the pixels of high altitude flights correctly classified, with the exception of Magnoliopsida that required a higher percent cover (\>90 %) to be well classified. Concerning the probability of each class, the highest percent cover was needed to confidently predict Bacillariophyceae. To predict Chlorophyceae with a confidence of 0.85, a percent cover of `r round((lm_green$coefficients[[2]]*85+lm_green$coefficients[[1]])*100,0)` % was needed, `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % for Magnoliopsida, `r round((lm_Rodo$coefficients[[2]]*85+lm_Rodo$coefficients[[1]])*100,0)` % for Rhodophyceae and `r round((lm_MPB$coefficients[[2]]*85+lm_MPB$coefficients[[1]])*100,0)` % for Bacillariophyceae.
+When the percent cover of a given class was 100 %, coarser high-flight pixels were well classified for all the classes except for Bare Sediment, which was only well classified 80% of the time. This phenomenon may be attributed to the time gap between the two flights, allowing for microphytobenthos migration to the surface during low tide, consequently altering the model's classification from bare sediment to Bacillariophyceae. A percent cover of at least 80% was sufficient to have all the pixels of high altitude flights correctly classified, with the exception of Magnoliopsida that required a higher percent cover (\>90 %) to be well classified. Concerning the probability of each class, the highest percent cover was needed to confidently predict Bacillariophyceae. To predict Chlorophyceae with a model likelihood of 0.85, a percent cover of `r round((lm_green$coefficients[[2]]*85+lm_green$coefficients[[1]])*100,0)` % was needed, `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % for Magnoliopsida, `r round((lm_Rodo$coefficients[[2]]*85+lm_Rodo$coefficients[[1]])*100,0)` % for Rhodophyceae and `r round((lm_MPB$coefficients[[2]]*85+lm_MPB$coefficients[[1]])*100,0)` % for Bacillariophyceae.
 
 # Discussion
 
@@ -5743,7 +5747,7 @@ ggsave("./Figures/Disc_Pigment_Table.png",rast_pigment, width= 1066*4, height=51
 
 ```
 
-The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green macroalgae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The ability to differentiate between various types of vegetation plays a critical role in ecological monitoring and coastal management. By distinguishing between seagrasses and macroalgae, our approach facilitates targeted conservation strategies, enabling more effective preservation and restoration efforts in coastal ecosystems. The discrimination of seagrasses from green macroalgae presents two main challenges [@oiry2021using ; @bannari2022 ; @veettil2020opportunities]. First these two macrophytes have a similar pigment composition: chlorophyll-a (common to all vegetation types), chlorophyll-b (an additional photosynthetic pigment), and accessory carotenoids such as zeaxanthin, lutein and neoxanthin (@fig-Pigm). Second, seagrass and green macroalgae frequently co-occur in intertidal areas, and can intermingle within a remote sensing pixel if the spatial resolution is too low. Here, the issue of intra-pixel mixing was resolved thanks to the very high spatial resolution of the drone, and the risk of spetral confusion was avoided thanks to the efficiency of the multispectral classifier. Our results confirm a recent study based on in situ radiometry, where it was demonstrated that a radiometer with at least eight spectral bands ranging from 500 to 850 nm and including a green band at 530 nm and a RedEdge band at 730 nm was crucial to accurately discriminate green macrophytes [@Davies2023].
+The primary objective of this study was to develop a method for the accurate classification of macrophytes on intertidal mudflats, specifically focusing on distinguishing between Chlorophyceae (green macroalgae) and marine Magnoliopsida (seagrasses) using multispectral drone data. The ability to differentiate between various types of vegetation plays a critical role in ecological monitoring and coastal management [@WFD2000]. By distinguishing between seagrasses and macroalgae, our approach facilitates targeted conservation strategies, enabling more effective preservation and restoration efforts in coastal ecosystems. The discrimination of seagrasses from green macroalgae presents two main challenges [@oiry2021using ; @bannari2022 ; @veettil2020opportunities]. First these two macrophytes have a similar pigment composition: chlorophyll-a (common to all vegetation types), chlorophyll-b (an additional photosynthetic pigment), and accessory carotenoids such as zeaxanthin, lutein and neoxanthin (@fig-Pigm). Second, seagrass and green macroalgae frequently co-occur in intertidal areas, and can intermingle within a remote sensing pixel if the spatial resolution is too low. Here, the issue of intra-pixel mixing was resolved thanks to the very high spatial resolution of the drone, and the risk of spectral confusion was avoided thanks to the efficiency of the multispectral classifier. Our results confirm a recent study based on *in situ* radiometry, where it was demonstrated that a radiometer with at least eight spectral bands ranging from 500 to 850 nm and including a green band at 530 nm and a RedEdge band at 730 nm was crucial to accurately discriminate green macrophytes [@Davies2023].
 
 ```{r Plot Table Pigment}
 #| cache: false
@@ -5777,30 +5781,30 @@ knitr::include_graphics("./Figures/Low_res/Validation/ConfusionMatrixGreen.png")
 :::
 
 ::: column
-Meeting these two criteria, the Micasense RedEdge-MX DUAL camera used in this study, enabled the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if the pigment composition of green macrophytes is similar, differences in the spectral shape can be observed, with green algae having a higher reflectance peak at 560 nm as well as a higher NIR plateau than seagrass (@fig-vegetation). Such differences were previously attributed to differences in pigments concentration and/or ratios [@bargain2013seasonal], cellular structure as well as in the disposition of the plant over the sediment surface [@beach1997vivo ; @kirk1994light ; @hedley2018influence].
+Meeting these two criteria, the Micasense RedEdge-MX DUAL camera used in this study, enabled the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if the pigment composition of green macrophytes is similar, differences in the spectral shape can be observed, with green algae having a higher reflectance peak at 560 nm as well as a higher NIR plateau than seagrass (@fig-vegetation). Such differences were previously attributed to differences in pigments concentration and/or ratios [@bargain2013seasonal], cellular structure as well as in the orientation of the plant over the sediment surface [@beach1997vivo ; @kirk1994light ; @hedley2018influence].
 :::
 :::
 
-The VIP analysis (@fig-VIP) identified that the band at 531 nm was the most important for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibited the highest reflectance among all other classes, highlighting the difference in carotenoids to chlorophyll-a ratios between seagrasses and green macroalgae [@repolho2017seagrass].
+The variable importance analysis (@fig-VIP) identified that the band at 531 nm was the most important for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibited the highest reflectance among all other classes, highlighting the difference in carotenoids to chlorophyll-a ratios between seagrasses and green macroalgae [@repolho2017seagrass].
 
-Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021growth] make it more reflective in the infrared part of the spectra [@Slaton2001] whereas the presence of fucoxanthin and zeaxanthin result in a low reflectance in the visible region (@fig-Pigm ; @fig-VIP). These two key features have been identified by the Neural Network as the two principal predictors to accurately identify brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range from 560 to 615 nm (@fig-VIP). Indeed the band at 560 nm has been identified as important for identifying this class likely due to phycoerythrin absorption at this wavelength. Regarding Bacillariophyceae, the VIP analysis (@fig-VIP) indicated that 475 nm was the most important predictor for this class. Indeed, the reflectance at 475 nm was higher for Bacillariophyceae than for any other vegetation class (@fig-vegetation), very likely due to the low biomass (and associated concentration of blue-absorbing pigments) of microphytobenthos biofilms compared to seagrass and macroalgae.
+Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021growth] make it more reflective in the infrared part of the spectra [@Slaton2001] whereas the presence of fucoxanthin and zeaxanthin result in a low reflectance in the visible region (@fig-Pigm ; @fig-VIP). These two key features have been identified by the Neural Network as the two principal predictors to accurately identify brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contribute to the lowest reflectance among all classes in the spectral range from 560 to 615 nm (@fig-VIP). Indeed the band at 560 nm has been identified as important for identifying this class, likely due to phycoerythrin absorption at this wavelength. Regarding Bacillariophyceae, the VIP analysis (@fig-VIP) indicated that 475 nm was the most important predictor for this class. Indeed, the reflectance at 475 nm was higher for Bacillariophyceae than for any other vegetation class (@fig-vegetation), very likely due to the low biomass (and associated concentration of blue-absorbing pigments) of microphytobenthos biofilms compared to seagrass and macroalgae.
 
 ## Altitude and Temporal Effects on Vegetation Prediction Accuracy
 
-While comparing the reflectance of both altitudes (12 m and 120 m), it was observed @fig-CompareRef that there is an underestimation of the infrared part of the spectra in the high-altitude dataset. Such disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible part of the electromagnetic spectra, where different pigmentation are associated to taxonomic dignostic features. This was a key feature in building a model that could reliably predict vegetation across geographical sites and seasons. It enabled consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
+While comparing the reflectance of both altitudes (12 m and 120 m), it was observed that there is an underestimation of the infrared part of the spectra in the high-altitude dataset (@fig-CompareRef). Such disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model (@eq-std ; [@Cao2017]). This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible part of the electromagnetic spectra, where different pigmentation are associated to taxonomic dignostic features. This was a key feature in building a model that could reliably predict vegetation across geographical sites and seasons. It enabled consistent prediction of vegetation classes across variations in biomass and variability in light conditions [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact].
 
-The @fig-upscaling demonstrates that at least `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % of seagrass cover is necessary for confident prediction of its presence. This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset used to train our algorithm was composed exclusively of pure pixels, which has resulted in the model's reduced confidence when faced with lower percentages of seagrass cover. Also, intertidal seagrasses exhibit marked phenology, with varying pigment composition throughout the year[@bargain2013seasonal ; @legare2022remote]. Since the training dataset has been made using well developed seagrass meadows, this model may be less accurate outside of the seasonal seagrass peak of biomass. Further investigation is required to evaluate the accuracy of the method along different periods of the year.
+We found `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % of seagrass cover is necessary for confident prediction of its presence (@fig-upscaling). This highlights a limitation of the methodology used to construct the training dataset for the model. The dataset used to train our algorithm was composed exclusively of pure pixels, which resulted in the model's reduced confidence when faced with lower percentages of seagrass cover. Also, intertidal seagrasses exhibit marked phenology, with varying pigment composition throughout the year [@bargain2013seasonal ; @legare2022remote]. Since the training dataset has been made using well developed seagrass meadows, this model may be less accurate outside of the seasonal seagrass peak of biomass. Further investigation is required to evaluate the accuracy of the method along different periods of the year.
 
 ## Towards climate and biodiversity applications
 
-Climate change, global warming, eutrophication, alien and invasive species development, coastal erosion, and sealevel rise are expected to continue impacting coastal ecosystems in the future [@SCHIBALSKI2022101414; @holon2018predictive ; @marquet2024global]. and the demand for meaningful and efficient monitoring of coastal habitats has never been higher[@muller2018satellite ; @villalobos2023remote ; @oiry2021using]. Our findings, particularly the improved discrimination of seagrass and green macroalgae from other intertidal vegetation classes, highlight the potential of drone-based remote sensing to support diverse applications, from biodiversity conservation to climate change adaptation strategies.
+Climate change, global warming, eutrophication, alien and invasive species development, coastal erosion, and sealevel rise are expected to continue impacting coastal ecosystems in the future [@SCHIBALSKI2022101414; @holon2018predictive ; @marquet2024global]. and the demand for meaningful and efficient monitoring of coastal habitats has never been higher[@muller2018satellite ; @villalobos2023remote ; @oiry2021using]. Our findings, particularly the improved discrimination of seagrass and green macroalgae from other intertidal vegetation classes, highlight the potential of drone-based remote sensing to support diverse applications, from conservation of biodiversity to climate change adaptation strategies.
 
-Because of coastal eutrophication, macroalgal blooms are becoming increasingly common in many regions around the world [@sutton2011european ; @ye2011green]. These blooms can have negative impacts on human health and local economic activities, including human health, fishing and aquaculture, tourism, and recreational activities [@villares1999nitrogen ; @ye2011green]. The first green tide events (i.e. bloom of green macroalgae of the genus *Ulva*) were reported in Brittany, France, back in the 1970s and have since been a concern for local policies and economic activities [@menesguen2018marees]. Some regions of the world have witnessed an increase in brown macroalgae blooms, predominantly involving algae of the genus *Sargassum* washing along the Caribbean coastlines [@louime2017sargassum], and more recently *Rugulopteryx okamurea* in southern Europe [@Roca2022]. Satellite remote sensing has proven to be a valuable tool for mapping the spatial and temporal extent of macroalgal blooms worldwide. However, due to limitations in spatial resolution, it can only effectively map well-developed blooms [@rs13081408 ; @klemas2012remote ; @haro2023biointertidal]. High spatial resolution drone imagery, coupled with an accurate classification algorithm, could be used to map the early stages of macroalgal blooms in areas known to have regular blooms or in new sites. Indeed, this approach could provide early warning alerts to local managers.
+Because of coastal eutrophication, macroalgal blooms are becoming increasingly common in many regions around the world [@sutton2011european ; @ye2011green]. These blooms can have negative impacts on human health and local economic activities, including human health, fishing and aquaculture, tourism, and recreational activities [@villares1999nitrogen ; @ye2011green]. The first green tide events (i.e. bloom of green macroalgae of the genus *Ulva*) were reported in Brittany, France, back in the 1970s and have since been a concern for local stakeholders and economic activities [@menesguen2018marees]. Some regions of the world have witnessed an increase in brown macroalgae blooms, predominantly involving algae of the genus *Sargassum* washing along the Caribbean coastlines [@louime2017sargassum], and more recently *Rugulopteryx okamurea* in southern Europe [@Roca2022]. Satellite remote sensing has proven to be a valuable tool for mapping the spatial and temporal extent of macroalgal blooms worldwide. However, due to limitations in spatial resolution, it can only effectively map well-developed blooms [@rs13081408 ; @klemas2012remote ; @haro2023biointertidal]. High spatial resolution drone imagery, coupled with an accurate classification algorithm, could be used to map the early stages of macroalgal blooms in areas known to have regular blooms or in new sites. Indeed, this approach could provide early warning alerts to local managers.
 
 Employing traditional sampling methods to monitor coastal ecosystems is time and resource-intensive, and the findings are often difficult to scale-up. Earth Observation can bridge this gap and meet the needs for systematic monitoring coastal ecosystems over large areas [@papathanasopoulou2019satellite]. The retrieval of Essential Biodiversity Variables and Essential Ocean Variables through satellite observations has been increasingly common, enabling comprehensive monitoring of entire ecosystems over extended time periods [@ratnarajah2023monitoring ; @Zoffoli2021]. The Water Framework Directive [@WFD2000] mandates the achievement and maintenance of "good ecological status" for all European waters, which necessitates a comprehensive understanding and monitoring of aquatic ecosystems, including coastal habitats like seagrass beds [@foden2007angiosperms ; @nordlund2024one ; @Zoffoli2021].
 
-Effective and efficient monitoring tools are essential for identifying the impacts of human activities and natural changes on coastal ecosystems. On-demand, multispectral drone observations at very high-resolution provide a novel and powerful tool to rapidly and accurately acquire ground truth satellite data. Spatially resolved data are indeed critical for calibrating and validating satellite remote sensing observations, thereby enhancing our capacity to monitor vast coastal areas. A perspective of this work could be to develop a similar classifier for satellite images (e.g. Sentinel-2), and test whether the discrimination between seagrass and green macroalgae is still operational at a coarser spatial resolution. The integration of drone technology facilitates a scalable approach to environmental surveillance, offering significant advancements in the spatial and temporal resolution of data collection. This, in turn, supports the directive's objectives by enabling more informed and timely management decisions for the conservation and restoration of aquatic ecosystems.
+Effective and efficient monitoring tools are essential for identifying the impacts of human activities and natural changes on coastal ecosystems. On-demand, multispectral drone observations at very high spatial-resolution provide a novel and powerful tool to rapidly and accurately acquire ground truth satellite data. Spatially resolved data are indeed critical for calibrating and validating satellite remote sensing observations, thereby enhancing our capacity to monitor vast coastal areas. A perspective of this work could be to develop a similar classifier for satellite images (e.g. Sentinel-2), and test whether the discrimination between seagrass and green macroalgae is still operational at a coarser spatial resolution. The integration of drone technology facilitates a scalable approach to environmental surveillance, offering significant advancements in the spatial and temporal resolution of data collection. This, in turn, supports the WFD's objectives by enabling more informed and timely management decisions for the conservation and restoration of aquatic ecosystems.
 
 # Conclusion
 
-The utilization of very high-resolution drone-based remote sensing coupled with machine learning techniques has proven to be an effective method for the discrimination of seagrasses from green macroalgae with a multispectral resolution sensor. Standardized reflectance was incorporated in the Neural Network model allowing for a better discrimination of spectral features related to pigment absorption in the visible. There was a striking difference for the variable of importance to discriminate Magnoliopsida from Chlorophyceae. The latter was essentially identified with the 451 nm spectral band while more spectral bands were needed to identify the former, notably 650, 560, 668, and 705 nm. As the spectral bands of the Micasense RedEdge Dual MX are very similar to those of Sentinel-2, we suggest that multispectral satellite data have the potential to perform this discrimination between green macrophytes. A sentinel-2 algorithm could be developed, using the output of this current workflow as training and validation data. The findings underscore the importance of adopting advanced remote sensing tools in ecological studies and environmental monitoring, providing a foundation for future research and policy implementation aimed at ecosystem conservation and restoration.
+The utilization of very high spatial-resolution drone-based remote sensing coupled with machine learning techniques has proven to be an effective method for the discrimination of seagrasses from green macroalgae with a multispectral resolution sensor. Standardized reflectance was incorporated in the Neural Network model allowing for a better discrimination of spectral features related to pigment absorption in the visible. There was a striking difference for the variable of importance to discriminate Magnoliopsida from Chlorophyceae. The latter was essentially identified with the 451 nm spectral band while more spectral bands were needed to identify the former, notably 650, 560, 668, and 705 nm. As the spectral bands of the Micasense RedEdge Dual MX are very similar to those of Sentinel-2, we suggest that multispectral satellite data have the potential to perform this discrimination between green macrophytes. A sentinel-2 algorithm could be developed, using the output of this current workflow as training and validation data. The findings underscore the importance of adopting advanced remote sensing tools in ecological studies and environmental monitoring, providing a foundation for future research and policy implementation aimed at ecosystem conservation and restoration.
