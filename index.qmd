@@ -1,5 +1,5 @@
 ---
-title: Draft -- Discriminating Seagrasses From Green Macroalgae in France and Portugal Intertidal areas using high resolution multispectral drone imagery -- Draft
+title: Draft -- Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery -- Draft
 author:
   - name: Simon Oiry
     orcid: 0000-0001-7161-5246
@@ -605,7 +605,7 @@ df<-data.frame(
   )
 )
 
-brdr1 <- fp_border_default(color = "black", width = 1.5)
+brdr1 <- fp_border_default(color = "black", width = 1)
 brdr2 <- fp_border_default(color = "grey", width = 1.5)
 brdr3 <- fp_border_default(color = "grey40", width = 1.5)
 
