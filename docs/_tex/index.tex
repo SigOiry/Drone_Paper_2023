@@ -127,7 +127,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={PREPRINT -- Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery -- PREPRINT.},
+  pdftitle={Draft -- Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery -- Draft},
   pdfauthor={Simon Oiry; Bede Ffinian Rowe Davies; Ana I. Sousa; Philippe Rosa; Maria Laura Zoffoli; Guillaume Brunier; Pierre Gernez; Laurent Barillé},
   pdfkeywords={Drone, Remote Sensing, Seagrass, Coastal
 Ecosystems, Neural Network},
@@ -142,9 +142,9 @@ Ecosystems, Neural Network},
 \begin{document}
 
 \begin{frontmatter}
-\title{PREPRINT -- Discriminating Seagrasses From Green Macroalgae in
+\title{Draft -- Discriminating Seagrasses From Green Macroalgae in
 European Intertidal areas using high resolution multispectral drone
-imagery -- PREPRINT.}
+imagery -- Draft}
 \author[1]{Simon Oiry%
 \corref{cor1}%
 }
@@ -204,34 +204,34 @@ Italy},,postcodesep={}}
 Coastal areas support seagrass meadows, which offer crucial ecosystem
 services including erosion control and carbon sequestration. However,
 these areas are increasingly impacted by human activities, leading to
-seagrass decline and habitat fragmentation. In situ surveys,
+habitat fragmentation and seagrass decline. In situ surveys,
 traditionally performed to monitor these ecosystems face limitations on
 temporal and spatial coverage, particularly in intertidal zones,
-prompting the use of satellite data within monitoring programs. Yet,
-satellite remote sensing struggles with spatial and spectral resolution,
-making it difficult to discriminate seagrass from other macrophytes in
-highly heterogenous meadows. Drone images at a very high spatial
-resolution offer a promising solution to address challenges related to
-spatial heterogeneity and intrapixel mixture. This study focuses on
-using drone acquisitions with a ten spectral band sensor mirroring those
-of Sentinel-2, for mapping intertidal macrophytes and effectively
-discriminating between seagrass and green macroalgae. Nine drone flights
-were conducted at two different altitudes (12m and 120m) across
-heterogeneous intertidal European habitats in France and Portugal. Low
-altitude flights were used to train a Deep Learning classifier based on
-Neural Networks to discrimintate among five taxonomic classes of
-intertidal vegetation: Magnoliopsida (Seagrass), Chlorophyceae (Green
-macroalgae), Phaeophyceae (Brown algae), Rhodophyceae (Red macroalgae)
-and benthic Bacillariophyceae (Diatoms). Classification of drone imagery
-resulted in an overall accuracy of 94\% across all the sites and images,
-covering a total area of 467 000 m². The model exhibited an accuracy of
-96.4\% in identifying seagrass. Importantly, seagrass and green algae
-can be discriminated, although they share the same pigment composition.
-As the algorithm was developed for a multispectral camera with ten
-spectral bands in the visible and near-infrared, it could be adapted to
-the Multi-Spectral Instrument (MSI) onboard Sentinel-2 thus offering
-promising perspectives for satellite remote sensing of intertidal
-biodiversity over lager scales.
+prompting the addition of satellite data within monitoring programs.
+Yet, satellite remote sensing struggles with spatial and spectral
+resolution, making it difficult to discriminate seagrass from other
+macrophytes in highly heterogenous meadows. Drone images at a very high
+spatial resolution offer a promising solution to address challenges
+related to spatial heterogeneity and intrapixel mixture. This study
+focuses on using drone acquisitions with a ten spectral band sensor
+mirroring those of Sentinel-2, for mapping intertidal macrophytes and
+effectively discriminating between seagrass and green macroalgae. Nine
+drone flights were conducted at two different altitudes (12m and 120m)
+across heterogeneous intertidal European habitats in France and
+Portugal. Low altitude flights were used to train a Deep Learning
+classifier based on Neural Networks to discrimintate among five
+taxonomic classes of intertidal vegetation: Magnoliopsida (Seagrass),
+Chlorophyceae (Green macroalgae), Phaeophyceae (Brown algae),
+Rhodophyceae (Red macroalgae) and benthic Bacillariophyceae (Diatoms).
+Classification of drone imagery resulted in an overall accuracy of 94\%
+across all the sites and images, covering a total area of 467 000 m².
+The model exhibited an accuracy of 96.4\% in identifying seagrass.
+Importantly, seagrass and green algae can be discriminated, although
+they share the same pigment composition. As the algorithm was developed
+for a multispectral camera with ten spectral bands in the visible and
+near-infrared, it could be adapted to the Multi-Spectral Instrument
+(MSI) onboard Sentinel-2 thus offering promising perspectives for
+satellite remote sensing of intertidal biodiversity over lager scales.
 \end{abstract}
 
 
@@ -258,22 +258,24 @@ providing living, breeding, and feeding grounds \citetext{\citealp[
 ]{gardner2018}; \citealp[ ]{Zoffoli2022}; \citealp{jankowska2019}}. Due
 to the concentration of human activities in coastal zones, seagrass
 meadows are directly exposed to and impacted by anthropogenic pressures.
-Global regression and fragmentation are currently observed due to
-climate change, diseases, urbanization, land reclamation, dredging,
-competition with alien species, and reduction in water quality
-\citetext{\citealp[ ]{nguyen2021}; \citealp[ ]{soissons2018}; \citealp[
-]{orth2006}; \citealp[ ]{lin2018}; \citealp[ ]{duffy2019}; \citealp[
+Global regression and fragmentation of seagrass meadows are currently
+observed due to climate change, diseases, urbanization, land
+reclamation, dredging, competition with alien species, and reduction in
+water quality \citetext{\citealp[ ]{nguyen2021}; \citealp[
+]{soissons2018}; \citealp[ ]{orth2006}; \citealp[ ]{lin2018}; \citealp[
+]{duffy2019}; \citealp[
 ]{rasheed2011long}; \citealp{chefaoui2018dramatic}}. Both habitat
-fragmentation and reduction, in turn, can severely copromise the
+fragmentation and reduction, in turn, can severely compromise the
 effectiveness of ecosystem services provided by seagrass meadows. While
 improvements in water quality have been recently reported in Europe,
-allowing an overall recovery of seagrass ecosystems at local scale, many
-coastal waters worldwide are still subjected to strong eutrophication
-processes \citetext{\citealp[ ]{deSantos2019}; \citealp{Zoffoli2021}}.
-Coastal eutrophication has been ass ociated to excessive accumulation of
-green macroalgae, so-called green tides (\citep{devlin2023nutrients}).
-Green tides produce shade and suffocation over seagrass individuals,
-thus threatening the health of seagrass ecosystems \citep{wang2022}.
+allowing an overall recovery of seagrass ecosystems at local scales,
+many coastal waters worldwide are still subjected to strong
+eutrophication processes \citetext{\citealp[
+]{deSantos2019}; \citealp{Zoffoli2021}}. Coastal eutrophication has been
+associated to excessive accumulation of green macroalgae, so-called
+green tides \citep{devlin2023nutrients}. Green tides produce shade and
+suffocation over seagrass individuals, thus threatening the health of
+seagrass ecosystems \citep{wang2022}.
 
 The importance of seagrass meadows and the variety of ecosystem services
 they provide have led to the enhancement of both global and regional
@@ -282,16 +284,16 @@ composition \citep{Miloslavich2018}, as well as Essential Biodiversity
 Variable (EBVs) such as seagrass taxonomic diversity, species
 distribution, population abundance, and phenology \citep{Pereira2013}.
 Traditionally, indicators of seagrass status have been quantified using
-\emph{in situ} measurements. The acquisition of field data in intertidal
-zones is however notoriously challenging. Intertidal seagrass meadows
-are only partially exposed during low tide and can be situated in
-difficult-to-reach mudflats, potentially leading to inaccurate and
-limited estimations with conventional sampling techniques
+\emph{in situ} measurements. However, the acquisition of these
+measurements in intertidal zones is notoriously challenging. Intertidal
+seagrass meadows are only partially exposed during low tide and can be
+situated in difficult-to-reach mudflats, potentially leading to
+inaccurate and limited estimations with conventional sampling techniques
 \citep{nijland2019}. Satellite observations have been proven effective
-in complementing in situ sampling, allowing for the near real-time and
-consistent retrieval of seagrass EOVs and EBVs over extensive meadows.
-\citetext{\citealp[ ]{Zoffoli2021}; \citealp[ ]{xu2021}; \citealp[
-]{Traganos2018}; \citealp{coffer2023}}
+in complementing \emph{in situ} sampling, allowing for the near
+real-time and consistent retrieval of seagrass EOVs and EBVs over
+extensive meadows. \citetext{\citealp[ ]{Zoffoli2021}; \citealp[
+]{xu2021}; \citealp[ ]{Traganos2018}; \citealp{coffer2023}}
 
 While satellite remote sensing (RS) provides temporally consistent
 observations over large spatial scales, its utilization over intertidal
@@ -300,9 +302,9 @@ temporal resolution (e.g.~daily MODIS observation) are limited by a too
 coarse spatial resolution (\textgreater100m) to accurately map patchy
 seagrass meadows. Missions with a high spatial resolution such as
 Sentinel-2 (10m) or Landsat8/9 (30m) can be limited by low spectral
-resolution. The limited number of spectral bands is indeed a challenge
-to accurately discriminate seagrass from others co-existing macrophytes.
-In particular Chlorophyceae (green algae) and marine Magnoliopsida
+resolution. The limited number of spectral bands challenges accurate
+discrimination of seagrass from other co-existing macrophytes. In
+particular Chlorophyceae (green algae) and marine Magnoliopsida
 (seagrass) share the same pigment composition \citetext{\citealp[
 ]{ralph2002}; \citealp{Douay2022}}. Therefore, to someone not
 specialized in the field, their spectral signatures may appear to be
@@ -317,15 +319,15 @@ green algae can develop at small spatial scales that are not observable
 using non-commercial satellite imagery \citep{tuya2013}, especially
 during the initial stage of a green tide.
 
-Drones can potentially fill the gaps left by satellite RS and in situ
-measurements, due to their ability to provide spatially-explicit
-observations at very high spatial resolutions (pixel size from mm to cm)
-while capturing data at multi-spectral resolution \citetext{\citealp[
-]{fairley2022drone}; \citealp{oh2017use}}. The versatility of drones
-allows for their application across a diverse thematic range , from
-coastal zone management \citetext{\citealp[ ]{adade2021}; \citealp[
-]{casella2020}; \citealp{angnuureng2022}} to mapping species
-distribution \citetext{\citealp[ ]{joyce2023}; \citealp[
+Drones can potentially fill the data gaps left by satellite RS and
+\emph{in situ} measurements, due to their ability to provide
+spatially-explicit observations at very high spatial resolutions (pixel
+size from mm to cm) while capturing data at multi-spectral resolution
+\citetext{\citealp[ ]{fairley2022drone}; \citealp{oh2017use}}. The
+versatility of drones allows for their application across a diverse
+thematic range , from coastal zone management \citetext{\citealp[
+]{adade2021}; \citealp[ ]{casella2020}; \citealp{angnuureng2022}} to
+mapping species distribution \citetext{\citealp[ ]{joyce2023}; \citealp[
 ]{tallam2023}; \citealp[ ]{Roca2022}; \citealp[
 ]{Roman2021}; \citealp{Brunier2022Topographic}}. However, when applied
 to coastal habitat mapping, most case studies were previously limited to
@@ -337,44 +339,45 @@ aimed at analyzing the potential of multispectral drone RS to map
 intertidal macrophytes over a diverse biogeographical range, with a
 particular focus on discriminating Magnoliopsida and Chlorophyceae
 (Seagrass and Green Algae respectively). Ten drone flights were
-performed over soft-bottom intertidal areas along two European countries
-(France and Portugal), covering a wide range of habitats, from
-monospecific seagrass meadows to meadows mixed with green, or red
-macroalgae. A deep learning algorithm was trained and validated for
-macrophyte discrimination, emphasizing applicability across diverse
-sites without a loss of prediction accuracy.
+performed over soft-bottom intertidal areas along the Atlantic
+coastlines of two European countries (France and Portugal), covering a
+wide range of habitats, from monospecific seagrass meadows to meadows
+mixed with green, or red macroalgae. A deep learning algorithm was
+trained and validated for macrophyte discrimination, emphasizing
+applicability across diverse sites without a loss of prediction
+accuracy.
 
 \section{Material \& Methods}\label{material-methods}
 
 \subsection{Study sites}\label{study-sites}
 
 Seven study sites distributed between France and Portugal were selected
-for their relatively extensive intertidal seagrass beds. Two sites are
+for their relatively extensive intertidal seagrass beds. Two sites were
 located in the Gulf of Morbihan (Figure~\ref{fig-map} A), France
 (47.5791°N, 2.8018°W). This gulf covers an area of 115 km² and is only
 connected to the sea through a 900m wide channel. A total of 53 small
 islands are scattered across the gulf leading to 250 km of shorelines.
-Patchy seagrass meadows can be found on a lot of these islands. Within
-the Gulf of Morbihan we chose two sites : one located on one of the
-gulf's islands (Arz island) and the other located in the southern part
-of the gulf (Duer). Two other sites were located in Bourgneuf Bay,
-France (46.9849°N, 2.1488°W). This bay is 340 km² semi-enclosed
-macrotidal bay, protected from waves by Noirmoutier Island. Bourgneuf
-bay hosts a large intertidal seagrass meadow of about 6 km². Within this
-meadow, the sites observed by drones (L'Epine and Barbatre,
-Figure~\ref{fig-map} B) contained monospecific beds of \emph{Nanozostera
-noltei} (dwarf eelgrass) with very little mixing with other macrophytes.
-Three sites were surveyed in the Ria de Aveiro Lagoon in Portugal
-(40.6887°N, 8.6810°W). The extent of this lagoon is about 80 km² with
-many narrow channels, large salt marshes and many mudflats that uncovers
-at low tide. It is connected to the open sea through a single channel,
-with a tidal lag between the North and the South of the lagoon. The
+Patchy seagrass meadows can be found on many of these islands. One of
+the sites within the gulf was on one its islands (Arz) and the other was
+located further south on a mainland beach area (Duer). Two other sites
+were located in Bourgneuf Bay, France (46.9849°N, 2.1488°W). This is a
+340 km² semi-enclosed macrotidal bay, protected from waves by
+Noirmoutier Island. Bourgneuf bay hosts a large intertidal seagrass
+meadow of about 6 km² \citep{ZOFFOLI2020112020}. Within this meadow, the
+sites observed by drones (L'Epine and Barbatre, Figure~\ref{fig-map} B)
+contained monospecific beds of \emph{Nanozostera noltei} (dwarf
+eelgrass) with very little mixing with other macrophytes. Three sites
+were surveyed in the Ria de Aveiro Lagoon in Portugal (40.6887°N,
+8.6810°W). The extent of this lagoon is \textasciitilde80 km² with many
+narrow channels, large salt marshes and many mudflats that uncover at
+low tide. It is connected to the open sea through a single channel, with
+a tidal lag between the North and the South of the lagoon. The
 southernmost site (Gafanha) was a mudflat located in a tributary river
 of the lagoon whereas the two other sites (Mataducos and Marinha
 Lanzarote) were situated in the middle of the lagoon and only accessible
 by boat (Figure~\ref{fig-map} C). These Portuguese sites are
 characterized by a more diverse intertidal vegetation, where patches of
-seagrass intermingle with red, brown and green macroalgae.
+seagrass intermingle with red, brown, and green macroalgae.
 
 \phantomsection\label{cell-fig-map}
 \begin{figure}[H]
@@ -413,8 +416,8 @@ different altitudes : 12 m or/and 120 m. (Table~\ref{tbl-flights}).
 \begin{table}
 
 \caption{\label{tbl-flights}List of drone flight, summarising the date,
-the altitude and the purpose of each flight. 12 m and 120 m flights have
-a spatial resolution of 8 and 80 mm respectively.}
+the altitude, and the purpose of each flight. 12 m and 120 m flights
+have a spatial resolution of 8 and 80 mm respectively.}
 
 \centering{
 
@@ -426,29 +429,27 @@ a spatial resolution of 8 and 80 mm respectively.}
 
 \subsubsection{Ground Control Points}\label{ground-control-points}
 
-Before each flight, targets used as Ground Control Points (GCPs) were
+Before each flight, targets used as ground control points were
 distributed over the study site and georeferenced with a Trimble © Geo
-XH 6000 differential GPS (dGPS). GCPs were used to correct
-georeferencing imprecision of orthomosaics with an horizontal and
-vertical accuracy of 10cm. dGPS was also used to georeference quadrats
-of 0.25 m² assessing the presence or absence of five key taxonomic
-classes of intertidal vegetation : Bacillariophyceae (Unicellular
-benthic diatoms forming biofilms at the sediment surface during low
-tide), Phaeophyceae (brown macroalgae), Magnoliopsida (dwarf seagrass),
-Chlorophyceae (green macroalgae) and Rhodophyceae (red macroalgae)
-(Figure~\ref{fig-vegetation}). Pictures of each quadrat were uploaded
-online to the Global Biodiversity Information Facility (GBIF) platform
-\citep{BedeGbif}, a public open portal to store and share biodiversity
-data. Each photograph was also processed to estimate the percent cover
-of each type of vegetation using an image processing software (imageJ).
-For all quadrats, the hyperspectral reflectance signatures of each
-vegetation class was measured using an ASD FieldSpec HandHeld 2
-spectroradiometer, which acquires reflectance between 325 and 1075 nm,
-with 1 nm of spectral resolution. Hyperspectral signatures from quadrats
-serve for dual purposes: they validate the radiometric calibration of
-drone data and contribute to error reduction in photo interpretation.
-The workflow developed in this study is presented in
-Figure~\ref{fig-workflow}.
+XH 6000 differential GPS (dGPS). Ground control points were used to
+correct georeferencing imprecision of orthomosaics with an horizontal
+and vertical accuracy of 10cm. A dGPS was also used to georeference
+quadrats of 0.25 m² ,which assessed the presence or absence of five key
+taxonomic classes of intertidal vegetation : Bacillariophyceae
+(Unicellular benthic diatoms forming biofilms at the sediment surface
+during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (dwarf
+seagrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red
+macroalgae) (Figure~\ref{fig-vegetation}). Pictures of each quadrat were
+uploaded online to the Global Biodiversity Information Facility (GBIF)
+platform \citep{BedeGbif}, a public open portal to store and share
+biodiversity data. Each photograph was also processed to estimate the
+percent cover of each type of vegetation using an image processing
+software \citep[ImageJ]{schneider2012nih}. Hyperspectral reflectance
+signatures of each vegetation class were recorded using an ASD FieldSpec
+HandHeld 2 spectroradiometer, which acquires reflectance between 325 and
+1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures
+served dual purposes: they validate the radiometric calibration of drone
+data and contribute to error reduction in photo interpretation.
 
 \phantomsection\label{cell-fig-vegetation}
 \begin{figure}[H]
@@ -469,21 +470,28 @@ at the spectral resolution of the Micasense RedEdge Dual MX.}
 
 A structure-from-motion photogrammetry software (Agisoft Metashape) was
 used to process images to obtain multispectral orthomosaics of each
-flight. The workflow for orthomosaicking was the same for every flight.
+flight. The process for orthomosaicking was identical for every flight.
 First, tying key points were detected inside of each image and between
 overlapping images in order to obtain a sparse point cloud. This cloud
 was cleaned using reprojection accuracy metric in order to remove noisy
 points. A dense point cloud was then produced using a structure from
 motion algorithm. A surface interpolation of this dense point cloud was
 made to obtain a digital surface model (DSM), used to reconstruct the
-multispectral ortho-image. Low altitude drone flights produced
-ortho-images with a very high spatial resolution (8 mm per pixel),
-making it efficient to visually distinguish between the various types of
-vegetation. High altitude fights on the other hand allowed to cover
-large areas and produced images with a pixel size of 80 mm
-(Table~\ref{tbl-flights}).
+multispectral ortho-image \citep{nebel2020review}. Low altitude drone
+flights produced ortho-images with a very high spatial resolution (8 mm
+per pixel), making it efficient to visually distinguish between the
+various types of vegetation. High altitude fights on the other hand
+allowed to cover large areas and produced images with a pixel size of 80
+mm (Table~\ref{tbl-flights}).
 
 \subsection{General Workflow}\label{general-workflow}
+
+The spectral similarities of the reflectance signatures between
+intertidal green macrophytes (Magnoliopsida and Chlorophyceae) make
+their discrimination challenging using simple classification algorithms
+(Figure~\ref{fig-vegetation} F). To overcome this challenge, a deep
+learning classification method was trained, validated, and applied to
+each drone flight (Figure~\ref{fig-workflow}).
 
 \phantomsection\label{cell-fig-workflow}
 \begin{figure}[H]
@@ -495,26 +503,19 @@ large areas and produced images with a pixel size of 80 mm
 }
 
 \caption{\label{fig-workflow}Schematic representation of the workflow.
-Diamonds represent input or output data, and rectangles represent Python
-processing algorithms. The overall workflow of this study is divided
-into two distinct parts based on the spatial resolution of the drone
-flights: high-resolution flights (pixel size: 8 mm) were utilized for
-training and prediction of the Neural Network model, whereas
+Parallelograms represent input or output data, and rectangles represent
+Python processing algorithms. The overall workflow of this study is
+divided into two distinct parts based on the spatial resolution of the
+drone flights: high-resolution flights (pixel size: 8 mm) were utilized
+for training and prediction of the Neural Network model, whereas
 lower-resolution flights (pixel size: 80 mm) were solely employed for
 prediction purposes. Validation has been performed on both high and low
 resolution flights.}
 
 \end{figure}%
 
-The spectral similarities of the reflectance signatures between
-intertidal green macrophytes (Magnoliopsida and Chlorophyceae) make
-their discrimination challenging using simple classification algorithms
-(Figure~\ref{fig-vegetation} F). To overcome this challenge, a deep
-learning classification method was trained, validated, and applied to
-each drone flight (Figure~\ref{fig-workflow}).
-
-\subsubsection{Neural Network model
-building}\label{neural-network-model-building}
+\subsubsection{Training dataset
+building}\label{training-dataset-building}
 
 \begin{table}
 
@@ -530,10 +531,10 @@ number of pixels used to train and validate each class}
 \end{table}%
 
 A dataset containing photo-interpreted drone reflectance pixels was
-built to train a Neural Network model with 2 hidden layers. The training
-pixels were categorized into seven different classes, representing the
-various habitats encountered at the different study sites: Sediment,
-Water, Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and
+built to train a Neural Network model. The training pixels were
+categorized into seven different classes, representing the various
+habitats encountered at the different study sites: Sediment, Water,
+Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and
 Rhodophyceae. Only low-altitude flights (Table~\ref{tbl-flights}) were
 used for training because their 8 mm spatial resolution allowied to
 avoid spectral sub-pixel mixing and to accurately identify vegetation
@@ -593,7 +594,10 @@ model, thus providing a geographically robust validation dataset.
 (VIP)}\label{variable-importance-plots-vip}
 
 Variable Importance Plots (VIP) serve as a method to identify which
-predictors are important for predicting a specific class. This is
+predictors are important for predicting a specific class. Out of the
+twenty one predictors utilized in this study, Variable Importance in
+Projection (VIP) was computed only for the raw and standardized values
+of the 10 spectral bands captured by the MicaSense camera. This is
 achieved by repeatedly predicting the same dataset while shuffling one
 predictor at a time. The benchmark score obtained after each iteration
 is then compared to the benchmark score obtained without shuffling any
