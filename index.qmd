@@ -25,7 +25,7 @@ author:
       - Data acquisition
       - Revision
     affiliations:
-      - CESAM – Centre for Environmental and Marine Studies, Department of Biology, University of Aveiro, Aveiro, Portugal
+      - ECOMARE - Laboratory for Innovation and Sustainability of Marine Biological Resources, CESAM – Centre for Environmental and Marine Studies, Department of Biology, University of Aveiro, Campus Universitário de Santiago, 3810-193 Aveiro, Portugal
   - name: Philippe Rosa
     corresponding: false
     roles: 
