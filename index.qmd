@@ -84,7 +84,6 @@ notebook-links: false
 editor_options: 
   chunk_output_type: console
 csl: RSE.csl
----dd .
 ---
 
 ```{r library}
@@ -96,7 +95,7 @@ csl: RSE.csl
 library(flextable)
 library(tidyverse)
 library(tidyterra)
-library(tidymodels)
+# library(tidymodels)
 library(Utilities.Package) 
 library(patchwork)
 library(sf) 
@@ -121,9 +120,12 @@ library(stars)
 library(gmodels)
 library(caret)
 library(rstudioapi)
+library(terra)
 
 
 options(scipen = 100000000)
+# terraOptions(cores = 12)
+
 ```
 
 ```{r my_comma}
@@ -5199,6 +5201,92 @@ knitr::include_graphics("Figures/Low_res/VIP/Fig_VIP.png")
 ```
 
 The spectral bands at 444, 717 and 842 nm of the Micasense camera did not provide as important information to discriminate any of the vegetation classes. The band at 531 nm was the only important predictor for the classifier to accurately predict Chlorophyceae. In fact, at this wavelength, the Chlorophyceae spectra showed the highest reflectance among all vegetation classes. The bands at 531 and 740 nm were the most important predictors for Phaeophyceae, corresponding to the lowest reflectance among all classes. Bands at 475 and 560 nm were the most important predictors for Bacillariophyceae and Rhodophyceae, respectively. Four predictors, ranging from the green (560 nm) to the RedEdge (705 nm) bands were important to accurately predict Magnoliopsida.
+
+## Effect of the spatial resolution on the prediction
+
+```{r Resampling}
+
+img_list <- list.files("Data/BiCOME_Flights", pattern = ".tif", recursive = T, full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path),
+         sites = case_when(str_detect(path, "Boat1") ~ "Boat1",
+                           str_detect(path, "Boat2") ~ "Boat2",
+                           str_detect(path, "GafanhaHigh") ~ "GafanhaHigh",
+                           str_detect(path, "GafanhaLow") ~ "GafanhaLow",
+                           str_detect(path, "Horse_rooster") ~ "Horse_rooster",
+                           str_detect(path, "Gois") ~ "Gois",
+                           str_detect(path, "Handfisher_1") ~ "Handfisher_1",
+                           str_detect(path, "Handfisher_2") ~ "Handfisher_2",
+                           str_detect(path, "NorthDike") ~ "NorthDike",
+                           str_detect(path, "Arz") ~ "Arz",
+                           str_detect(path, "DuerHigh") ~ "DuerHigh",
+                           str_detect(path, "DuerLow") ~ "DuerLow",
+                           str_detect(path, "Kerdrean") ~ "Kerdrean",
+                           str_detect(path, "Locmariaquer") ~ "Locmariaquer"),
+         type = case_when(str_detect(name, "Preds") ~ "Pred",
+                          str_detect(name, "Probs") ~ "Prob",
+                          T ~ "Ortho"),
+         filter = case_when(str_detect(path,"Majority_filter_21by21")~ "21",
+                            str_detect(path,"Majority_filter_7by7")~ "7",
+                            str_detect(path,"Majority_filter")~ "3",
+                            str_detect(path,"RAW")~ "RAW",
+                            T ~ "NA"),
+         UTM_zone = case_when(str_detect(path, "Aveiro") ~ 32629,
+                              TRUE ~ 32630)) %>% 
+  dplyr::filter(!str_detect(path, ".tif.aux.xml"),
+                !str_detect(path, ".tif.enp"),
+                type == "Ortho")
+
+# res_to_resample <- c(10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,200,300,400,500,600,700,800,900,1000,1500,2000,2500,3000)
+res_to_resample <- c(2000)
+
+  
+  # pb2 <- progress_bar$new(
+  # format = "  Processing [:bar] :percent in :elapsed",
+  # total = length(res_to_resample),    # Total number of iterations
+  # width = 60    # Width of the progress bar
+  # )
+  
+for(i in 1:nrow(img_list)){
+      # pb2$tick()
+
+  img <- terra::rast(img_list$path[i]) %>% 
+    terra::project(paste0("EPSG:", img_list$UTM_zone[i]), thread = T)
+
+  
+  for(ii in 1:length(res_to_resample)){
+    new_res <- res_to_resample[ii]/100
+    
+    r_template <- rast(ext(img), resolution = new_res, crs = crs(img))
+    r_resampled <- terra::resample(img, r_template, method="bilinear", threads = T)%>% 
+      terra::project("EPSG:4326", thread = T)
+    
+    if(i == 1){
+      if(!dir.exists(paste0("Data/Resampling/",res_to_resample[ii],"cm"))){
+       dir.create(paste0("Data/Resampling/",res_to_resample[ii],"cm"), recursive = T) 
+      }
+    }
+    writeRaster(r_resampled, paste0("Data/Resampling/",res_to_resample[ii],"cm/",gsub(".tif",paste0("_",res_to_resample[ii],"cm.tif"),img_list$name[i])),overwrite = T)
+  } 
+
+}
+
+a <- list.files("Data/Resampling", recursive = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path) %>% gsub(".tif","",.)) %>% 
+  pull(name) %>%
+  str_c(collapse = "\", \"") %>%
+  str_c("\"", ., "\"")
+
+paste0(a)
+
+write.csv(a, 
+  "test.csv")
+
+```
+
 
 ## Effect of the percent cover on the prediction
 

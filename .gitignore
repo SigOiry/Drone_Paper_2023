@@ -1,2 +1,5 @@
 /.quarto/
 .Rproj.user
+Data/BiCOME_Flights/*
+Data/Predictions/*
+Data/Resampling/*
