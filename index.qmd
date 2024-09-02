@@ -5588,6 +5588,14 @@ for(i in 1:nrow(list_pred)){
 ```
 
 ```{r resampling validation data}
+library(MapRs)
+
+img_list <- list.files("Data/Predictions/RAW/", pattern = ".tif", full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path),
+         type = case_when(str_detect(name,"Probs",) ~ "Probs",
+                          TRUE ~ "Pred"))
 
 
 
