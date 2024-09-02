@@ -3117,7 +3117,8 @@ The model was applied to all flights at both 12 and 120 m of altitude. In situ i
 ## Variable Importance
 
 Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the twenty one predictors utilized in this study, Variable Importance was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while randomly shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
-
+ 
+## Impact of the spatial resolution in the prediction
 ## Impact of the vegetation cover on the prediction
 
 The key aspect of the workflow adopted in the present study is the mapping of specific areas at two different altitudes (12m and 120m), resulting in two distinct resolutions for the same area (8mm and 80mm). The predictions made on the high-resolution flight can be used to estimate the cover (percentage, %) of each vegetation class for every pixel of the lower resolution flight. Consequently, for each pixel of the high-altitude flights, the cover (%) of each vegetation class were obtained, and a kernel density plot was generated. This plot provides a visual representation of the behavior of the model in different vegetation percent cover scenarios.
@@ -5204,7 +5205,11 @@ The spectral bands at 444, 717 and 842 nm of the Micasense camera did not provid
 
 ## Effect of the spatial resolution on the prediction
 
-```{r Resampling}
+```{r Resampling orthos}
+#| cache: false
+#| echo: false
+#| warning: false
+#| eval: false
 
 img_list <- list.files("Data/BiCOME_Flights", pattern = ".tif", recursive = T, full.names = T) %>% 
   as_tibble() %>% 
@@ -5272,10 +5277,11 @@ for(i in 1:nrow(img_list)){
 
 }
 
-a <- list.files("Data/Resampling", recursive = T) %>% 
+a <- list.files("D:/Git_repo/DISCOV-MicaSense/Data/img") %>% 
   as_tibble() %>% 
   rename(path = "value") %>% 
   mutate(name = gsub(".*/","",path) %>% gsub(".tif","",.)) %>% 
+  # dplyr::filter(str_detect("Arz_29092022_Fl2_12m*", name))
   pull(name) %>%
   str_c(collapse = "\", \"") %>%
   str_c("\"", ., "\"")
@@ -5284,8 +5290,310 @@ paste0(a)
 
 write.csv(a, 
   "test.csv")
+```
+
+```{r gif_making}
+
+list_pred <- list.files("Data/Predictions/Resampled",full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path),
+         type = case_when(str_detect(name, "_prob.tif") ~ "Prob",
+                          T ~ "Pred")) %>% 
+  dplyr::filter(type == "Pred") %>% 
+  mutate(res =sub(".*_(\\d+)cm_.*", "\\1", name) %>% as.numeric(),
+         ortho_name  = sub("_(\\d+)cm_.*", "", name)) %>% 
+  arrange(ortho_name,res) %>% 
+  mutate(site = case_when(str_detect(ortho_name, "Aveiro_1506_Highest") ~ "Aveiro",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_1") ~ "Boat1",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_2") ~ "Boat2",
+                          str_detect(ortho_name, "NoirmoutierNorthDikeSite") ~ "NorthDike",
+                          str_detect(ortho_name, "Duer_15072022_120m") ~ "Duer",
+                          str_detect(ortho_name, "handfisher_Ortho") ~ "handfisher_Ortho",
+                          str_detect(ortho_name, "Horse_rooster") ~ "Horse_rooster",
+                          str_detect(ortho_name, "fl1_120m_handfisher_old") ~ "fl1_120m_handfisher_old",
+                          str_detect(ortho_name, "fl2_120m_handfisher_old") ~ "fl2_120m_handfisher_old",
+                          T ~ NA)) %>% 
+  dplyr::filter(!site == "handfisher_Ortho",
+                !site == "Duer")
+
+scales <- data.frame(res = unique(list_pred$res)) %>% 
+  mutate(label = case_when(res < 100 ~  paste0(res, "cm"),
+                           T ~ paste0(res / 100, "m")))
+extremes <- data.frame(
+  res = c(10, 3000),
+  label = c("10cm", "30m")
+)
+
+
+
+for(i in 1 :nrow(scales)){
+  
+ point_of_interest <- scales[i,]
+ 
+ a <- ggplot() +
+  theme_void()+
+  # Draw the axis as a line
+  geom_segment(aes(x = 10, xend = 3000, y = 0, yend = 0), linewidth = 0.5) +
+  
+  # Add the points at the extremities with labels
+  geom_text(data = extremes, aes(x = res, y = 0, label = label), vjust = -1, size = 5) +
+  
+  # Add the point of interest with a label
+  geom_point(data = point_of_interest, aes(x = res, y = 0), color = "red", size = 3) +
+  geom_text(data = point_of_interest, aes(x = res, y = 0, label = label), vjust = 1.5, size = 5, color = "red") +
+  
+  # Scale the x-axis from 10 to 3000 cm
+  # scale_x_continuous(limits = c(10, 3000), breaks = c(10, 100, 500, 1000, 1500, 2000, 2500, 3000)) +
+  
+  # Customize the theme to remove y-axis
+  # theme_minimal() +
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+ 
+ ggsave(paste0("output/plot/scales/",point_of_interest$res,".png"),a, bg = "white",width = 1904*2, height = 132*2, unit = "px" )
+ 
+}
+
+
+for(i in 1:nrow(list_pred)){
+      
+    img <- list_pred$path[i] %>% 
+      rast() 
+    names(img) <- "layer"
+    
+    img <- img %>% 
+       dplyr::filter(layer != 0,
+                     layer <= 8) %>% 
+      mutate(layer = as.factor(layer))
+    # ifel(img$layer == 0 | img$layer > 8, NA, img$layer)
+    
+     if(list_pred$site[i] == "Aveiro"){
+       mask <- read_sf("Data/shp/Aveiro/background_Gafanha_high.shp") %>% 
+         dplyr::filter(Type != "Land")
+     }else{
+       if(list_pred$site[i]  %in% c("Boat1","Boat2")){
+         mask <- read_sf("Data/shp/Aveiro/background_Boat.shp") %>% 
+          dplyr::filter(Type != "Land")
+       }else{
+         if(list_pred$site[i] == "NorthDike"){
+           mask <- read_sf("Data/shp/Bourgneuf/background_Dike.shp") %>% 
+            dplyr::filter(Type != "Land")
+         }else{
+           if(list_pred$site[i] == "Horse_rooster"){
+             mask <- read_sf("Data/shp/Aveiro/background_Horse_rooster.shp") %>% 
+                dplyr::filter(Type != "Land")
+           }else{
+            if(list_pred$site[i]  %in% c("fl1_120m_handfisher_old","fl2_120m_handfisher_old")){
+              mask <- read_sf("Data/shp/Bourgneuf/background_fisherman.shp") %>% 
+              dplyr::filter(Type != "Land")
+            }
+           }
+          }
+        }
+     }
+    
+    low_res <-  list_pred %>% 
+      dplyr::filter(site == list_pred$site[i],
+                    res == max(res)) %>% 
+      pull(path) %>% 
+      rast()
+    
+    names(low_res) <- "layer"
+    
+    low_res <- low_res %>% 
+       dplyr::filter(layer != 0,
+                     layer <= 8) %>% 
+      mutate(layer = as.factor(layer))
+
+     img <- mask(img,mask)
+     
+     df_layer <- img %>% 
+      as_tibble() %>% 
+      # mutate(layer = as.numeric(layer)) %>%
+      filter(!is.na(layer),
+             layer != 0 ) %>%
+      group_by(layer) %>%
+      summarise(count = n()) %>%
+      mutate(percentage = count / sum(count) * 100,
+             label = paste0(layer, " (", round(percentage, 1), "%)"))    
+    
+    
+    colors <- data.frame(
+      layer = as.character(c(1:5)),
+      color = c("#DAA520","#b3ff1a","#389318","#873e23","#b3002d")
+    )
+    
+    layer_counts <- df_layer %>% 
+      mutate(layer = as.character(layer)) %>%
+      # dplyr::filter(layer %in% c("3","4") ) %>% 
+      select(layer,count) %>% 
+      dplyr::filter(layer %in% c("1","2","3","4","5")) %>% 
+      left_join(colors, by = "layer")
+    
+    png("pie_chart.png", width = 800, height = 800, bg = "transparent")
+
+    plotrix::pie3D(layer_counts$count,
+      # labels = layer_counts$layer,
+      explode = 0.1, # Adds space between the slices
+      # main = "3D Pie Chart of Layer",
+      col = layer_counts$color,
+      radius = 0.5,
+      theta = 2)
+      
+    dev.off()
+    
+    img_grob <- grid::rasterGrob(png::readPNG("pie_chart.png"), 
+                             interpolate = TRUE)
+    
+    scale_grob <- grid::rasterGrob(png::readPNG(paste0("Output/plot/scales/",list_pred$res[i],".png")), 
+                             interpolate = TRUE)
+
+   plot <-  ggplot()+
+        tidyterra::geom_spatraster(data = img, 
+                                   mapping = aes(fill = layer),
+                                   maxcell = 500832*8)+
+     tidyterra::geom_spatraster(data = low_res, 
+                                   mapping = aes(fill = layer), 
+                                alpha = 0)+
+     
+      coord_sf(crs = 4326)+
+      scale_fill_manual(breaks = c(1,2,3,4,5,6,7,8),
+                        values=c("#DAA520", "#b3ff1a","#389318","#873e23","#b3002d","#797a79","white","#42c9bc"),
+                        na.value = NA,
+                        name = "",
+                        labels = c("Bacillariophyceae",
+                                   "Chlorophyceae",
+                                   "Magnoliopsida",
+                                   "Phaeophyceae",
+                                   "Rhodophyceae",
+                                   "Sediment",
+                                   "Sunglint",
+                                   "Water"))+
+     theme_Bede_Map()+
+     theme(axis.text.x = element_text(size = 20, angle = 20,hjust = 1),
+           axis.text.y = element_text(size = 20),
+           axis.title = element_blank(),
+           legend.background = element_blank(),
+           legend.text = element_text(size = 20),
+           legend.key.size = unit(1,"cm"))
+
+    
+   plot_limits <- ggplot_build(plot)$layout$panel_params[[1]]
+    
+    x_range <- plot_limits$x_range
+    y_range <- plot_limits$y_range
+    
+   if(list_pred$site[i] == "Aveiro"){
+      x_position_1 <- x_range[2] - (x_range[2] - x_range[1]) * 0.4
+      y_position_1 <- y_range[1] + (y_range[2] - y_range[1]) * 0.4
+      
+      x_position_2 <- x_range[2] - (x_range[2] - x_range[1]) * 1
+      y_position_2 <- y_range[1] + (y_range[2] - y_range[1]) * 0.1
+      
+      plot <- plot + annotation_custom(
+          grob = img_grob,xmin = x_position_1,xmax = x_range[2], ymin = y_range[1], ymax = y_position_1)+
+        theme(legend.position = c(0.91,0.6))+
+         annotation_custom(
+          grob = scale_grob,xmin = x_position_2,xmax = x_range[2], ymin = y_range[1], ymax = y_position_2)+
+        theme(legend.position = c(0.91,0.6))
+     
+   }
+
+   if(list_pred$site[i] == "Boat1"){
+      x_position_1 <- x_range[2] - (x_range[2] - x_range[1]) * 1.15
+      x_position_12 <- x_range[2] - (x_range[2] - x_range[1]) * 0.7
+      y_position_1 <- y_range[1] + (y_range[2] - y_range[1]) * 0.4
+      y_position_12 <- y_range[1] + (y_range[2] - y_range[1]) * 0.8
+
+      
+      x_position_2 <- x_range[2] - (x_range[2] - x_range[1]) * 1
+      y_position_2 <- y_range[1] + (y_range[2] - y_range[1]) * 0.1
+      
+      plot <- plot + 
+        annotation_custom(grob = img_grob,
+                          xmin = x_position_1,
+                          xmax = x_position_12,
+                          ymin = y_position_1, 
+                          ymax = y_position_12)+
+         annotation_custom(grob = scale_grob,
+                           xmin = x_position_2,
+                           xmax = x_range[2],
+                           ymin = y_range[1],
+                           ymax = y_position_2)+
+        theme(legend.position = c(0.18,1))
+     
+   }
+    
+   if(list_pred$site[i] == "Boat2"){
+      x_position_1 <- x_range[2] - (x_range[2] - x_range[1]) * 0.9
+      x_position_12 <- x_range[2] - (x_range[2] - x_range[1]) * 0.6
+      y_position_1 <- y_range[1] + (y_range[2] - y_range[1]) * 0.6
+      y_position_12 <- y_range[1] + (y_range[2] - y_range[1]) * 1
+
+      
+      x_position_2 <- x_range[2] - (x_range[2] - x_range[1]) * 1
+      y_position_2 <- y_range[1] + (y_range[2] - y_range[1]) * 0.1
+      
+      plot <- plot + 
+        annotation_custom(grob = img_grob,
+                          xmin = x_position_1,
+                          xmax = x_position_12,
+                          ymin = y_position_1,
+                          ymax = y_position_12)+
+         annotation_custom(grob = scale_grob,
+                           xmin = x_position_2,
+                           xmax = x_range[2],
+                           ymin = y_range[1],
+                           ymax = y_position_2)+
+        theme(legend.position = c(0.18,1))
+     
+   }
+   if(list_pred$site[i] == "NorthDike"){
+      x_position_1 <- x_range[2] - (x_range[2] - x_range[1]) * 0.9
+      x_position_12 <- x_range[2] - (x_range[2] - x_range[1]) * 0.6
+      y_position_1 <- y_range[1] + (y_range[2] - y_range[1]) * 0.6
+      y_position_12 <- y_range[1] + (y_range[2] - y_range[1]) * 1
+
+      
+      x_position_2 <- x_range[2] - (x_range[2] - x_range[1]) * 1
+      y_position_2 <- y_range[1] + (y_range[2] - y_range[1]) * 0.1
+      
+      plot <- plot + 
+        annotation_custom(grob = img_grob,
+                          xmin = x_position_1,
+                          xmax = x_position_12,
+                          ymin = y_position_1,
+                          ymax = y_position_12)+
+         annotation_custom(grob = scale_grob,
+                           xmin = x_position_2,
+                           xmax = x_range[2],
+                           ymin = y_range[1],
+                           ymax = y_position_2)+
+        theme(legend.position = c(0.18,1))
+     
+   }
+    
+    # plot
+    ggsave(paste0("Output/Resampling/",gsub(".tif",".png",list_pred$name[i])), plot, height = 1125*4, width = 1320*4, units = "px")
+
+
+}
+```
+
+```{r resampling validation data}
+
+
 
 ```
+
+
 
 
 ## Effect of the percent cover on the prediction

@@ -1,0 +1,16 @@
+<sub-article article-type="notebook" id="nb-36">
+<front-stub>
+</front-stub>
+
+<body>
+<p>&lt;!DOCTYPE qgis PUBLIC ‘http://mrcc.com/qgis.dtd’ ‘SYSTEM’&gt; </p>
+<p> +proj=utm +zone=29 +datum=WGS84 +units=m +no_defs 0 0 false </p>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
