@@ -5243,7 +5243,7 @@ img_list <- list.files("Data/BiCOME_Flights", pattern = ".tif", recursive = T, f
                 !str_detect(path, ".tif.enp"),
                 type == "Ortho")
 
-# res_to_resample <- c(10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,200,300,400,500,600,700,800,900,1000,1500,2000,2500,3000)
+res_to_resample <- c(10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,200,300,400,500,600,700,800,900,1000,1500,2000,2500,3000)
 res_to_resample <- c(2000)
 
   
@@ -5293,7 +5293,10 @@ write.csv(a,
 ```
 
 ```{r gif_making}
-
+#| cache: false
+#| echo: false
+#| warning: false
+#| eval: false
 list_pred <- list.files("Data/Predictions/Resampled",full.names = T) %>% 
   as_tibble() %>% 
   rename(path = "value") %>% 
@@ -5588,18 +5591,289 @@ for(i in 1:nrow(list_pred)){
 ```
 
 ```{r resampling validation data}
+#| cache: false
+#| echo: false
+#| warning: false
+#| eval: false
+
 library(MapRs)
 
 img_list <- list.files("Data/Predictions/RAW/", pattern = ".tif", full.names = T) %>% 
   as_tibble() %>% 
   rename(path = "value") %>% 
   mutate(name = gsub(".*/","",path),
-         type = case_when(str_detect(name,"Probs",) ~ "Probs",
-                          TRUE ~ "Pred"))
+         type = case_when(str_detect(name,"Probs") ~ "Probs",
+                          TRUE ~ "Pred"),
+         site = case_when(str_detect(name,"Boat1") ~ "Boat1",
+                          str_detect(name,"Boat2") ~ "Boat2",
+                          str_detect(name,"Gafanha_high") ~ "AveiroHigh",
+                          str_detect(name,"Duer") ~ "Duer",
+                          str_detect(name,"Gafanha_Low") ~ "AveiroLow",
+                          str_detect(name,"NorthDike") ~ "NorthDike"),
+         filtered = case_when(str_detect(name,"_7") ~ T,
+                              T ~ F),
+         UTM_zone = case_when(str_detect(path, "NorthDike") ~ 32630,
+                              str_detect(path, "Duer") ~ 32630,
+                              TRUE ~ 32629)) %>% 
+  dplyr::filter(site != "AveiroLow",
+                type == "Pred",
+                filtered == F,
+                site == "NorthDike")
+
+# res_to_resample <- c(10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,200,300,400,500,600,700,800,900,1000,1500,2000,2500,3000)
+res_to_resample <- c(3000)
+
+for(i in 1:nrow(img_list)){
+  
+  img <- img_list %>% 
+    dplyr::filter(path == img_list$path[i]) %>% 
+    pull(path) %>% 
+    rast()%>% 
+    terra::project(paste0("EPSG:", img_list$UTM_zone[i]), thread = T, method = "near") 
+  
+    for(ii in 1:length(res_to_resample)){
+      
+      new_res <- res_to_resample[ii]/100
+    
+    r_template <- rast(ext(img), resolution = new_res, crs = crs(img))
+    r_resampled <- terra::resample(img, r_template, method="mode", threads = T)%>% 
+      terra::project("EPSG:4326", thread = T, method = "near")
+    
+    if(i == 1){
+      if(!dir.exists(paste0("Data/Validation/Prediction_resampling/",res_to_resample[ii],"cm"))){
+       dir.create(paste0("Data/Validation/Prediction_resampling/",res_to_resample[ii],"cm"), recursive = T) 
+      }
+    }
+    writeRaster(r_resampled, paste0("Data/Validation/Prediction_resampling/",res_to_resample[ii],"cm/",gsub(".tif",paste0("_",res_to_resample[ii],"cm.tif"),img_list$name[i])),overwrite = T)
+    }
+  }
+```
+
+```{r Comparison resampled data}
+#| cache: false
+#| echo: false
+#| warning: false
+#| eval: false
 
 
+df_valid <- list.files("Data/Validation/Prediction_resampling",pattern = ".tif",recursive = T, full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path)) %>% 
+  # dplyr::filter(type == "Pred") %>% 
+  mutate(res =sub(".*_(\\d+)cm.*", "\\1", name) %>% as.numeric()) %>% 
+  arrange(name,res) %>% 
+  mutate(site = case_when(str_detect(name, "Gafanha_high") ~ "Aveiro",
+                          str_detect(name, "Boat1") ~ "Boat1",
+                          str_detect(name, "Boat2") ~ "Boat2",
+                          str_detect(name, "NorthDike") ~ "NorthDike",
+                          str_detect(name, "Duer_high") ~ "Duer",
+                          str_detect(name, "handfisher_Ortho") ~ "handfisher_Ortho",
+                          T ~ NA),
+         type = "validation")
+
+
+df_resampled <- list.files("Data/Predictions/Resampled",full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path),
+         type = case_when(str_detect(name, "_prob.tif") ~ "Prob",
+                          T ~ "Pred")) %>% 
+  dplyr::filter(type == "Pred") %>% 
+  mutate(res =sub(".*_(\\d+)cm_.*", "\\1", name) %>% as.numeric(),
+         ortho_name  = sub("_(\\d+)cm_.*", "", name)) %>% 
+  arrange(ortho_name,res) %>% 
+  mutate(site = case_when(str_detect(ortho_name, "Aveiro_1506_Highest") ~ "Aveiro",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_1") ~ "Boat1",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_2") ~ "Boat2",
+                          str_detect(ortho_name, "NoirmoutierNorthDikeSite") ~ "NorthDike",
+                          str_detect(ortho_name, "Duer_15072022_120m") ~ "Duer",
+                          str_detect(ortho_name, "handfisher_Ortho") ~ "handfisher_Ortho",
+                          str_detect(ortho_name, "Horse_rooster") ~ "Horse_rooster",
+                          str_detect(ortho_name, "fl1_120m_handfisher_old") ~ "fl1_120m_handfisher_old",
+                          str_detect(ortho_name, "fl2_120m_handfisher_old") ~ "fl2_120m_handfisher_old",
+                          T ~ NA)) %>% 
+  dplyr::filter(!site == "handfisher_Ortho",
+                !site == "Duer") %>% 
+  dplyr::select(-ortho_name)
+
+df <- df_valid %>% 
+  bind_rows(df_resampled) %>% 
+  dplyr::filter(site %in% c("Aveiro","Boat1","Boat2","NorthDike")) %>% 
+  # dplyr::filter(site == "Aveiro") %>% 
+  dplyr::select(-name) %>% 
+  pivot_wider(names_from = type, values_from = path)
+
+for(i in 1:nrow(df)){
+
+  print(i)
+  
+  img <- rast(c(df$validation[i],df$Pred[i]))
+  
+  names(img) <- c("true","pred")
+  
+  df_img <- img %>%  
+    as.data.frame() %>% 
+    dplyr::filter(!true == 0,
+                  !pred == 0) %>% 
+    dplyr::mutate(res = df$res[i],
+                  site = df$site[i])
+  
+  if(i == 1){
+    df_compare <- df_img
+  }else{
+    df_compare <- rbind(df_compare,df_img)
+  }
+}
+
+validation = df_compare %>% 
+  mutate(same = case_when(pred == true ~ T,
+                          T ~ F))
+
+
+
+total <- validation %>% 
+  lazy_dt() %>% 
+  group_by(res,true) %>% 
+  dplyr::summarise(agreed = sum(same, na.rm = T),
+          n_obs = n()) %>% 
+  # ungroup() %>% 
+  mutate(prop = agreed/n_obs) %>% 
+  as_tibble() %>% 
+  dplyr::filter(true != 1) %>% 
+  mutate(true_fct = as.factor(true),
+         area = res*res)
+  
+
+
+total %>% 
+  ggplot(aes(x = res, y = prop, group = true, color = as.factor(true)))+
+  geom_line()
+  # scale_x_log10()
+
+glm_res_true <- glm(prop ~ area * true_fct , data = total) 
+glm_res <- glm(prop ~ area, data = total, family = "") 
+
+
+summary(glm_res)
+
+Utilities.Package::Model_Check(glm_res)
+
+
+NewData<-expand_grid(area=unique(total$area),
+                    true_fct=unique(total$true_fct))
+
+pred <- predict(glm_res_true, NewData, se.fit = T)
+
+
+NewData <- NewData %>% 
+  mutate(fit = pred$fit*100,
+         se = pred$se.fit*100, 
+         res = sqrt(area)/100)
+
+
+  cols_fill <- c("1" = "#DAA520",
+                 "2" = "#b3ff1a",
+                 "3" = "#389318",
+                 "4" = "#873e23",
+                 "5" = "#b3002d",
+                 "6" = "#70543e",
+                 "7" = 'grey',
+                 "8" = "#42c9bc")
+plot <- ggplot(NewData)+
+  geom_ribbon(aes(x = res, y = fit, ymax = fit+se, ymin = fit-se, 
+                  color = true_fct, group = true_fct, fill = true_fct
+                  ), alpha = 0.2)+
+  geom_line(aes(x = res, y = fit,
+                color = true_fct, group = true_fct
+                ))+
+  # ylim(0,1)+
+      scale_fill_manual(name = NULL,
+                        values = cols_fill,
+                        labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water")) +
+    scale_color_manual(name = NULL,
+                      values = cols_fill,
+                      labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))+
+  theme_Bede()+
+  xlab("Resolution (m)") +
+  ylab("Agreement")+
+  theme(axis.title = element_text(size = 20),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        legend.key.size = unit(1, "cm"))
+
+ggsave("Output/plot/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
+
+#### Area
+
+test <-  validation %>% 
+  lazy_dt() %>% 
+  pivot_longer(c(true, pred), names_to = "source", values_to = "class") %>% 
+  group_by(res,class,source) %>% 
+  summarise(class_area = n()*(res*res)/(100*100)) %>% 
+  as_tibble() %>% 
+  pivot_wider(names_from = source, values_from = class_area) %>% 
+  mutate(agreement = (1-abs(((pred-true)/(pred+true))))*100,
+         # agreement1 = abs(pred-true)/max(pred,true)
+         class = as.factor(class))
+
+test %>%
+  dplyr::filter(class != 1) %>%
+  ggplot(aes(x = res, y =agreement))+
+  geom_line(aes(color = class, group = class))
+
+# test %>%
+#   pivot_longer(c(pred,true), names_to = "dataset", values_to = "values") %>% 
+#   dplyr::filter(class != 1) %>%
+#     ggplot(aes(x = res, y = values, color = dataset, group = dataset))+
+#   geom_line()+
+#   facet_wrap(~ class, scales = "free")
+
+
+glm_res_area <- glm(agreement ~ res * class , data = test) 
+
+summary(glm_res_area)
+
+Utilities.Package::Model_Check(glm_res_area)
+
+NewData<-expand_grid(res=unique(test$res),
+                    class=unique(test$class))
+
+pred <- predict(glm_res_area, NewData, se.fit = T)
+
+
+NewData <- NewData %>% 
+  mutate(fit = pred$fit,
+         se = pred$se.fit)
+
+NewData %>% 
+  dplyr::filter(class != 1) %>% 
+ggplot()+
+  geom_ribbon(aes(x = res, y = fit, ymax = fit+se, ymin = fit-se, 
+                  color = class, group = class, fill = class
+                  ), alpha = 0.2)+
+  geom_line(aes(x = res, y = fit,
+                color = class, group = class
+                ))+
+  # ylim(0,1)+
+      scale_fill_manual(name = NULL,
+                        values = cols_fill,
+                        labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water")) +
+    scale_color_manual(name = NULL,
+                      values = cols_fill,
+                      labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))+
+  theme_Bede()+
+  xlab("Resolution (m)") +
+  ylab("Agreement")+
+  theme(axis.title = element_text(size = 20),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        legend.key.size = unit(1, "cm"))
 
 ```
+
 
 
 
