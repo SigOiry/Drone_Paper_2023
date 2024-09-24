@@ -121,6 +121,7 @@ library(gmodels)
 library(caret)
 library(rstudioapi)
 library(terra)
+library(MapRs)
 
 
 options(scipen = 100000000)
@@ -5704,72 +5705,98 @@ df <- df_valid %>%
   dplyr::select(-name) %>% 
   pivot_wider(names_from = type, values_from = path)
 
-for(i in 1:nrow(df)){
+if(file.exists("Data/Resampled_saved_data_total.csv")){
+  
+  total <- read.csv( "Data/Resampled_saved_data_total.csv")
+  
+}else{
 
-  print(i)
+  for(i in 1:nrow(df)){
   
-  img <- rast(c(df$validation[i],df$Pred[i]))
-  
-  names(img) <- c("true","pred")
-  
-  df_img <- img %>%  
-    as.data.frame() %>% 
-    dplyr::filter(!true == 0,
-                  !pred == 0) %>% 
-    dplyr::mutate(res = df$res[i],
-                  site = df$site[i])
-  
-  if(i == 1){
-    df_compare <- df_img
-  }else{
-    df_compare <- rbind(df_compare,df_img)
+    print(i)
+    
+    img <- rast(c(df$validation[i],df$Pred[i]))
+    
+    names(img) <- c("true","pred")
+    
+    df_img <- img %>%  
+      as.data.frame() %>% 
+      dplyr::filter(!true == 0,
+                    !pred == 0) %>% 
+      dplyr::mutate(res = df$res[i],
+                    site = df$site[i])
+    
+    if(i == 1){
+      df_compare <- df_img
+    }else{
+      df_compare <- rbind(df_compare,df_img)
+    }
   }
-}
-
-validation = df_compare %>% 
-  mutate(same = case_when(pred == true ~ T,
-                          T ~ F))
-
-
-
-total <- validation %>% 
-  lazy_dt() %>% 
+  
+  validation = df_compare %>% 
+    mutate(same = case_when(pred == true ~ T,
+                            T ~ F))
+  
+  total <- validation %>% 
+  dtplyr::lazy_dt() %>% 
   group_by(res,true) %>% 
   dplyr::summarise(agreed = sum(same, na.rm = T),
           n_obs = n()) %>% 
   # ungroup() %>% 
   mutate(prop = agreed/n_obs) %>% 
   as_tibble() %>% 
-  dplyr::filter(true != 1) %>% 
+  dplyr::filter(true != 1,
+                true != 6,
+                true != 7,
+                true != 8) %>% 
   mutate(true_fct = as.factor(true),
-         area = res*res)
+         area = res*res) 
   
+  write.csv(total, "Data/Resampled_saved_data_total.csv", row.names = F)
+}
 
 
+
+  
+# reframing <- total %>% 
+#   group_by(true_fct) %>% 
+#   dplyr::filter(res == 10) %>% 
+#   ungroup() %>% 
+#   mutate(diff = max(prop)-prop) %>% 
+#   dplyr::select(true_fct,diff)
+#   
+# 
+# total <- total %>% 
+#   left_join(reframing, by = "true_fct") %>% 
+#   mutate(prop = prop + diff) %>% 
+#   dplyr::select(-diff)
+  
 total %>% 
-  ggplot(aes(x = res, y = prop, group = true, color = as.factor(true)))+
-  geom_line()
-  # scale_x_log10()
+  ggplot(aes(x = res, y = prop, group = true, color =true_fct))+
+  geom_line()+
+  theme_Bede_Map()
 
-glm_res_true <- glm(prop ~ area * true_fct , data = total) 
-glm_res <- glm(prop ~ area, data = total, family = "") 
-
-
-summary(glm_res)
-
-Utilities.Package::Model_Check(glm_res)
+# glm_res_true <- glm(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
+glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
 
 
-NewData<-expand_grid(area=unique(total$area),
-                    true_fct=unique(total$true_fct))
 
-pred <- predict(glm_res_true, NewData, se.fit = T)
+summary(glm_res_true)
+
+Utilities.Package::Model_Check(glm_res_true)
+
+
+NewData<-expand_grid(res=unique(total$res),
+                    true_fct=unique(total$true_fct),
+                    area = res*res)
+
+pred <- predict(glm_res_true, NewData, se.fit = T, type = "link")
 
 
 NewData <- NewData %>% 
   mutate(fit = pred$fit*100,
-         se = pred$se.fit*100, 
-         res = sqrt(area)/100)
+         se = pred$se.fit*100,
+         true_fct=as.factor(true_fct))
 
 
   cols_fill <- c("1" = "#DAA520",
@@ -5780,11 +5807,12 @@ NewData <- NewData %>%
                  "6" = "#70543e",
                  "7" = 'grey',
                  "8" = "#42c9bc")
-plot <- ggplot(NewData)+
-  geom_ribbon(aes(x = res, y = fit, ymax = fit+se, ymin = fit-se, 
+  
+(plot <- ggplot(NewData)+
+  geom_ribbon(aes(x = sqrt(area), y = fit, ymax = fit+se, ymin = fit-se, 
                   color = true_fct, group = true_fct, fill = true_fct
                   ), alpha = 0.2)+
-  geom_line(aes(x = res, y = fit,
+  geom_line(aes(x = sqrt(area), y = fit,
                 color = true_fct, group = true_fct
                 ))+
   # ylim(0,1)+
@@ -5802,76 +5830,12 @@ plot <- ggplot(NewData)+
         axis.text.y = element_text(size = 15),
         legend.text = element_text(size = 15),
         legend.key.size = unit(1, "cm"))
-
+    
+    # scale_x_log10()
+  
+  )
+  
 ggsave("Output/plot/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
-
-#### Area
-
-test <-  validation %>% 
-  lazy_dt() %>% 
-  pivot_longer(c(true, pred), names_to = "source", values_to = "class") %>% 
-  group_by(res,class,source) %>% 
-  summarise(class_area = n()*(res*res)/(100*100)) %>% 
-  as_tibble() %>% 
-  pivot_wider(names_from = source, values_from = class_area) %>% 
-  mutate(agreement = (1-abs(((pred-true)/(pred+true))))*100,
-         # agreement1 = abs(pred-true)/max(pred,true)
-         class = as.factor(class))
-
-test %>%
-  dplyr::filter(class != 1) %>%
-  ggplot(aes(x = res, y =agreement))+
-  geom_line(aes(color = class, group = class))
-
-# test %>%
-#   pivot_longer(c(pred,true), names_to = "dataset", values_to = "values") %>% 
-#   dplyr::filter(class != 1) %>%
-#     ggplot(aes(x = res, y = values, color = dataset, group = dataset))+
-#   geom_line()+
-#   facet_wrap(~ class, scales = "free")
-
-
-glm_res_area <- glm(agreement ~ res * class , data = test) 
-
-summary(glm_res_area)
-
-Utilities.Package::Model_Check(glm_res_area)
-
-NewData<-expand_grid(res=unique(test$res),
-                    class=unique(test$class))
-
-pred <- predict(glm_res_area, NewData, se.fit = T)
-
-
-NewData <- NewData %>% 
-  mutate(fit = pred$fit,
-         se = pred$se.fit)
-
-NewData %>% 
-  dplyr::filter(class != 1) %>% 
-ggplot()+
-  geom_ribbon(aes(x = res, y = fit, ymax = fit+se, ymin = fit-se, 
-                  color = class, group = class, fill = class
-                  ), alpha = 0.2)+
-  geom_line(aes(x = res, y = fit,
-                color = class, group = class
-                ))+
-  # ylim(0,1)+
-      scale_fill_manual(name = NULL,
-                        values = cols_fill,
-                        labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water")) +
-    scale_color_manual(name = NULL,
-                      values = cols_fill,
-                      labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))+
-  theme_Bede()+
-  xlab("Resolution (m)") +
-  ylab("Agreement")+
-  theme(axis.title = element_text(size = 20),
-        axis.text.x = element_text(size = 15),
-        axis.text.y = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm"))
-
 ```
 
 
