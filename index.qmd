@@ -145,7 +145,7 @@ The importance of seagrass meadows and the variety of ecosystem services they pr
 
 While satellite remote sensing (RS) provides temporally consistent observations over large spatial scales, its utilization over intertidal areas is limited by several constraints. Satellite missions with a high temporal resolution (e.g. daily MODIS observation) are limited by a too coarse spatial resolution (\>100 m) to accurately map patchy seagrass meadows. Missions with a high spatial resolution such as Sentinel-2 (10 m) or Landsat8/9 (30 m) can be limited by low spectral resolution. The limited number of spectral bands challenges accurate discrimination of seagrass from other co-existing macrophytes. In particular Chlorophyceae (green algae) and marine Magnoliopsida (seagrass) share the same pigment composition [@ralph2002 ; @Douay2022]. Therefore, to someone not specialized in the field, their spectral signatures may appear to be alike [@Davies2023 ; @bannari2022]. Recently, using advanced machine-learning algorithms trained with a large hyperspectral library of more than 300 field reflectance spectra, @Davies2023 demonstrated that it was possible to discriminate Magnoliopsida from Chlorophyceae using radiometric data acquired at Sentinel-2 's spectral resolution. However the application of this approach to satellite RS remains to be validated. Moreover patches of green algae can develop at small spatial scales that are not observable using non-commercial satellite imagery [@tuya2013], especially during the initial stage of a green tide.
 
-Drones (Unmanned Aerial Vehicles – UAVs) can potentially fill the data gaps left by satellite RS and *in situ* measurements, due to their ability to provide spatially-explicit observations at very high spatial resolutions (pixel size from mm to cm) while capturing data at multi-spectral resolution [@fairley2022drone ; @oh2017use]. The versatility of drones allows for their application across a diverse thematic range , from coastal zone management [@adade2021 ; @casella2020 ; @angnuureng2022] to mapping species distribution [@joyce2023 ; @tallam2023 ; @Roca2022 ; @Roman2021 ; @Brunier2022Topographic ; @sousa2019blue]. However, when applied to coastal habitat mapping, most case studies were previously limited to a single flight, restricting the generalizability of their application over wider geographical scales [@Roman2021 ; @collin2019improving ; @rossiter2020uav ; @Brunier2022Topographic]. The present study aimed at analyzing the potential of multispectral drone RS to map intertidal macrophytes over a diverse biogeographical range, with a particular focus on discriminating Magnoliopsida and Chlorophyceae (Seagrass and Green Algae, respectively). Ten drone flights were performed over soft-bottom intertidal areas along the Atlantic coastlines of two European countries (France and Portugal), covering a wide range of habitats, from monospecific seagrass meadows to meadows mixed with green, or red macroalgae. A deep learning algorithm was trained and validated for macrophyte discrimination, emphasizing applicability across diverse sites without a loss of prediction accuracy.
+Drones (Unmanned Aerial Vehicles -- UAVs) can potentially fill the data gaps left by satellite RS and *in situ* measurements, due to their ability to provide spatially-explicit observations at very high spatial resolutions (pixel size from mm to cm) while capturing data at multi-spectral resolution [@fairley2022drone ; @oh2017use]. The versatility of drones allows for their application across a diverse thematic range , from coastal zone management [@adade2021 ; @casella2020 ; @angnuureng2022] to mapping species distribution [@joyce2023 ; @tallam2023 ; @Roca2022 ; @Roman2021 ; @Brunier2022Topographic ; @sousa2019blue]. However, when applied to coastal habitat mapping, most case studies were previously limited to a single flight, restricting the generalizability of their application over wider geographical scales [@Roman2021 ; @collin2019improving ; @rossiter2020uav ; @Brunier2022Topographic]. The present study aimed at analyzing the potential of multispectral drone RS to map intertidal macrophytes over a diverse biogeographical range, with a particular focus on discriminating Magnoliopsida and Chlorophyceae (Seagrass and Green Algae, respectively). Ten drone flights were performed over soft-bottom intertidal areas along the Atlantic coastlines of two European countries (France and Portugal), covering a wide range of habitats, from monospecific seagrass meadows to meadows mixed with green, or red macroalgae. A deep learning algorithm was trained and validated for macrophyte discrimination, emphasizing applicability across diverse sites without a loss of prediction accuracy.
 
 # Material & Methods
 
@@ -3118,8 +3118,9 @@ The model was applied to all flights at both 12 and 120 m of altitude. In situ i
 ## Variable Importance
 
 Variable Importance Plots (VIP) serve as a method to identify which predictors are important for predicting a specific class. Out of the twenty one predictors utilized in this study, Variable Importance was computed only for the raw and standardized values of the 10 spectral bands captured by the MicaSense camera. This is achieved by repeatedly predicting the same dataset while randomly shuffling one predictor at a time. The benchmark score obtained after each iteration is then compared to the benchmark score obtained without shuffling any variables. The greater the difference between these two benchmark values, the more important the variable is for the model [@WEI2015399].
- 
+
 ## Impact of the spatial resolution in the prediction
+
 ## Impact of the vegetation cover on the prediction
 
 The key aspect of the workflow adopted in the present study is the mapping of specific areas at two different altitudes (12m and 120m), resulting in two distinct resolutions for the same area (8mm and 80mm). The predictions made on the high-resolution flight can be used to estimate the cover (percentage, %) of each vegetation class for every pixel of the lower resolution flight. Consequently, for each pixel of the high-altitude flights, the cover (%) of each vegetation class were obtained, and a kernel density plot was generated. This plot provides a visual representation of the behavior of the model in different vegetation percent cover scenarios.
@@ -5809,10 +5810,10 @@ NewData <- NewData %>%
                  "8" = "#42c9bc")
   
 (plot <- ggplot(NewData)+
-  geom_ribbon(aes(x = sqrt(area), y = fit, ymax = fit+se, ymin = fit-se, 
+  geom_ribbon(aes(x = sqrt(area)/100, y = fit, ymax = fit+se, ymin = fit-se, 
                   color = true_fct, group = true_fct, fill = true_fct
                   ), alpha = 0.2)+
-  geom_line(aes(x = sqrt(area), y = fit,
+  geom_line(aes(x = sqrt(area)/100, y = fit,
                 color = true_fct, group = true_fct
                 ))+
   # ylim(0,1)+
@@ -5835,12 +5836,21 @@ NewData <- NewData %>%
   
   )
   
-ggsave("Output/plot/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
+ggsave("Figures/High_res/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
 ```
 
+```{r Pixel size Plot}
+#| cache: false
+#| echo: false
+#| warning: false
+#| fig-cap: Coucou
+#| label: fig-pixelsize
+#| fig-width: 10
+#| fig-height: 7
+#| out-width: "90%"
 
-
-
+knitr::include_graphics("Figures/High_res/resolution_plot.png")
+```
 
 ## Effect of the percent cover on the prediction
 

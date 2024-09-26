@@ -12,5 +12,155 @@
     "index-preview.html": "5a321476",
     "index.subarticle.xml": "87f5ee59",
     "Simon_Drone_Paper.docx": "dccd2807"
+  },
+  "Data/shp/All_Flights_Area_PseudoMercator.qmd": {
+    "All_Flights_Area_PseudoMercator.embed.ipynb": "6a476e1e",
+    "All_Flights_Area_PseudoMercator.out.ipynb": "2f4a9b97",
+    "All_Flights_Area_PseudoMercator-preview.html": "f2b689be"
+  },
+  "Data/shp/Aveiro/background_Boat.qmd": {
+    "background_Boat.embed.ipynb": "dbccfbfa",
+    "background_Boat.out.ipynb": "5842dd58",
+    "background_Boat-preview.html": "827dd1da"
+  },
+  "Data/shp/Aveiro/background_Gafanha_high.qmd": {
+    "background_Gafanha_high.embed.ipynb": "12d3c0a5",
+    "background_Gafanha_high.out.ipynb": "fe8ad57c",
+    "background_Gafanha_high-preview.html": "45f16674"
+  },
+  "Data/shp/Aveiro/Background_p1_aveiro.qmd": {
+    "Background_p1_aveiro.embed.ipynb": "30865e6f",
+    "Background_p1_aveiro.out.ipynb": "5220360b",
+    "Background_p1_aveiro-preview.html": "2767a39f"
+  },
+  "Data/shp/Aveiro/Gafanha_mask_Drone.qmd": {
+    "Gafanha_mask_Drone.embed.ipynb": "bc5a7678",
+    "Gafanha_mask_Drone.out.ipynb": "f1757587",
+    "Gafanha_mask_Drone-preview.html": "739f68da"
+  },
+  "Data/shp/Aveiro/GafLow_extent.qmd": {
+    "GafLow_extent.embed.ipynb": "e7890d3e",
+    "GafLow_extent.out.ipynb": "db056d2f",
+    "GafLow_extent-preview.html": "b8cbe34d"
+  },
+  "Data/shp/Aveiro/mask_aveiro_intertidal_32629.qmd": {
+    "mask_aveiro_intertidal_32629.embed.ipynb": "498870e9",
+    "mask_aveiro_intertidal_32629.out.ipynb": "df7a8b9e",
+    "mask_aveiro_intertidal_32629-preview.html": "dcf02125"
+  },
+  "Data/shp/Aveiro/mask_boat.qmd": {
+    "mask_boat.embed.ipynb": "14bf41af",
+    "mask_boat.out.ipynb": "9a338bf4",
+    "mask_boat-preview.html": "5906eb52"
+  },
+  "Data/shp/Aveiro/mask_Gafanha_high.qmd": {
+    "mask_Gafanha_high.embed.ipynb": "f0f6a2c1",
+    "mask_Gafanha_high.out.ipynb": "01a0dd18",
+    "mask_Gafanha_high-preview.html": "d997ecfd"
+  },
+  "Data/shp/Aveiro/mask_Gafanha_high1.qmd": {
+    "mask_Gafanha_high1.embed.ipynb": "0a5e2727",
+    "mask_Gafanha_high1.out.ipynb": "d1b97350",
+    "mask_Gafanha_high1-preview.html": "ad59193d"
+  },
+  "Data/shp/Aveiro/mask_Gafanha_low.qmd": {
+    "mask_Gafanha_low.embed.ipynb": "fa58be75",
+    "mask_Gafanha_low.out.ipynb": "ceb836e1",
+    "mask_Gafanha_low-preview.html": "d523b389"
+  },
+  "Data/shp/Aveiro/mask_land_intertidal_Aveiro.qmd": {
+    "mask_land_intertidal_Aveiro.embed.ipynb": "ea0a355f",
+    "mask_land_intertidal_Aveiro.out.ipynb": "f78454ed",
+    "mask_land_intertidal_Aveiro-preview.html": "13c51bb2"
+  },
+  "Data/shp/Aveiro/PRT_adm0.qmd": {
+    "PRT_adm0.embed.ipynb": "73812e3a",
+    "PRT_adm0.out.ipynb": "6534e1b0",
+    "PRT_adm0-preview.html": "807a2248"
+  },
+  "Data/shp/Bourgneuf/background_Dike.qmd": {
+    "background_Dike.embed.ipynb": "79722bd0",
+    "background_Dike.out.ipynb": "0663858b",
+    "background_Dike-preview.html": "0d34f57c"
+  },
+  "Data/shp/Bourgneuf/intertidal_mask_BB.qmd": {
+    "intertidal_mask_BB.embed.ipynb": "d9daf999",
+    "intertidal_mask_BB.out.ipynb": "1246ecf4",
+    "intertidal_mask_BB-preview.html": "a1042ca8"
+  },
+  "Data/shp/Bourgneuf/mask_land_intertidal_BB.qmd": {
+    "mask_land_intertidal_BB.embed.ipynb": "174963c0",
+    "mask_land_intertidal_BB.out.ipynb": "b579099e",
+    "mask_land_intertidal_BB-preview.html": "3d9c2181"
+  },
+  "Data/shp/Bourgneuf/mask_NorthDike.qmd": {
+    "mask_NorthDike.embed.ipynb": "b4f63f26",
+    "mask_NorthDike.out.ipynb": "c87c2554",
+    "mask_NorthDike-preview.html": "88f9f6f4"
+  },
+  "Data/shp/Etel/Intertidal_mask_Etel.qmd": {
+    "Intertidal_mask_Etel.embed.ipynb": "6763e23b",
+    "Intertidal_mask_Etel.out.ipynb": "85971332",
+    "Intertidal_mask_Etel-preview.html": "7ab26eaf"
+  },
+  "Data/shp/Etel/mask_land_intertidal_Etel.qmd": {
+    "mask_land_intertidal_Etel.embed.ipynb": "acc96676",
+    "mask_land_intertidal_Etel.out.ipynb": "7a2c0c4e",
+    "mask_land_intertidal_Etel-preview.html": "7b968774"
+  },
+  "Data/shp/Mask_Alt_Compare_All.qmd": {
+    "Mask_Alt_Compare_All.embed.ipynb": "889db976",
+    "Mask_Alt_Compare_All.out.ipynb": "07f93914",
+    "Mask_Alt_Compare_All-preview.html": "d1043550"
+  },
+  "Data/shp/Morbihan/Duer_mask_Drone.qmd": {
+    "Duer_mask_Drone.embed.ipynb": "b1d0a3b7",
+    "Duer_mask_Drone.out.ipynb": "e5c7189f",
+    "Duer_mask_Drone-preview.html": "23ee02bf"
+  },
+  "Data/shp/Morbihan/mask_land_intertidal_Morbihan.qmd": {
+    "mask_land_intertidal_Morbihan.embed.ipynb": "8be9969a",
+    "mask_land_intertidal_Morbihan.out.ipynb": "96cdd35e",
+    "mask_land_intertidal_Morbihan-preview.html": "52a0acbc"
+  },
+  "Data/shp/Morbihan/Morbihan_intertidal.qmd": {
+    "Morbihan_intertidal.embed.ipynb": "7f590ffc",
+    "Morbihan_intertidal.out.ipynb": "eb7b8065",
+    "Morbihan_intertidal-preview.html": "f8b81271"
+  },
+  "Data/shp/Trait du Croisic/Intertidal_mask_croisic.qmd": {
+    "Intertidal_mask_croisic.embed.ipynb": "cced03c8",
+    "Intertidal_mask_croisic.out.ipynb": "81f01042",
+    "Intertidal_mask_croisic-preview.html": "3e16c1f8"
+  },
+  "Data/shp/Trait du Croisic/mask_land_intertidal_Croisic.qmd": {
+    "mask_land_intertidal_Croisic.embed.ipynb": "89ad17b9",
+    "mask_land_intertidal_Croisic.out.ipynb": "65b8c143",
+    "mask_land_intertidal_Croisic-preview.html": "88fd36ce"
+  },
+  "Data/shp/zoom_extent_map_Boat_2_comparison.qmd": {
+    "zoom_extent_map_Boat_2_comparison.embed.ipynb": "60fef4bc",
+    "zoom_extent_map_Boat_2_comparison.out.ipynb": "0321daaf",
+    "zoom_extent_map_Boat_2_comparison-preview.html": "bb57d0b1"
+  },
+  "Data/shp/zoom_extent_map_Boat_comparison.qmd": {
+    "zoom_extent_map_Boat_comparison.embed.ipynb": "55c0fa0e",
+    "zoom_extent_map_Boat_comparison.out.ipynb": "1cfd6e91",
+    "zoom_extent_map_Boat_comparison-preview.html": "80547c25"
+  },
+  "Data/shp/zoom_extent_map_Dike_comparison.qmd": {
+    "zoom_extent_map_Dike_comparison.embed.ipynb": "12699ed9",
+    "zoom_extent_map_Dike_comparison.out.ipynb": "a9f82610",
+    "zoom_extent_map_Dike_comparison-preview.html": "92fb7aa8"
+  },
+  "Data/shp/zoom_extent_map_Gafanha_comparison.qmd": {
+    "zoom_extent_map_Gafanha_comparison.embed.ipynb": "0b81318c",
+    "zoom_extent_map_Gafanha_comparison.out.ipynb": "573f460f",
+    "zoom_extent_map_Gafanha_comparison-preview.html": "c03e68d5"
+  },
+  "Data/shp/zoom_extent_map_Gafanha_High_comparison.qmd": {
+    "zoom_extent_map_Gafanha_High_comparison.embed.ipynb": "dcb3ae58",
+    "zoom_extent_map_Gafanha_High_comparison.out.ipynb": "4263e0a9",
+    "zoom_extent_map_Gafanha_High_comparison-preview.html": "1f8480be"
   }
 }
