@@ -5746,10 +5746,10 @@ if(file.exists("Data/Resampled_saved_data_total.csv")){
   # ungroup() %>% 
   mutate(prop = agreed/n_obs) %>% 
   as_tibble() %>% 
-  dplyr::filter(true != 1,
-                true != 6,
-                true != 7,
-                true != 8) %>% 
+  # dplyr::filter(true != 1,
+  #               true != 6,
+  #               true != 7,
+  #               true != 8) %>% 
   mutate(true_fct = as.factor(true),
          area = res*res) 
   
@@ -5777,9 +5777,12 @@ total %>%
   geom_line()+
   theme_Bede_Map()
 
-# glm_res_true <- glm(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
-glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
+glm_res_true <- glm(prop ~ area*true_fct , data = total)
+# glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
 
+a <- total %>% 
+  group_by(res, true) %>% 
+  reframe(mean = mean(prop))
 
 
 summary(glm_res_true)
@@ -5787,9 +5790,8 @@ summary(glm_res_true)
 Utilities.Package::Model_Check(glm_res_true)
 
 
-NewData<-expand_grid(res=unique(total$res),
-                    true_fct=unique(total$true_fct),
-                    area = res*res)
+NewData<-expand_grid(area=unique(total$area),
+                    true_fct=unique(total$true_fct))
 
 pred <- predict(glm_res_true, NewData, se.fit = T, type = "link")
 
@@ -5797,7 +5799,7 @@ pred <- predict(glm_res_true, NewData, se.fit = T, type = "link")
 NewData <- NewData %>% 
   mutate(fit = pred$fit*100,
          se = pred$se.fit*100,
-         true_fct=as.factor(true_fct))
+         true_fct=(true_fct))
 
 
   cols_fill <- c("1" = "#DAA520",
@@ -5810,13 +5812,12 @@ NewData <- NewData %>%
                  "8" = "#42c9bc")
   
 (plot <- ggplot(NewData)+
-  geom_ribbon(aes(x = sqrt(area)/100, y = fit, ymax = fit+se, ymin = fit-se, 
+  geom_ribbon(aes(x = sqrt(area), y = fit, ymax = fit+se, ymin = fit-se, 
                   color = true_fct, group = true_fct, fill = true_fct
                   ), alpha = 0.2)+
-  geom_line(aes(x = sqrt(area)/100, y = fit,
+  geom_line(aes(x = sqrt(area), y = fit,
                 color = true_fct, group = true_fct
                 ))+
-  # ylim(0,1)+
       scale_fill_manual(name = NULL,
                         values = cols_fill,
                         labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water")) +
@@ -5830,7 +5831,8 @@ NewData <- NewData %>%
         axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm"))
+        legend.key.size = unit(1, "cm")
+          )
     
     # scale_x_log10()
   
