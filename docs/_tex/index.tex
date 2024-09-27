@@ -625,6 +625,25 @@ important the variable is for the model \citep{WEI2015399}.
 \subsection{Impact of the spatial resolution in the
 prediction}\label{impact-of-the-spatial-resolution-in-the-prediction}
 
+To assess the impact of spatial resolution on the model's output, the
+reflectance of each flight's orthomosaic was spatially resampled using
+the average method from the Terra package in R. DISCOV was then applied
+to these resampled rasters. The results were compared to the original
+model predictions, which were resampled using the mode method from the
+Terra package in R. For each resolution and each class of the model, an
+agreement percentage was obtained, where a score of 100 indicates that
+all pixels in the two products are identical, and a score of 0 indicates
+that all pixels are different.
+
+We used a Generalized Linear Model (GLM) with a Gaussian family and an
+identity link function to investigate the relationship between pixel
+resolution, vegetation class, and their interaction on the response
+variable, the agreement. The formula for the model was:
+
+\begin{equation}\phantomsection\label{eq-gam}{
+Agreement \sim  Resolution \times VegetationClass
+}\end{equation}
+
 \subsection{Impact of the vegetation cover on the
 prediction}\label{impact-of-the-vegetation-cover-on-the-prediction}
 
@@ -875,6 +894,21 @@ Magnoliopsida.
 \subsection{Effect of the spatial resolution on the
 prediction}\label{effect-of-the-spatial-resolution-on-the-prediction}
 
+Figure~\ref{fig-pixelsize} shows an effect of the pixel size on the
+agreement between the two products. The highest resolution in which the
+resampling has been performed is 10 cm. At this resolution, the
+agreement has already decreased from 78\% (red algae) to 94\%
+(seagrass), depending on the class. As pixel size increases, the
+agreement between the products declines steadily for all classes. This
+decline is most pronounced for green algae, which experiences the
+sharpest drop in agreement as pixel size increases beyond 10 m, reaching
+below 0\% at a pixel size of 30 m. Seagrass maintain higher levels of
+agreement at coarser resolutions, although a clear decline is still
+observed, with seagrasses dropping from over 94\% at 10 cm to around
+88\% at 30 m. Brown algae and red algae show a more moderate decline
+compared to red algae, with agreement levels remaining around 62\% and
+40\%, respectively, at 30 m resolution.
+
 \phantomsection\label{cell-fig-pixelsize}
 \begin{figure}[H]
 
@@ -887,6 +921,17 @@ prediction}\label{effect-of-the-spatial-resolution-on-the-prediction}
 \caption{\label{fig-pixelsize}Coucou}
 
 \end{figure}%
+
+The Generalized Linear Model (GLM) analysis revealed a significant
+effect of pixel resolution on the agreement, with a negative
+relationship (\[\beta = -1.0334 \times 10^{-8}, p < 0.001\]). This
+indicates that as pixel resolution increases, the proportion of the
+response variable decreases.
+
+The vegetation classes also exhibited distinct effects on the agreement.
+Magnoliopsida showed a significant positive effect
+(\[\beta = 0.1202, p < 0.001\]), suggesting that this class was
+associated with a higher agreement.
 
 \subsection{Effect of the percent cover on the
 prediction}\label{effect-of-the-percent-cover-on-the-prediction}

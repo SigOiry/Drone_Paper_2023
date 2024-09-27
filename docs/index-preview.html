@@ -13,7 +13,7 @@
     <meta name="author" content="Guillaume Brunier">
     <meta name="author" content="Pierre Gernez">
     <meta name="author" content="Laurent Barillé">
-    <meta name="dcterms.date" content="2024-09-26">
+    <meta name="dcterms.date" content="2024-09-27">
     <meta name="keywords" content="Drone, Remote Sensing, Seagrass, Coastal Ecosystems, Neural Network">
 
     <title>Draft – Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery – Draft</title>
@@ -207,10 +207,10 @@
 <meta name="citation_author" content="Guillaume Brunier">
 <meta name="citation_author" content="Pierre Gernez">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_publication_date" content="2024-09-26">
-<meta name="citation_cover_date" content="2024-09-26">
+<meta name="citation_publication_date" content="2024-09-27">
+<meta name="citation_cover_date" content="2024-09-27">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-09-26">
+<meta name="citation_online_date" content="2024-09-27">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=‘Blue carbon’and nutrient stocks of salt marshes at a temperate coastal lagoon (ria de aveiro, portugal);,citation_author=Ana I Sousa;,citation_author=Danielle B Santos;,citation_author=Eduardo Ferreira Silva;,citation_author=Lisa P Sousa;,citation_author=Daniel FR Cleary;,citation_author=Amadeu MVM Soares;,citation_author=Ana I Lillebø;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=1;,citation_volume=7;,citation_journal_title=Scientific reports;,citation_publisher=Nature Publishing Group UK London;">
@@ -392,7 +392,7 @@
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">September 26, 2024</p>
+              <p class="date">September 27, 2024</p>
             </div>
           </div>
           
@@ -3670,6 +3670,11 @@ NDVI = \frac{R(840nm)-R(668nm)}{R(840nm)+R(668nm)}
 </section>
 <section id="impact-of-the-spatial-resolution-in-the-prediction" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="impact-of-the-spatial-resolution-in-the-prediction"><span class="header-section-number">2.6</span> Impact of the spatial resolution in the prediction</h2>
+<p>To assess the impact of spatial resolution on the model’s output, the reflectance of each flight’s orthomosaic was spatially resampled using the average method from the Terra package in R. DISCOV was then applied to these resampled rasters. The results were compared to the original model predictions, which were resampled using the mode method from the Terra package in R. For each resolution and each class of the model, an agreement percentage was obtained, where a score of 100 indicates that all pixels in the two products are identical, and a score of 0 indicates that all pixels are different.</p>
+<p>We used a Generalized Linear Model (GLM) with a Gaussian family and an identity link function to investigate the relationship between pixel resolution, vegetation class, and their interaction on the response variable, the agreement. The formula for the model was:</p>
+<p><span id="eq-gam"><span class="math display">\[
+Agreement \sim  Resolution \times VegetationClass
+\tag{3}\]</span></span></p>
 </section>
 <section id="impact-of-the-vegetation-cover-on-the-prediction" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="impact-of-the-vegetation-cover-on-the-prediction"><span class="header-section-number">2.7</span> Impact of the vegetation cover on the prediction</h2>
@@ -6178,136 +6183,140 @@ Figure&nbsp;10: Variable Importance of the Neural Network Classifier for each ta
 <span id="cb128-48"><a href="#cb128-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb128-49"><a href="#cb128-49" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(<span class="st">"Data/Resampled_saved_data_total.csv"</span>)){</span>
 <span id="cb128-50"><a href="#cb128-50" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-51"><a href="#cb128-51" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( <span class="st">"Data/Resampled_saved_data_total.csv"</span>)</span>
-<span id="cb128-52"><a href="#cb128-52" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-53"><a href="#cb128-53" aria-hidden="true" tabindex="-1"></a>}<span class="cf">else</span>{</span>
-<span id="cb128-54"><a href="#cb128-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-55"><a href="#cb128-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df)){</span>
-<span id="cb128-56"><a href="#cb128-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-57"><a href="#cb128-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(i)</span>
-<span id="cb128-58"><a href="#cb128-58" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb128-59"><a href="#cb128-59" aria-hidden="true" tabindex="-1"></a>    img <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">c</span>(df<span class="sc">$</span>validation[i],df<span class="sc">$</span>Pred[i]))</span>
-<span id="cb128-60"><a href="#cb128-60" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb128-61"><a href="#cb128-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(img) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"true"</span>,<span class="st">"pred"</span>)</span>
-<span id="cb128-62"><a href="#cb128-62" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb128-63"><a href="#cb128-63" aria-hidden="true" tabindex="-1"></a>    df_img <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span>  </span>
-<span id="cb128-64"><a href="#cb128-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb128-65"><a href="#cb128-65" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>true <span class="sc">==</span> <span class="dv">0</span>,</span>
-<span id="cb128-66"><a href="#cb128-66" aria-hidden="true" tabindex="-1"></a>                    <span class="sc">!</span>pred <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-67"><a href="#cb128-67" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">res =</span> df<span class="sc">$</span>res[i],</span>
-<span id="cb128-68"><a href="#cb128-68" aria-hidden="true" tabindex="-1"></a>                    <span class="at">site =</span> df<span class="sc">$</span>site[i])</span>
-<span id="cb128-69"><a href="#cb128-69" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb128-70"><a href="#cb128-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(i <span class="sc">==</span> <span class="dv">1</span>){</span>
-<span id="cb128-71"><a href="#cb128-71" aria-hidden="true" tabindex="-1"></a>      df_compare <span class="ot">&lt;-</span> df_img</span>
-<span id="cb128-72"><a href="#cb128-72" aria-hidden="true" tabindex="-1"></a>    }<span class="cf">else</span>{</span>
-<span id="cb128-73"><a href="#cb128-73" aria-hidden="true" tabindex="-1"></a>      df_compare <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_compare,df_img)</span>
-<span id="cb128-74"><a href="#cb128-74" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb128-75"><a href="#cb128-75" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb128-76"><a href="#cb128-76" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-77"><a href="#cb128-77" aria-hidden="true" tabindex="-1"></a>  validation <span class="ot">=</span> df_compare <span class="sc">%&gt;%</span> </span>
-<span id="cb128-78"><a href="#cb128-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">same =</span> <span class="fu">case_when</span>(pred <span class="sc">==</span> true <span class="sc">~</span> T,</span>
-<span id="cb128-79"><a href="#cb128-79" aria-hidden="true" tabindex="-1"></a>                            T <span class="sc">~</span> F))</span>
-<span id="cb128-80"><a href="#cb128-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-81"><a href="#cb128-81" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> validation <span class="sc">%&gt;%</span> </span>
-<span id="cb128-82"><a href="#cb128-82" aria-hidden="true" tabindex="-1"></a>  dtplyr<span class="sc">::</span><span class="fu">lazy_dt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb128-83"><a href="#cb128-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(res,true) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-84"><a href="#cb128-84" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">agreed =</span> <span class="fu">sum</span>(same, <span class="at">na.rm =</span> T),</span>
-<span id="cb128-85"><a href="#cb128-85" aria-hidden="true" tabindex="-1"></a>          <span class="at">n_obs =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-86"><a href="#cb128-86" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ungroup() %&gt;% </span></span>
-<span id="cb128-87"><a href="#cb128-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> agreed<span class="sc">/</span>n_obs) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-88"><a href="#cb128-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb128-89"><a href="#cb128-89" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(true <span class="sc">!=</span> <span class="dv">1</span>,</span>
-<span id="cb128-90"><a href="#cb128-90" aria-hidden="true" tabindex="-1"></a>                true <span class="sc">!=</span> <span class="dv">6</span>,</span>
-<span id="cb128-91"><a href="#cb128-91" aria-hidden="true" tabindex="-1"></a>                true <span class="sc">!=</span> <span class="dv">7</span>,</span>
-<span id="cb128-92"><a href="#cb128-92" aria-hidden="true" tabindex="-1"></a>                true <span class="sc">!=</span> <span class="dv">8</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-93"><a href="#cb128-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">true_fct =</span> <span class="fu">as.factor</span>(true),</span>
-<span id="cb128-94"><a href="#cb128-94" aria-hidden="true" tabindex="-1"></a>         <span class="at">area =</span> res<span class="sc">*</span>res) </span>
-<span id="cb128-95"><a href="#cb128-95" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-96"><a href="#cb128-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(total, <span class="st">"Data/Resampled_saved_data_total.csv"</span>, <span class="at">row.names =</span> F)</span>
-<span id="cb128-97"><a href="#cb128-97" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb128-98"><a href="#cb128-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-51"><a href="#cb128-51" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> <span class="fu">read.csv</span>( <span class="st">"Data/Resampled_saved_data_total.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-52"><a href="#cb128-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">true_fct =</span> <span class="fu">as.factor</span>(true))</span>
+<span id="cb128-53"><a href="#cb128-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-54"><a href="#cb128-54" aria-hidden="true" tabindex="-1"></a>}<span class="cf">else</span>{</span>
+<span id="cb128-55"><a href="#cb128-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-56"><a href="#cb128-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df)){</span>
+<span id="cb128-57"><a href="#cb128-57" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-58"><a href="#cb128-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(i)</span>
+<span id="cb128-59"><a href="#cb128-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb128-60"><a href="#cb128-60" aria-hidden="true" tabindex="-1"></a>    img <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">c</span>(df<span class="sc">$</span>validation[i],df<span class="sc">$</span>Pred[i]))</span>
+<span id="cb128-61"><a href="#cb128-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb128-62"><a href="#cb128-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(img) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"true"</span>,<span class="st">"pred"</span>)</span>
+<span id="cb128-63"><a href="#cb128-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb128-64"><a href="#cb128-64" aria-hidden="true" tabindex="-1"></a>    df_img <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span>  </span>
+<span id="cb128-65"><a href="#cb128-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb128-66"><a href="#cb128-66" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>true <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb128-67"><a href="#cb128-67" aria-hidden="true" tabindex="-1"></a>                    <span class="sc">!</span>pred <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-68"><a href="#cb128-68" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">res =</span> df<span class="sc">$</span>res[i],</span>
+<span id="cb128-69"><a href="#cb128-69" aria-hidden="true" tabindex="-1"></a>                    <span class="at">site =</span> df<span class="sc">$</span>site[i])</span>
+<span id="cb128-70"><a href="#cb128-70" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb128-71"><a href="#cb128-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(i <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb128-72"><a href="#cb128-72" aria-hidden="true" tabindex="-1"></a>      df_compare <span class="ot">&lt;-</span> df_img</span>
+<span id="cb128-73"><a href="#cb128-73" aria-hidden="true" tabindex="-1"></a>    }<span class="cf">else</span>{</span>
+<span id="cb128-74"><a href="#cb128-74" aria-hidden="true" tabindex="-1"></a>      df_compare <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_compare,df_img)</span>
+<span id="cb128-75"><a href="#cb128-75" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb128-76"><a href="#cb128-76" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb128-77"><a href="#cb128-77" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-78"><a href="#cb128-78" aria-hidden="true" tabindex="-1"></a>  validation <span class="ot">=</span> df_compare <span class="sc">%&gt;%</span> </span>
+<span id="cb128-79"><a href="#cb128-79" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">same =</span> <span class="fu">case_when</span>(pred <span class="sc">==</span> true <span class="sc">~</span> T,</span>
+<span id="cb128-80"><a href="#cb128-80" aria-hidden="true" tabindex="-1"></a>                            T <span class="sc">~</span> F))</span>
+<span id="cb128-81"><a href="#cb128-81" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-82"><a href="#cb128-82" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> validation <span class="sc">%&gt;%</span> </span>
+<span id="cb128-83"><a href="#cb128-83" aria-hidden="true" tabindex="-1"></a>  dtplyr<span class="sc">::</span><span class="fu">lazy_dt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb128-84"><a href="#cb128-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(res,true) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-85"><a href="#cb128-85" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">agreed =</span> <span class="fu">sum</span>(same, <span class="at">na.rm =</span> T),</span>
+<span id="cb128-86"><a href="#cb128-86" aria-hidden="true" tabindex="-1"></a>          <span class="at">n_obs =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-87"><a href="#cb128-87" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ungroup() %&gt;% </span></span>
+<span id="cb128-88"><a href="#cb128-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> agreed<span class="sc">/</span>n_obs) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-89"><a href="#cb128-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb128-90"><a href="#cb128-90" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dplyr::filter(true != 1,</span></span>
+<span id="cb128-91"><a href="#cb128-91" aria-hidden="true" tabindex="-1"></a>  <span class="co">#               true != 6,</span></span>
+<span id="cb128-92"><a href="#cb128-92" aria-hidden="true" tabindex="-1"></a>  <span class="co">#               true != 7,</span></span>
+<span id="cb128-93"><a href="#cb128-93" aria-hidden="true" tabindex="-1"></a>  <span class="co">#               true != 8) %&gt;% </span></span>
+<span id="cb128-94"><a href="#cb128-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">true_fct =</span> <span class="fu">as.factor</span>(true),</span>
+<span id="cb128-95"><a href="#cb128-95" aria-hidden="true" tabindex="-1"></a>         <span class="at">area =</span> res<span class="sc">*</span>res) </span>
+<span id="cb128-96"><a href="#cb128-96" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-97"><a href="#cb128-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(total, <span class="st">"Data/Resampled_saved_data_total.csv"</span>, <span class="at">row.names =</span> F)</span>
+<span id="cb128-98"><a href="#cb128-98" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb128-99"><a href="#cb128-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-100"><a href="#cb128-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-101"><a href="#cb128-101" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-102"><a href="#cb128-102" aria-hidden="true" tabindex="-1"></a><span class="co"># reframing &lt;- total %&gt;% </span></span>
-<span id="cb128-103"><a href="#cb128-103" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(true_fct) %&gt;% </span></span>
-<span id="cb128-104"><a href="#cb128-104" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::filter(res == 10) %&gt;% </span></span>
-<span id="cb128-105"><a href="#cb128-105" aria-hidden="true" tabindex="-1"></a><span class="co">#   ungroup() %&gt;% </span></span>
-<span id="cb128-106"><a href="#cb128-106" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(diff = max(prop)-prop) %&gt;% </span></span>
-<span id="cb128-107"><a href="#cb128-107" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::select(true_fct,diff)</span></span>
-<span id="cb128-108"><a href="#cb128-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
-<span id="cb128-109"><a href="#cb128-109" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb128-110"><a href="#cb128-110" aria-hidden="true" tabindex="-1"></a><span class="co"># total &lt;- total %&gt;% </span></span>
-<span id="cb128-111"><a href="#cb128-111" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(reframing, by = "true_fct") %&gt;% </span></span>
-<span id="cb128-112"><a href="#cb128-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(prop = prop + diff) %&gt;% </span></span>
-<span id="cb128-113"><a href="#cb128-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::select(-diff)</span></span>
-<span id="cb128-114"><a href="#cb128-114" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-115"><a href="#cb128-115" aria-hidden="true" tabindex="-1"></a>total <span class="sc">%&gt;%</span> </span>
-<span id="cb128-116"><a href="#cb128-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> res, <span class="at">y =</span> prop, <span class="at">group =</span> true, <span class="at">color =</span>true_fct))<span class="sc">+</span></span>
-<span id="cb128-117"><a href="#cb128-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb128-118"><a href="#cb128-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Bede_Map</span>()</span>
-<span id="cb128-119"><a href="#cb128-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-120"><a href="#cb128-120" aria-hidden="true" tabindex="-1"></a><span class="co"># glm_res_true &lt;- glm(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) </span></span>
-<span id="cb128-121"><a href="#cb128-121" aria-hidden="true" tabindex="-1"></a>glm_res_true <span class="ot">&lt;-</span> mgcv<span class="sc">::</span><span class="fu">gam</span>(prop <span class="sc">~</span> area <span class="sc">*</span> true_fct , <span class="at">data =</span> total, <span class="at">familly =</span> mgcv<span class="sc">::</span><span class="fu">betar</span>(<span class="at">link=</span><span class="st">"logit"</span>)) </span>
-<span id="cb128-122"><a href="#cb128-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-100"><a href="#cb128-100" aria-hidden="true" tabindex="-1"></a><span class="co"># validation &lt;- read.csv( "Data/Resampled_saved_data.csv")</span></span>
+<span id="cb128-101"><a href="#cb128-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-102"><a href="#cb128-102" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-103"><a href="#cb128-103" aria-hidden="true" tabindex="-1"></a><span class="co"># reframing &lt;- total %&gt;% </span></span>
+<span id="cb128-104"><a href="#cb128-104" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(true_fct) %&gt;% </span></span>
+<span id="cb128-105"><a href="#cb128-105" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::filter(res == 10) %&gt;% </span></span>
+<span id="cb128-106"><a href="#cb128-106" aria-hidden="true" tabindex="-1"></a><span class="co">#   ungroup() %&gt;% </span></span>
+<span id="cb128-107"><a href="#cb128-107" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(diff = max(prop)-prop) %&gt;% </span></span>
+<span id="cb128-108"><a href="#cb128-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::select(true_fct,diff)</span></span>
+<span id="cb128-109"><a href="#cb128-109" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb128-110"><a href="#cb128-110" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-111"><a href="#cb128-111" aria-hidden="true" tabindex="-1"></a><span class="co"># total &lt;- total %&gt;% </span></span>
+<span id="cb128-112"><a href="#cb128-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(reframing, by = "true_fct") %&gt;% </span></span>
+<span id="cb128-113"><a href="#cb128-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(prop = prop + diff) %&gt;% </span></span>
+<span id="cb128-114"><a href="#cb128-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::select(-diff)</span></span>
+<span id="cb128-115"><a href="#cb128-115" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-116"><a href="#cb128-116" aria-hidden="true" tabindex="-1"></a>total <span class="sc">%&gt;%</span> </span>
+<span id="cb128-117"><a href="#cb128-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> res, <span class="at">y =</span> prop, <span class="at">group =</span> true, <span class="at">color =</span>true_fct))<span class="sc">+</span></span>
+<span id="cb128-118"><a href="#cb128-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb128-119"><a href="#cb128-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Bede_Map</span>()</span>
+<span id="cb128-120"><a href="#cb128-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-121"><a href="#cb128-121" aria-hidden="true" tabindex="-1"></a>glm_res_true <span class="ot">&lt;-</span> <span class="fu">glm</span>(prop <span class="sc">~</span> area<span class="sc">*</span>true_fct , <span class="at">data =</span> total)</span>
+<span id="cb128-122"><a href="#cb128-122" aria-hidden="true" tabindex="-1"></a><span class="co"># glm_res_true &lt;- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) </span></span>
 <span id="cb128-123"><a href="#cb128-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-124"><a href="#cb128-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-125"><a href="#cb128-125" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm_res_true)</span>
-<span id="cb128-126"><a href="#cb128-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-127"><a href="#cb128-127" aria-hidden="true" tabindex="-1"></a>Utilities.Package<span class="sc">::</span><span class="fu">Model_Check</span>(glm_res_true)</span>
+<span id="cb128-124"><a href="#cb128-124" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> total <span class="sc">%&gt;%</span> </span>
+<span id="cb128-125"><a href="#cb128-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(res, true) <span class="sc">%&gt;%</span> </span>
+<span id="cb128-126"><a href="#cb128-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">mean =</span> <span class="fu">mean</span>(prop))</span>
+<span id="cb128-127"><a href="#cb128-127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb128-128"><a href="#cb128-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-129"><a href="#cb128-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-130"><a href="#cb128-130" aria-hidden="true" tabindex="-1"></a>NewData<span class="ot">&lt;-</span><span class="fu">expand_grid</span>(<span class="at">res=</span><span class="fu">unique</span>(total<span class="sc">$</span>res),</span>
-<span id="cb128-131"><a href="#cb128-131" aria-hidden="true" tabindex="-1"></a>                    <span class="at">true_fct=</span><span class="fu">unique</span>(total<span class="sc">$</span>true_fct),</span>
-<span id="cb128-132"><a href="#cb128-132" aria-hidden="true" tabindex="-1"></a>                    <span class="at">area =</span> res<span class="sc">*</span>res)</span>
+<span id="cb128-129"><a href="#cb128-129" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm_res_true)</span>
+<span id="cb128-130"><a href="#cb128-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-131"><a href="#cb128-131" aria-hidden="true" tabindex="-1"></a>Utilities.Package<span class="sc">::</span><span class="fu">Model_Check</span>(glm_res_true)</span>
+<span id="cb128-132"><a href="#cb128-132" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb128-133"><a href="#cb128-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-134"><a href="#cb128-134" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm_res_true, NewData, <span class="at">se.fit =</span> T, <span class="at">type =</span> <span class="st">"link"</span>)</span>
-<span id="cb128-135"><a href="#cb128-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-134"><a href="#cb128-134" aria-hidden="true" tabindex="-1"></a>NewData<span class="ot">&lt;-</span><span class="fu">expand_grid</span>(<span class="at">area=</span><span class="fu">unique</span>(total<span class="sc">$</span>area),</span>
+<span id="cb128-135"><a href="#cb128-135" aria-hidden="true" tabindex="-1"></a>                    <span class="at">true_fct=</span><span class="fu">unique</span>(total<span class="sc">$</span>true_fct))</span>
 <span id="cb128-136"><a href="#cb128-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-137"><a href="#cb128-137" aria-hidden="true" tabindex="-1"></a>NewData <span class="ot">&lt;-</span> NewData <span class="sc">%&gt;%</span> </span>
-<span id="cb128-138"><a href="#cb128-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> pred<span class="sc">$</span>fit<span class="sc">*</span><span class="dv">100</span>,</span>
-<span id="cb128-139"><a href="#cb128-139" aria-hidden="true" tabindex="-1"></a>         <span class="at">se =</span> pred<span class="sc">$</span>se.fit<span class="sc">*</span><span class="dv">100</span>,</span>
-<span id="cb128-140"><a href="#cb128-140" aria-hidden="true" tabindex="-1"></a>         <span class="at">true_fct=</span><span class="fu">as.factor</span>(true_fct))</span>
-<span id="cb128-141"><a href="#cb128-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-142"><a href="#cb128-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb128-143"><a href="#cb128-143" aria-hidden="true" tabindex="-1"></a>  cols_fill <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#DAA520"</span>,</span>
-<span id="cb128-144"><a href="#cb128-144" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"#b3ff1a"</span>,</span>
-<span id="cb128-145"><a href="#cb128-145" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"3"</span> <span class="ot">=</span> <span class="st">"#389318"</span>,</span>
-<span id="cb128-146"><a href="#cb128-146" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"4"</span> <span class="ot">=</span> <span class="st">"#873e23"</span>,</span>
-<span id="cb128-147"><a href="#cb128-147" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"5"</span> <span class="ot">=</span> <span class="st">"#b3002d"</span>,</span>
-<span id="cb128-148"><a href="#cb128-148" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"6"</span> <span class="ot">=</span> <span class="st">"#70543e"</span>,</span>
-<span id="cb128-149"><a href="#cb128-149" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"7"</span> <span class="ot">=</span> <span class="st">'grey'</span>,</span>
-<span id="cb128-150"><a href="#cb128-150" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"8"</span> <span class="ot">=</span> <span class="st">"#42c9bc"</span>)</span>
-<span id="cb128-151"><a href="#cb128-151" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-152"><a href="#cb128-152" aria-hidden="true" tabindex="-1"></a>(plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
-<span id="cb128-153"><a href="#cb128-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">sqrt</span>(area)<span class="sc">/</span><span class="dv">100</span>, <span class="at">y =</span> fit, <span class="at">ymax =</span> fit<span class="sc">+</span>se, <span class="at">ymin =</span> fit<span class="sc">-</span>se, </span>
-<span id="cb128-154"><a href="#cb128-154" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> true_fct, <span class="at">group =</span> true_fct, <span class="at">fill =</span> true_fct</span>
-<span id="cb128-155"><a href="#cb128-155" aria-hidden="true" tabindex="-1"></a>                  ), <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb128-156"><a href="#cb128-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">sqrt</span>(area)<span class="sc">/</span><span class="dv">100</span>, <span class="at">y =</span> fit,</span>
-<span id="cb128-157"><a href="#cb128-157" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> true_fct, <span class="at">group =</span> true_fct</span>
-<span id="cb128-158"><a href="#cb128-158" aria-hidden="true" tabindex="-1"></a>                ))<span class="sc">+</span></span>
-<span id="cb128-159"><a href="#cb128-159" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ylim(0,1)+</span></span>
-<span id="cb128-160"><a href="#cb128-160" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
-<span id="cb128-161"><a href="#cb128-161" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values =</span> cols_fill,</span>
-<span id="cb128-162"><a href="#cb128-162" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Green algae"</span>, <span class="st">"Seagrass"</span>, <span class="st">"Brown algae"</span>, <span class="st">"Red algae"</span>, <span class="st">"Sediment"</span>, <span class="st">"Sunglint"</span>,<span class="st">"Water"</span>)) <span class="sc">+</span></span>
-<span id="cb128-163"><a href="#cb128-163" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
-<span id="cb128-164"><a href="#cb128-164" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values =</span> cols_fill,</span>
-<span id="cb128-165"><a href="#cb128-165" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Green algae"</span>, <span class="st">"Seagrass"</span>, <span class="st">"Brown algae"</span>, <span class="st">"Red algae"</span>, <span class="st">"Sediment"</span>, <span class="st">"Sunglint"</span>,<span class="st">"Water"</span>))<span class="sc">+</span></span>
-<span id="cb128-166"><a href="#cb128-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Bede</span>()<span class="sc">+</span></span>
-<span id="cb128-167"><a href="#cb128-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Resolution (m)"</span>) <span class="sc">+</span></span>
-<span id="cb128-168"><a href="#cb128-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Agreement"</span>)<span class="sc">+</span></span>
-<span id="cb128-169"><a href="#cb128-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),</span>
-<span id="cb128-170"><a href="#cb128-170" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
-<span id="cb128-171"><a href="#cb128-171" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
-<span id="cb128-172"><a href="#cb128-172" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
-<span id="cb128-173"><a href="#cb128-173" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>))</span>
-<span id="cb128-174"><a href="#cb128-174" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb128-175"><a href="#cb128-175" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scale_x_log10()</span></span>
-<span id="cb128-176"><a href="#cb128-176" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-177"><a href="#cb128-177" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb128-178"><a href="#cb128-178" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb128-179"><a href="#cb128-179" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"Figures/High_res/resolution_plot.png"</span>, plot, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">height =</span> <span class="dv">803</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">width =</span> <span class="dv">1184</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">units =</span> <span class="st">"px"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb128-137"><a href="#cb128-137" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm_res_true, NewData, <span class="at">se.fit =</span> T, <span class="at">type =</span> <span class="st">"link"</span>)</span>
+<span id="cb128-138"><a href="#cb128-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-139"><a href="#cb128-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-140"><a href="#cb128-140" aria-hidden="true" tabindex="-1"></a>NewData <span class="ot">&lt;-</span> NewData <span class="sc">%&gt;%</span> </span>
+<span id="cb128-141"><a href="#cb128-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> pred<span class="sc">$</span>fit<span class="sc">*</span><span class="dv">100</span>,</span>
+<span id="cb128-142"><a href="#cb128-142" aria-hidden="true" tabindex="-1"></a>         <span class="at">se =</span> pred<span class="sc">$</span>se.fit<span class="sc">*</span><span class="dv">100</span>,</span>
+<span id="cb128-143"><a href="#cb128-143" aria-hidden="true" tabindex="-1"></a>         <span class="at">true_fct=</span>(true_fct))</span>
+<span id="cb128-144"><a href="#cb128-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-145"><a href="#cb128-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-146"><a href="#cb128-146" aria-hidden="true" tabindex="-1"></a>  cols_fill <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#DAA520"</span>,</span>
+<span id="cb128-147"><a href="#cb128-147" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"#b3ff1a"</span>,</span>
+<span id="cb128-148"><a href="#cb128-148" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"3"</span> <span class="ot">=</span> <span class="st">"#389318"</span>,</span>
+<span id="cb128-149"><a href="#cb128-149" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"4"</span> <span class="ot">=</span> <span class="st">"#873e23"</span>,</span>
+<span id="cb128-150"><a href="#cb128-150" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"5"</span> <span class="ot">=</span> <span class="st">"#b3002d"</span>,</span>
+<span id="cb128-151"><a href="#cb128-151" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"6"</span> <span class="ot">=</span> <span class="st">"#70543e"</span>,</span>
+<span id="cb128-152"><a href="#cb128-152" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"7"</span> <span class="ot">=</span> <span class="st">'grey'</span>,</span>
+<span id="cb128-153"><a href="#cb128-153" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"8"</span> <span class="ot">=</span> <span class="st">"#42c9bc"</span>)</span>
+<span id="cb128-154"><a href="#cb128-154" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-155"><a href="#cb128-155" aria-hidden="true" tabindex="-1"></a>(plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb128-156"><a href="#cb128-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">sqrt</span>(area)<span class="sc">/</span><span class="dv">100</span>, <span class="at">y =</span> fit, <span class="at">ymax =</span> fit<span class="sc">+</span>se, <span class="at">ymin =</span> fit<span class="sc">-</span>se, </span>
+<span id="cb128-157"><a href="#cb128-157" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> true_fct, <span class="at">group =</span> true_fct, <span class="at">fill =</span> true_fct</span>
+<span id="cb128-158"><a href="#cb128-158" aria-hidden="true" tabindex="-1"></a>                  ), <span class="at">alpha =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb128-159"><a href="#cb128-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">sqrt</span>(area)<span class="sc">/</span><span class="dv">100</span>, <span class="at">y =</span> fit,</span>
+<span id="cb128-160"><a href="#cb128-160" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> true_fct, <span class="at">group =</span> true_fct</span>
+<span id="cb128-161"><a href="#cb128-161" aria-hidden="true" tabindex="-1"></a>                ))<span class="sc">+</span></span>
+<span id="cb128-162"><a href="#cb128-162" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb128-163"><a href="#cb128-163" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values =</span> cols_fill,</span>
+<span id="cb128-164"><a href="#cb128-164" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Green algae"</span>, <span class="st">"Seagrass"</span>, <span class="st">"Brown algae"</span>, <span class="st">"Red algae"</span>, <span class="st">"Sediment"</span>, <span class="st">"Sunglint"</span>,<span class="st">"Water"</span>)) <span class="sc">+</span></span>
+<span id="cb128-165"><a href="#cb128-165" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb128-166"><a href="#cb128-166" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values =</span> cols_fill,</span>
+<span id="cb128-167"><a href="#cb128-167" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Green algae"</span>, <span class="st">"Seagrass"</span>, <span class="st">"Brown algae"</span>, <span class="st">"Red algae"</span>, <span class="st">"Sediment"</span>, <span class="st">"Sunglint"</span>,<span class="st">"Water"</span>))<span class="sc">+</span></span>
+<span id="cb128-168"><a href="#cb128-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_Bede</span>()<span class="sc">+</span></span>
+<span id="cb128-169"><a href="#cb128-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Resolution (m)"</span>) <span class="sc">+</span></span>
+<span id="cb128-170"><a href="#cb128-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Agreement"</span>)<span class="sc">+</span></span>
+<span id="cb128-171"><a href="#cb128-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),</span>
+<span id="cb128-172"><a href="#cb128-172" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb128-173"><a href="#cb128-173" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb128-174"><a href="#cb128-174" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb128-175"><a href="#cb128-175" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>)</span>
+<span id="cb128-176"><a href="#cb128-176" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb128-177"><a href="#cb128-177" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb128-178"><a href="#cb128-178" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scale_x_log10()</span></span>
+<span id="cb128-179"><a href="#cb128-179" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-180"><a href="#cb128-180" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb128-181"><a href="#cb128-181" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb128-182"><a href="#cb128-182" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"Figures/High_res/resolution_plot.png"</span>, plot, <span class="at">bg =</span> <span class="st">"white"</span>, <span class="at">height =</span> <span class="dv">803</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">width =</span> <span class="dv">1184</span><span class="sc">*</span><span class="dv">3</span>, <span class="at">units =</span> <span class="st">"px"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
+<p><a href="#fig-pixelsize" class="quarto-xref">Figure&nbsp;11</a> shows an effect of the pixel size on the agreement between the two products. The highest resolution in which the resampling has been performed is 10 cm. At this resolution, the agreement has already decreased from 78% (red algae) to 94% (seagrass), depending on the class. As pixel size increases, the agreement between the products declines steadily for all classes. This decline is most pronounced for green algae, which experiences the sharpest drop in agreement as pixel size increases beyond 10 m, reaching below 0% at a pixel size of 30 m. Seagrass maintain higher levels of agreement at coarser resolutions, although a clear decline is still observed, with seagrasses dropping from over 94% at 10 cm to around 88% at 30 m. Brown algae and red algae show a more moderate decline compared to red algae, with agreement levels remaining around 62% and 40%, respectively, at 30 m resolution.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [46]:</pre></div><div id="cell-fig-pixelsize" class="cell">
 <div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/High_res/resolution_plot.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -6323,6 +6332,8 @@ Figure&nbsp;11: Coucou
 </div>
 </div>
 </div></div>
+<p>The Generalized Linear Model (GLM) analysis revealed a significant effect of pixel resolution on the agreement, with a negative relationship (<span class="math display">\[\beta = -1.0334 \times 10^{-8}, p &lt; 0.001\]</span>). This indicates that as pixel resolution increases, the proportion of the response variable decreases.</p>
+<p>The vegetation classes also exhibited distinct effects on the agreement. Magnoliopsida showed a significant positive effect (<span class="math display">\[\beta = 0.1202, p &lt; 0.001\]</span>), suggesting that this class was associated with a higher agreement.</p>
 </section>
 <section id="effect-of-the-percent-cover-on-the-prediction" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="effect-of-the-percent-cover-on-the-prediction"><span class="header-section-number">3.5</span> Effect of the percent cover on the prediction</h2>
@@ -7696,7 +7707,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
