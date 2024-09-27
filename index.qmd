@@ -4236,7 +4236,7 @@ knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png")
 
 ```
 
-Amoung the high altitude flights, the one acquired over the inner part of Ria de Aveiro coastal lagoon covered the largest area with approximately 1.5 km² (@fig-Boat). This site was dominated by seagrass and red macroalgae. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow were mixed with green macroalgae (*Ulva sp.*), which the model agreed with (F1 score of 0.89 for green algae, 0.97 for seagrass and 0.98 for red algae).
+Among the high altitude flights, the one acquired over the inner part of Ria de Aveiro coastal lagoon covered the largest area with approximately 1.5 km² (@fig-Boat). This site was dominated by seagrass and red macroalgae. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow were mixed with green macroalgae (*Ulva sp.*), which the model agreed with (F1 score of 0.89 for green algae, 0.97 for seagrass and 0.98 for red algae).
 
 ```{r Figure 6 Boat}
 #| cache: true
@@ -5850,7 +5850,7 @@ NewData <- NewData %>%
 ggsave("Figures/High_res/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
 ```
 
-@fig-pixelsize shows an effect of the pixel size on the agreement between the two products. The highest resolution in which the resampling has been performed is 10 cm. At this resolution, the agreement has already decreased from 78% (red algae) to 94% (seagrass), depending on the class. As pixel size increases, the agreement between the products declines steadily for all classes. This decline is most pronounced for green algae, which experiences the sharpest drop in agreement as pixel size increases beyond 10 m, reaching below 0% at a pixel size of 30 m. Seagrass maintain higher levels of agreement at coarser resolutions, although a clear decline is still observed, with seagrasses dropping from over 94% at 10 cm to around 88% at 30 m. Brown algae and red algae show a more moderate decline compared to red algae, with agreement levels remaining around 62% and 40%, respectively, at 30 m resolution.
+@fig-pixelsize demonstrated the effect of pixel size on the agreement between two products. The highest resolution at which resampling was performed was 10 cm. At this resolution, agreement rates had already decreased, ranging from 78% for red algae to 94% for seagrass, depending on the class. As pixel size increased, the agreement between the products steadily declined across all classes. This decline was most pronounced for green algae, which experienced the sharpest drop in agreement as pixel size surpassed 10 m, falling below 0% at a 30 m pixel size. Seagrass maintained higher agreement levels at coarser resolutions, though a clear decline was still observed, dropping from over 94% at 10 cm to around 88% at 30 m. Brown algae and red algae showed a more moderate decline in comparison, with agreement levels at 30 m resolution settling around 62% and 40%, respectively.
 
 ```{r Pixel size Plot}
 #| cache: false
