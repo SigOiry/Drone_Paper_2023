@@ -3122,12 +3122,12 @@ Variable Importance Plots (VIP) serve as a method to identify which predictors a
 
 ## Impact of the spatial resolution in the prediction
 
-To assess the impact of spatial resolution on the model's output, the reflectance of each flight's orthomosaic was spatially resampled using the average method from the Terra package in R. DISCOV was then applied to these resampled rasters. The results were compared to the original model predictions, which were resampled using the mode method from the Terra package in R. For each resolution and each class of the model, an agreement percentage was obtained, where a score of 100 indicates that all pixels in the two products are identical, and a score of 0 indicates that all pixels are different.
+To evaluate the impact of spatial resolution on the model’s output, we resampled the reflectance of each flight's orthomosaic using the average method from the Terra package in R. DISCOV was then applied to these resampled rasters, and the results were compared to the original model predictions. For each resolution and vegetation class, we calculated predicted area loss, where a score of 0 indicates no area loss during resampling, and a score of 100 indicates complete loss of vegetation.
 
-We used a Generalized Linear Model (GLM) with a Gaussian family and an identity link function to investigate the relationship between pixel resolution, vegetation class, and their interaction on the response variable, the agreement. The formula for the model was:
+We used a Generalized Linear Model (GLM) with a Gaussian family and identity link function to examine the relationship between pixel resolution, vegetation class, and their interaction on the response variable (the loss of vegetation area). The model formula was as follows:
 
 $$
-Agreement \sim  Resolution \times VegetationClass
+%loss \sim  Resolution \times VegetationClass
 $$ {#eq-gam}
 
 ## Impact of mixed vegetation cover on the prediction
@@ -5777,6 +5777,8 @@ if(file.exists("Data/Resampled_saved_data_total.csv")){
 #   mutate(prop = prop + diff) %>% 
 #   dplyr::select(-diff)
   
+total <-  total %>% 
+  mutate(loss = 1-prop)
 total %>% 
   ggplot(aes(x = area, y = loss, group = true, color =true_fct))+
   geom_line()+
@@ -5804,7 +5806,11 @@ pred <- predict(glm_res_true, NewData, se.fit = T, type = "link")
 NewData <- NewData %>% 
   mutate(fit = pred$fit*100,
          se = pred$se.fit*100,
-         true_fct=(true_fct))
+         true_fct=(true_fct),
+         res = sqrt(area)/100) %>% 
+  group_by(true_fct) %>% 
+  mutate(fitted = ((fit-min(fit))/(max(fit)-min(fit)))*(max(fit)/100),
+         fitted_se = ((se-min(se))/(max(se)-min(se)))*(max(se)/100))
 
 
   cols_fill <- c("1" = "#DAA520",
@@ -5815,21 +5821,17 @@ NewData <- NewData %>%
                  "6" = "#70543e",
                  "7" = 'grey',
                  "8" = "#42c9bc")
-  a <- NewData %>% 
-  dplyr::filter(true_fct != 1,
-                true_fct != 6,
-                true_fct != 7,
-                true_fct != 8) 
+
 (plot <- NewData %>% 
   dplyr::filter(true_fct != 1,
                 true_fct != 6,
                 true_fct != 7,
                 true_fct != 8) %>%
     ggplot()+
-  geom_ribbon(aes(x = sqrt(area), y = fit, ymax = fit+se, ymin = fit-se, 
+  geom_ribbon(aes(x = sqrt(area)/100, y = fitted*100, ymax = (fitted+fitted_se)*100, ymin = (fitted-fitted_se)*100,
                   color = true_fct, group = true_fct, fill = true_fct
                   ), alpha = 0.2)+
-  geom_line(aes(x = sqrt(area), y = fit,
+  geom_line(aes(x = sqrt(area)/100, y = fitted*100,
                 color = true_fct, group = true_fct
                 ))+
       scale_fill_manual(name = NULL,
@@ -5855,13 +5857,195 @@ NewData <- NewData %>%
 ggsave("Figures/High_res/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
 ```
 
-@fig-pixelsize illustrated the relationship between predicted area loss for different vegetation types and map resolution. The highest resolution used for resampling was 10 cm, at which point vegetation area had already started to decrease. The losses ranged from 21% for red algae to 5% for seagrass, depending on the vegetation type. As pixel size increased, the retrieved vegetation area decreased for all classes. This reduction was most severe for green algae, which experienced a sharp decline once pixel size exceeded 10 m, culminating in a complete loss (100%) at a 30 m pixel size. Seagrass exhibited the lowest loss at coarser resolutions, though it still showed a clear decline, with area loss increasing from over 5% at 10 cm to around 11% at 30 m. Brown algae and red algae experienced more moderate declines, with losses at 30 m resolution reaching approximately 37% and 59%, respectively.
+```{r vegetation loss}
+#| cache: false
+#| echo: false
+#| warning: false
+#| eval: false
+
+df_resampled_img <- list.files("Data/Predictions/Resampled",full.names = T) %>% 
+  as_tibble() %>% 
+  rename(path = "value") %>% 
+  mutate(name = gsub(".*/","",path),
+         type = case_when(str_detect(name, "_prob.tif") ~ "Prob",
+                          T ~ "Pred")) %>% 
+  dplyr::filter(type == "Pred") %>% 
+  mutate(res =sub(".*_(\\d+)cm_.*", "\\1", name) %>% as.numeric(),
+         ortho_name  = sub("_(\\d+)cm_.*", "", name)) %>% 
+  arrange(ortho_name,res) %>% 
+  mutate(site = case_when(str_detect(ortho_name, "Aveiro_1506_Highest") ~ "Aveiro",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_1") ~ "Boat1",
+                          str_detect(ortho_name, "Aveiro_boat_1706_flight_2") ~ "Boat2",
+                          str_detect(ortho_name, "NoirmoutierNorthDikeSite") ~ "NorthDike",
+                          str_detect(ortho_name, "Duer_15072022_120m") ~ "Duer",
+                          str_detect(ortho_name, "handfisher_Ortho") ~ "handfisher_Ortho",
+                          str_detect(ortho_name, "Horse_rooster") ~ "Horse_rooster",
+                          str_detect(ortho_name, "fl1_120m_handfisher_old") ~ "fl1_120m_handfisher_old",
+                          str_detect(ortho_name, "fl2_120m_handfisher_old") ~ "fl2_120m_handfisher_old",
+                          T ~ NA)) %>% 
+  dplyr::filter(!site == "handfisher_Ortho",
+                !site == "Duer") %>% 
+  dplyr::select(-ortho_name)
+
+
+native_res <- df_resampled_img %>% 
+  dplyr::filter(res == 10)
+
+
+  for(i in 1:nrow(native_res)){
+  
+    print(i)
+    
+    img <- rast(native_res$path[i])
+    
+    names(img) <- c("pred")
+    
+    df_img <- img %>%  
+      as.data.frame() %>% 
+      dplyr::filter(!pred == 0) %>% 
+      group_by(pred) %>% 
+      reframe(n_obs = n()) %>% 
+      dplyr::mutate(res = native_res$res[i],
+                    site = native_res$site[i],
+                    px_area = (res/100)*(res/100),
+                    area_vegetation = n_obs*px_area) %>% 
+      dplyr::select(-c(px_area,n_obs)) %>% 
+      rename(area_RAW  = area_vegetation)
+    
+    if(i == 1){
+      df_native <- df_img
+    }else{
+      df_native <- rbind(df_native,df_img)
+    }
+  }
+
+  for(i in 1:nrow(df_resampled_img)){
+  
+    print(i)
+    
+    img <- rast(df_resampled_img$path[i])
+    
+    names(img) <- c("pred")
+    
+    df_img <- img %>%  
+      as.data.frame() %>% 
+      dplyr::filter(!pred == 0) %>% 
+      group_by(pred) %>% 
+      reframe(n_obs = n()) %>% 
+      dplyr::mutate(res = df_resampled_img$res[i],
+                    site = df_resampled_img$site[i],
+                    px_area = (res/100)*(res/100),
+                    area_vegetation = n_obs*px_area) %>% 
+      dplyr::select(-c(px_area,n_obs)) %>% 
+      rename(area_resampled  = area_vegetation)
+    
+    if(i == 1){
+      df_resampled <- df_img
+    }else{
+      df_resampled <- rbind(df_resampled,df_img)
+    }
+  }
+
+# df_compare <- read.csv("Data/Resampled_saved_data.csv")
+
+df_area_compare <- df_resampled %>% 
+  # select(-res) %>% 
+  left_join(df_native %>% dplyr::select(-res), by = c("site","pred")) %>% 
+  mutate(loss = abs((area_resampled-area_RAW)/(area_resampled+area_RAW)),
+          class_fct = as.factor(pred),
+         area = res*res)
+ 
+df_area_compare %>% 
+  dplyr::filter(class_fct != 1,
+                class_fct != 6,
+                class_fct != 7,
+                class_fct != 8) %>%  
+  # group_by(area,class_fct) %>% 
+  # reframe(loss = mean(loss)) %>% 
+  ggplot(aes(x = area, y = loss, colour = class_fct))+
+  geom_point()+
+  geom_smooth(method = "gam")+
+    scale_color_manual(name = NULL,
+                      values = cols_fill,
+                      labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))
+
+
+
+glm_res_true <- glm(loss ~ area*class_fct , data = df_area_compare)
+# glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
+
+summary(glm_res_true)
+
+Utilities.Package::Model_Check(glm_res_true)
+
+
+NewData<-expand_grid(area=unique(df_area_compare$area),
+                    class_fct=unique(df_area_compare$class_fct))
+
+pred <- predict(glm_res_true, NewData, se.fit = T, type = "link")
+
+
+NewData <- NewData %>% 
+  mutate(fit = pred$fit*100,
+         se = pred$se.fit*100)
+
+
+  cols_fill <- c("1" = "#DAA520",
+                 "2" = "#b3ff1a",
+                 "3" = "#389318",
+                 "4" = "#873e23",
+                 "5" = "#b3002d",
+                 "6" = "#70543e",
+                 "7" = 'grey',
+                 "8" = "#42c9bc")
+  
+  a <- NewData %>% 
+  dplyr::filter(class_fct != 1,
+                class_fct != 6,
+                class_fct != 7,
+                class_fct != 8) 
+  
+(plot <- NewData %>% 
+  dplyr::filter(class_fct != 1,
+                class_fct != 6,
+                class_fct != 7,
+                class_fct != 8) %>%
+    ggplot()+
+  geom_ribbon(aes(x = sqrt(area)/100, y = fit, ymax = fit+se, ymin = fit-se, 
+                  color = class_fct, group = class_fct, fill = class_fct
+                  ), alpha = 0.2)+
+  geom_line(aes(x = sqrt(area)/100, y = fit,
+                color = class_fct, group = class_fct
+                ))+
+      scale_fill_manual(name = NULL,
+                        values = cols_fill,
+                        labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water")) +
+    scale_color_manual(name = NULL,
+                      values = cols_fill,
+                      labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))+
+  theme_Bede()+
+    # xlim(0,1)+
+  xlab("Resolution (m)") +
+  ylab("Predicted area loss")+
+  theme(axis.title = element_text(size = 20),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        legend.key.size = unit(1, "cm")
+          )
+    
+      )
+ 
+```
+
+
+@fig-pixelsize illustrates the relationship between predicted area loss for various vegetation types and map resolution. At a fine resolution of 1m, changes in the retrieved area for each vegetation type are minimal. Green algae shows the highest loss rate, with 1.2% area lost compared to the raw resolution (8cm). As the resolution coarsens to 10m, area loss becomes significant, with green algae again experiencing the greatest reduction (12% compared to 8cm) and seagrass showing the smallest loss (1.3%). At a resolution of 30m, all green algae have been lost (100% compared to 8cm), while seagrass experiences a relatively small reduction of 11%. Brown algae and red algae show moderate declines, with losses at 30m resolution reaching approximately 37% and 59%, respectively.
 
 ```{r Pixel size Plot}
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: Coucou
+#| fig-cap: Predicted area loss for different vegetation types (green algae, seagrass, brown algae, red algae) as a function of spatial resolution. Lines represent generalized linear model (GLM) predictions, and shaded areas indicate standard errors. As resolution decreases, predicted area loss increases for all vegetation types, with green algae showing the highest loss and seagrass the smallest at coarser resolutions.
 #| label: fig-pixelsize
 #| fig-width: 10
 #| fig-height: 7
@@ -6613,9 +6797,11 @@ While comparing the reflectance at two different altitudes (12 m and 120 m), a n
 
 ## Impact of Pixel Resolution on the prediction and Implications for Satellite Remote Sensing
 
-The results of @fig-pixelsize highlight the importance of pixel resolution in maintaining accurate classification and agreement between products derived from remote sensing data with different spatial resolutions. As the pixel size increases, a consistent decline in agreement is observed across all vegetation classes, with more pronounced effects for certain classes, such as green algae. This phenomenon underscores the sensitivity of spatial resolution in distinguishing smaller or patchier vegetation features. Green algae, being more patchy in all our study sites, demonstrates the steepest drop in agreement with increasing pixel size, which aligns with expectations given the limitations of coarser resolution in capturing fine-scale details.
+The results of @fig-pixelsize emphasize the critical role of pixel resolution in accurately retrieving vegetation area from remote sensing data. As pixel size increases, a consistent decline in area retrieval is observed across all vegetation types, with more pronounced effects for certain types, such as green algae. This highlights the sensitivity of spatial resolution in detecting smaller or more fragmented vegetation features. Green algae, being particularly patchy across all study sites, shows the steepest decline in area agreement as pixel size increases, which aligns with expectations given the limitations of coarser resolution in capturing fine-scale details.
 
-This relationship between resolution and agreement has significant implications for satellite platforms like Sentinel-2 and Landsat. Both satellites, commonly used in marine and coastal vegetation studies, offer medium-resolution imagery, with pixel sizes of 10 m and 30 m, respectively. While these resolutions are suitable for broad-scale environmental monitoring, they may struggle to capture finer-scale heterogeneity, especially for more fragmented or patchy vegetation types like green algae. The results suggest that while coarser resolutions like those of Landsat are sufficient for seagrass and other more homogeneous vegetation types, higher resolutions are essential for accurately mapping species like green algae.
+This resolution-area relationship has important implications for satellite platforms like Sentinel-2 and Landsat, which are commonly used in marine and coastal vegetation studies. Both satellites offer medium-resolution imagery, with pixel sizes of 10m and 30m, respectively. While these resolutions are suitable for broad-scale environmental monitoring, they may struggle to capture finer-scale heterogeneity, particularly in fragmented vegetation like green algae. The findings suggest that, while coarser resolutions like those of Landsat may be adequate for more homogeneous types, such as seagrass, higher resolutions are essential for accurately mapping patchier species like green algae. These findings have direct implications for environmental management and conservation planning. Overlooking fine-scale vegetation features, such as those seen in green algae, could result in inadequate protection or restoration efforts, particularly in ecologically sensitive coastal zones, as early stages of green tides could be challenging to monitor at coarse resolutions. 
+
+Higher-resolution imagery offers more accurate vegetation mapping but comes with trade-offs. As resolution increases, data costs rise, and processing becomes more resource-intensive due to the larger file sizes and computational demands. Additionally, high-resolution data requires more storage and can slow down real-time applications. For large-scale monitoring or homogeneous vegetation types, medium-resolution platforms like Sentinel-2 are often sufficient. However, when mapping fragmented vegetation like green algae, the precision provided by higher-resolution imagery is crucial, despite the additional costs and processing challenges it imposes.
 
 ## Towards climate and biodiversity applications
 
