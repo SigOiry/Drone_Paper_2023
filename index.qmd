@@ -5752,10 +5752,11 @@ if(file.exists("Data/Resampled_saved_data_total.csv")){
   dplyr::summarise(agreed = sum(same, na.rm = T),
           n_obs = n()) %>% 
   # ungroup() %>% 
-  mutate(prop = agreed/n_obs) %>% 
+  mutate(prop = agreed/n_obs,
+         loss = 1-prop) %>% 
   as_tibble() %>% 
   mutate(true_fct = as.factor(true),
-         area = res*res) 
+         area = (res/100)*(res/100)) 
   
   write.csv(total, "Data/Resampled_saved_data_total.csv", row.names = F)
 }
@@ -5777,16 +5778,16 @@ if(file.exists("Data/Resampled_saved_data_total.csv")){
 #   dplyr::select(-diff)
   
 total %>% 
-  ggplot(aes(x = res, y = prop, group = true, color =true_fct))+
+  ggplot(aes(x = area, y = loss, group = true, color =true_fct))+
   geom_line()+
   theme_Bede_Map()
 
-glm_res_true <- glm(prop ~ area*true_fct , data = total)
+glm_res_true <- glm(loss ~ area*true_fct , data = total)
 # glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
 
 a <- total %>% 
   group_by(res, true) %>% 
-  reframe(mean = mean(prop))
+  reframe(mean = mean(loss))
 
 
 summary(glm_res_true)
@@ -5814,17 +5815,21 @@ NewData <- NewData %>%
                  "6" = "#70543e",
                  "7" = 'grey',
                  "8" = "#42c9bc")
-  
+  a <- NewData %>% 
+  dplyr::filter(true_fct != 1,
+                true_fct != 6,
+                true_fct != 7,
+                true_fct != 8) 
 (plot <- NewData %>% 
   dplyr::filter(true_fct != 1,
                 true_fct != 6,
                 true_fct != 7,
                 true_fct != 8) %>%
     ggplot()+
-  geom_ribbon(aes(x = sqrt(area)/100, y = fit, ymax = fit+se, ymin = fit-se, 
+  geom_ribbon(aes(x = sqrt(area), y = fit, ymax = fit+se, ymin = fit-se, 
                   color = true_fct, group = true_fct, fill = true_fct
                   ), alpha = 0.2)+
-  geom_line(aes(x = sqrt(area)/100, y = fit,
+  geom_line(aes(x = sqrt(area), y = fit,
                 color = true_fct, group = true_fct
                 ))+
       scale_fill_manual(name = NULL,
@@ -5835,7 +5840,7 @@ NewData <- NewData %>%
                       labels = c("Green algae", "Seagrass", "Brown algae", "Red algae", "Sediment", "Sunglint","Water"))+
   theme_Bede()+
   xlab("Resolution (m)") +
-  ylab("Agreement")+
+  ylab("Predicted area loss")+
   theme(axis.title = element_text(size = 20),
         axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 15),
@@ -5850,7 +5855,7 @@ NewData <- NewData %>%
 ggsave("Figures/High_res/resolution_plot.png", plot, bg = "white", height = 803*3, width = 1184*3, units = "px")
 ```
 
-@fig-pixelsize demonstrated the effect of pixel size on the agreement between two products. The highest resolution at which resampling was performed was 10 cm. At this resolution, agreement rates had already decreased, ranging from 78% for red algae to 94% for seagrass, depending on the class. As pixel size increased, the agreement between the products steadily declined across all classes. This decline was most pronounced for green algae, which experienced the sharpest drop in agreement as pixel size surpassed 10 m, falling below 0% at a 30 m pixel size. Seagrass maintained higher agreement levels at coarser resolutions, though a clear decline was still observed, dropping from over 94% at 10 cm to around 88% at 30 m. Brown algae and red algae showed a more moderate decline in comparison, with agreement levels at 30 m resolution settling around 62% and 40%, respectively.
+@fig-pixelsize illustrated the relationship between predicted area loss for different vegetation types and map resolution. The highest resolution used for resampling was 10 cm, at which point vegetation area had already started to decrease. The losses ranged from 21% for red algae to 5% for seagrass, depending on the vegetation type. As pixel size increased, the retrieved vegetation area decreased for all classes. This reduction was most severe for green algae, which experienced a sharp decline once pixel size exceeded 10 m, culminating in a complete loss (100%) at a 30 m pixel size. Seagrass exhibited the lowest loss at coarser resolutions, though it still showed a clear decline, with area loss increasing from over 5% at 10 cm to around 11% at 30 m. Brown algae and red algae experienced more moderate declines, with losses at 30 m resolution reaching approximately 37% and 59%, respectively.
 
 ```{r Pixel size Plot}
 #| cache: false
@@ -5865,9 +5870,7 @@ ggsave("Figures/High_res/resolution_plot.png", plot, bg = "white", height = 803*
 knitr::include_graphics("Figures/High_res/resolution_plot.png")
 ```
 
-The Generalized Linear Model (GLM) analysis revealed a significant effect of pixel resolution on the agreement, with a negative relationship ($\beta = -1.0334 \times 10^{-8}, p < 0.001$). This indicates that as pixel resolution increases, the proportion of the response variable decreases.
-
-The vegetation classes also exhibited distinct effects on the agreement. Magnoliopsida showed a significant positive effect ($\beta = 0.1202, p < 0.001$), suggesting that this class was associated with a higher agreement.
+The Generalized Linear Model (GLM) analysis showed a significant effect of pixel resolution on the mapped vegetation area, indicating a positive relationship between resolution and area loss ($\beta = 0.067, p < 0.001$). This suggests that as pixel resolution increases, the mapped area of each vegetation type decreases.
 
 ## Effect of the percent cover on the prediction
 

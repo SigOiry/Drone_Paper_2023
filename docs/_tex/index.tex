@@ -41,14 +41,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -117,6 +131,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -137,6 +152,7 @@ Ecosystems, Neural Network},
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
+
 
 \setlength{\parindent}{6pt}
 \begin{document}
@@ -248,6 +264,7 @@ Ecosystems \sep
 \end{keyword}
 \end{frontmatter}
     
+
 \section{Introduction}\label{introduction}
 
 Coastal areas are vital hotspots for marine biodiversity, with
@@ -255,31 +272,28 @@ intertidal seagrass meadows playing a crucial role at the interface
 between the land and oceans \citep{unsworth2022}. Seagrass meadows
 provide a myriad of ecosystem services, including carbon sequestration,
 oxygen production, protection against sea-level rise and coastline
-erosion, and mitigation of eutrophication \citetext{\citealp[
-]{unsworth2022}; \citealp{sousa2019blue}}. They serve as vital habitats
-for a diverse array of marine and terrestrial species, providing living,
-breeding, and feeding grounds \citetext{\citealp[
-]{gardner2018}; \citealp[ ]{Zoffoli2022}; \citealp{jankowska2019}}. Due
-to the concentration of human activities in coastal zones, seagrass
-meadows are directly exposed to and impacted by anthropogenic pressures.
-Global regression and fragmentation of seagrass meadows are currently
-observed due to climate change, diseases, urbanization, land
-reclamation, dredging, competition with alien species, and reduction in
-water quality \citetext{\citealp[ ]{nguyen2021}; \citealp[
-]{soissons2018}; \citealp[ ]{orth2006}; \citealp[ ]{lin2018}; \citealp[
-]{duffy2019}; \citealp[ ]{rasheed2011long}; \citealp[
-]{chefaoui2018dramatic}; \citealp{sousa2019blue}}. Both habitat
-fragmentation and reduction, in turn, can severely compromise the
-effectiveness of ecosystem services provided by seagrass meadows. While
-improvements in water quality and hydrodynamics have been recently
-reported in Europe, allowing an overall recovery of seagrass ecosystems
-at local and European scales, many coastal waters worldwide are still
-subjected to strong eutrophication processes \citetext{\citealp[
-]{deSantos2019}; \citealp[ ]{Zoffoli2021}; \citealp{sousa2019blue}}.
-Coastal eutrophication has been associated to excessive accumulation of
-green macroalgae, so-called green tides \citep{devlin2023nutrients}.
-Green tides produce shade and suffocation over seagrass individuals,
-thus threatening the health of seagrass ecosystems \citep{wang2022}.
+erosion, and mitigation of eutrophication
+\citep{unsworth2022, sousa2019blue}. They serve as vital habitats for a
+diverse array of marine and terrestrial species, providing living,
+breeding, and feeding grounds
+\citep{gardner2018, Zoffoli2022, jankowska2019}. Due to the
+concentration of human activities in coastal zones, seagrass meadows are
+directly exposed to and impacted by anthropogenic pressures. Global
+regression and fragmentation of seagrass meadows are currently observed
+due to climate change, diseases, urbanization, land reclamation,
+dredging, competition with alien species, and reduction in water quality
+\citep{nguyen2021, soissons2018, orth2006, lin2018, duffy2019, rasheed2011long, chefaoui2018dramatic, sousa2019blue}.
+Both habitat fragmentation and reduction, in turn, can severely
+compromise the effectiveness of ecosystem services provided by seagrass
+meadows. While improvements in water quality and hydrodynamics have been
+recently reported in Europe, allowing an overall recovery of seagrass
+ecosystems at local and European scales, many coastal waters worldwide
+are still subjected to strong eutrophication processes
+\citep{deSantos2019, Zoffoli2021, sousa2019blue}. Coastal eutrophication
+has been associated to excessive accumulation of green macroalgae,
+so-called green tides \citep{devlin2023nutrients}. Green tides produce
+shade and suffocation over seagrass individuals, thus threatening the
+health of seagrass ecosystems \citep{wang2022}.
 
 The importance of seagrass meadows and the variety of ecosystem services
 they provide have led to the enhancement of both global and regional
@@ -296,8 +310,7 @@ limited estimations with conventional sampling techniques
 \citep{nijland2019}. Satellite observations have been proven effective
 in complementing \emph{in situ} sampling, allowing for the near
 real-time and consistent retrieval of seagrass EOVs and EBVs over
-extensive meadows. \citetext{\citealp[ ]{Zoffoli2021}; \citealp[
-]{xu2021}; \citealp[ ]{Traganos2018}; \citealp{coffer2023}}
+extensive meadows. \citep{Zoffoli2021, xu2021, Traganos2018, coffer2023}
 
 While satellite remote sensing (RS) provides temporally consistent
 observations over large spatial scales, its utilization over intertidal
@@ -309,46 +322,43 @@ Sentinel-2 (10 m) or Landsat8/9 (30 m) can be limited by low spectral
 resolution. The limited number of spectral bands challenges accurate
 discrimination of seagrass from other co-existing macrophytes. In
 particular Chlorophyceae (green algae) and marine Magnoliopsida
-(seagrass) share the same pigment composition \citetext{\citealp[
-]{ralph2002}; \citealp{Douay2022}}. Therefore, to someone not
-specialized in the field, their spectral signatures may appear to be
-alike \citetext{\citealp[ ]{Davies2023}; \citealp{bannari2022}}.
-Recently, using advanced machine-learning algorithms trained with a
-large hyperspectral library of more than 300 field reflectance spectra,
-\citep{Davies2023} demonstrated that it was possible to discriminate
-Magnoliopsida from Chlorophyceae using radiometric data acquired at
-Sentinel-2 's spectral resolution. However the application of this
-approach to satellite RS remains to be validated. Moreover patches of
-green algae can develop at small spatial scales that are not observable
-using non-commercial satellite imagery \citep{tuya2013}, especially
-during the initial stage of a green tide.
+(seagrass) share the same pigment composition
+\citep{ralph2002, Douay2022}. Therefore, to someone not specialized in
+the field, their spectral signatures may appear to be alike
+\citep{Davies2023, bannari2022}. Recently, using advanced
+machine-learning algorithms trained with a large hyperspectral library
+of more than 300 field reflectance spectra, \citep{Davies2023}
+demonstrated that it was possible to discriminate Magnoliopsida from
+Chlorophyceae using radiometric data acquired at Sentinel-2 's spectral
+resolution. However the application of this approach to satellite RS
+remains to be validated. Moreover patches of green algae can develop at
+small spatial scales that are not observable using non-commercial
+satellite imagery \citep{tuya2013}, especially during the initial stage
+of a green tide.
 
 Drones (Unmanned Aerial Vehicles -- UAVs) can potentially fill the data
 gaps left by satellite RS and \emph{in situ} measurements, due to their
 ability to provide spatially-explicit observations at very high spatial
 resolutions (pixel size from mm to cm) while capturing data at
-multi-spectral resolution \citetext{\citealp[
-]{fairley2022drone}; \citealp{oh2017use}}. The versatility of drones
-allows for their application across a diverse thematic range , from
-coastal zone management \citetext{\citealp[ ]{adade2021}; \citealp[
-]{casella2020}; \citealp{angnuureng2022}} to mapping species
-distribution \citetext{\citealp[ ]{joyce2023}; \citealp[
-]{tallam2023}; \citealp[ ]{Roca2022}; \citealp[ ]{Roman2021}; \citealp[
-]{Brunier2022Topographic}; \citealp{sousa2019blue}}. However, when
-applied to coastal habitat mapping, most case studies were previously
-limited to a single flight, restricting the generalizability of their
-application over wider geographical scales \citetext{\citealp[
-]{Roman2021}; \citealp[ ]{collin2019improving}; \citealp[
-]{rossiter2020uav}; \citealp{Brunier2022Topographic}}. The present study
-aimed at analyzing the potential of multispectral drone RS to map
-intertidal macrophytes over a diverse biogeographical range, with a
-particular focus on discriminating Magnoliopsida and Chlorophyceae
-(Seagrass and Green Algae, respectively). Ten drone flights were
-performed over soft-bottom intertidal areas along the Atlantic
-coastlines of two European countries (France and Portugal), covering a
-wide range of habitats, from monospecific seagrass meadows to meadows
-mixed with green, or red macroalgae. A deep learning algorithm was
-trained and validated for macrophyte discrimination, emphasizing
+multi-spectral resolution \citep{fairley2022drone, oh2017use}. The
+versatility of drones allows for their application across a diverse
+thematic range , from coastal zone management
+\citep{adade2021, casella2020, angnuureng2022} to mapping species
+distribution
+\citep{joyce2023, tallam2023, Roca2022, Roman2021, Brunier2022Topographic, sousa2019blue}.
+However, when applied to coastal habitat mapping, most case studies were
+previously limited to a single flight, restricting the generalizability
+of their application over wider geographical scales
+\citep{Roman2021, collin2019improving, rossiter2020uav, Brunier2022Topographic}.
+The present study aimed at analyzing the potential of multispectral
+drone RS to map intertidal macrophytes over a diverse biogeographical
+range, with a particular focus on discriminating Magnoliopsida and
+Chlorophyceae (Seagrass and Green Algae, respectively). Ten drone
+flights were performed over soft-bottom intertidal areas along the
+Atlantic coastlines of two European countries (France and Portugal),
+covering a wide range of habitats, from monospecific seagrass meadows to
+meadows mixed with green, or red macroalgae. A deep learning algorithm
+was trained and validated for macrophyte discrimination, emphasizing
 applicability across diverse sites without a loss of prediction
 accuracy. In addition, the results obtained from drone-based
 multispectral remote sensing will be spatially degraded to satellite
@@ -573,8 +583,7 @@ min/max transformation (Equation~\ref{eq-std} ; \citep{Cao2017}) and the
 Normalized difference vegetation index (NDVI, Equation~\ref{eq-ndvi}).
 Standardisation of spectral bands is commonly used to eliminate the
 scaling differences between spectra and to limit the effect of biomass
-on the spectra shape \citetext{\citealp[
-]{Douay2022}; \citealp{Davies2023}}.
+on the spectra shape \citep{Douay2022, Davies2023}.
 
 \begin{equation}\phantomsection\label{eq-std}{
 R_{i}^{*}(\lambda) = \frac{R_{i}(\lambda) - min(R_{i})}{max(R_{i})- min(R_{i})}
@@ -910,19 +919,20 @@ Magnoliopsida.
 \subsection{Effect of the spatial resolution on the
 prediction}\label{effect-of-the-spatial-resolution-on-the-prediction}
 
-Figure~\ref{fig-pixelsize} demonstrated the effect of pixel size on the
-agreement between two products. The highest resolution at which
-resampling was performed was 10 cm. At this resolution, agreement rates
-had already decreased, ranging from 78\% for red algae to 94\% for
-seagrass, depending on the class. As pixel size increased, the agreement
-between the products steadily declined across all classes. This decline
-was most pronounced for green algae, which experienced the sharpest drop
-in agreement as pixel size surpassed 10 m, falling below 0\% at a 30 m
-pixel size. Seagrass maintained higher agreement levels at coarser
-resolutions, though a clear decline was still observed, dropping from
-over 94\% at 10 cm to around 88\% at 30 m. Brown algae and red algae
-showed a more moderate decline in comparison, with agreement levels at
-30 m resolution settling around 62\% and 40\%, respectively.
+Figure~\ref{fig-pixelsize} illustrated the relationship between
+predicted area loss for different vegetation types and map resolution.
+The highest resolution used for resampling was 10 cm, at which point
+vegetation area had already started to decrease. The losses ranged from
+21\% for red algae to 5\% for seagrass, depending on the vegetation
+type. As pixel size increased, the retrieved vegetation area decreased
+for all classes. This reduction was most severe for green algae, which
+experienced a sharp decline once pixel size exceeded 10 m, culminating
+in a complete loss (100\%) at a 30 m pixel size. Seagrass exhibited the
+lowest loss at coarser resolutions, though it still showed a clear
+decline, with area loss increasing from over 5\% at 10 cm to around 11\%
+at 30 m. Brown algae and red algae experienced more moderate declines,
+with losses at 30 m resolution reaching approximately 37\% and 59\%,
+respectively.
 
 \phantomsection\label{cell-fig-pixelsize}
 \begin{figure}[H]
@@ -937,16 +947,11 @@ showed a more moderate decline in comparison, with agreement levels at
 
 \end{figure}%
 
-The Generalized Linear Model (GLM) analysis revealed a significant
-effect of pixel resolution on the agreement, with a negative
-relationship (\(\beta = -1.0334 \times 10^{-8}, p < 0.001\)). This
-indicates that as pixel resolution increases, the proportion of the
-response variable decreases.
-
-The vegetation classes also exhibited distinct effects on the agreement.
-Magnoliopsida showed a significant positive effect
-(\(\beta = 0.1202, p < 0.001\)), suggesting that this class was
-associated with a higher agreement.
+The Generalized Linear Model (GLM) analysis showed a significant effect
+of pixel resolution on the mapped vegetation area, indicating a positive
+relationship between resolution and area loss
+(\(\beta = 0.067, p < 0.001\)). This suggests that as pixel resolution
+increases, the mapped area of each vegetation type decreases.
 
 \subsection{Effect of the percent cover on the
 prediction}\label{effect-of-the-percent-cover-on-the-prediction}
@@ -999,9 +1004,8 @@ accurate classification of macrophytes at low tide on tidal flats,
 specifically focusing on distinguishing between Chlorophyceae (green
 macroalgae) and marine Magnoliopsida (seagrasses) using a multispectral
 resolution. The discrimination of seagrasses from green macroalgae
-presents is spectrally challenging \citetext{\citealp[
-]{oiry2021using}; \citealp[
-]{bannari2022}; \citealp{veettil2020opportunities}}. These two
+presents is spectrally challenging
+\citep{oiry2021using, bannari2022, veettil2020opportunities}. These two
 macrophytes share a similar pigment composition: chlorophyll-a (common
 to all vegetation types), chlorophyll-b (an additional photosynthetic
 pigment), and accessory carotenoids such as zeaxanthin, lutein and
@@ -1060,9 +1064,8 @@ well as a higher NIR plateau than seagrass
 (Figure~\ref{fig-vegetation}). Such differences were previously
 attributed to differences in pigments concentration and/or ratios
 \citep{bargain2013seasonal}, cellular structure as well as in the
-orientation of the plant at the sediment surface \citetext{\citealp[
-]{beach1997vivo}; \citealp[
-]{kirk1994light}; \citealp{hedley2018influence}}.
+orientation of the plant at the sediment surface
+\citep{beach1997vivo, kirk1994light, hedley2018influence}.
 
 The variable importance analysis (Figure~\ref{fig-VIP}) identified that
 the band at 531 nm was the most important for accurately identifying
@@ -1127,21 +1130,20 @@ disappear during the winter and reach their peak above-ground biomass in
 the summer and early fall. Along with these seasonal changes in biomass,
 the pigment composition and ratios also vary throughout the year,
 reflecting the plants' adaptations to different environmental conditions
-\citetext{\citealp[ ]{bargain2013seasonal}; \citealp{legare2022remote}}.
-Standardization of spectral signatures helps to mitigate the impact of
-changing biomass on the spectral profile, enabling the development of a
-model that can reliably predict vegetation across different geographical
-locations and seasons. This approach allows for consistent
-classification of vegetation despite variations in biomass and
-fluctuations in light conditions, providing a robust tool for monitoring
-and predicting vegetation dynamics \citetext{\citealp[
-]{fyfe2003spatial}; \citealp[
-]{COSTA2021107018}; \citealp{piaser2023impact}}. We found 90 \% seagrass
-cover was necessary at an 8 cm resolution for confident prediction of
-its presence (Figure~\ref{fig-upscaling}). However, due to the strong
-phenology of intertidal seagrass meadows in Europe, the period when a
-meadow is well-established can be temporally restricted, limiting the
-ideal window for accurate detection.
+\citep{bargain2013seasonal, legare2022remote}. Standardization of
+spectral signatures helps to mitigate the impact of changing biomass on
+the spectral profile, enabling the development of a model that can
+reliably predict vegetation across different geographical locations and
+seasons. This approach allows for consistent classification of
+vegetation despite variations in biomass and fluctuations in light
+conditions, providing a robust tool for monitoring and predicting
+vegetation dynamics
+\citep{fyfe2003spatial, COSTA2021107018, piaser2023impact}. We found 90
+\% seagrass cover was necessary at an 8 cm resolution for confident
+prediction of its presence (Figure~\ref{fig-upscaling}). However, due to
+the strong phenology of intertidal seagrass meadows in Europe, the
+period when a meadow is well-established can be temporally restricted,
+limiting the ideal window for accurate detection.
 
 \subsection{Impact of Pixel Resolution on the prediction and
 Implications for Satellite Remote
@@ -1178,57 +1180,53 @@ applications}\label{towards-climate-and-biodiversity-applications}
 Climate change, global warming, eutrophication, alien and invasive
 species development, coastal erosion, and sea level rise are expected to
 continue impacting coastal ecosystems in the future
-\citetext{\citealp{SCHIBALSKI2022101414}; \citealp[
-]{holon2018predictive}; \citealp{marquet2024global}} and the demand for
-meaningful and efficient monitoring of coastal habitats has never been
-higher\citetext{\citealp[ ]{muller2018satellite}; \citealp[
-]{villalobos2023remote}; \citealp{oiry2021using}}. Our findings,
-particularly the improved discrimination of intertidal seagrass and
-green macroalgae from other intertidal vegetation classes, highlight the
-potential of drone-based remote sensing to support diverse applications,
-from conservation of biodiversity to climate change adaptation
-strategies.
+\citep{SCHIBALSKI2022101414, holon2018predictive, marquet2024global} and
+the demand for meaningful and efficient monitoring of coastal habitats
+has never been
+higher\citep{muller2018satellite, villalobos2023remote, oiry2021using}.
+Our findings, particularly the improved discrimination of intertidal
+seagrass and green macroalgae from other intertidal vegetation classes,
+highlight the potential of drone-based remote sensing to support diverse
+applications, from conservation of biodiversity to climate change
+adaptation strategies.
 
 Because of coastal eutrophication, macroalgal blooms are becoming
-increasingly common in many regions around the world \citetext{\citealp[
-]{sutton2011european}; \citealp{ye2011green}}. These blooms can have
-negative impacts on human health and local economic activities,
-including human health, fishing and aquaculture, tourism, and
-recreational activities \citetext{\citealp[
-]{villares1999nitrogen}; \citealp{ye2011green}}. The first green tide
-events (i.e.~bloom of green macroalgae of the genus \emph{Ulva}) were
-reported in Brittany, France, back in the 1970s and have since been a
-concern for local stakeholders and economic activities
-\citep{menesguen2018marees}. Some regions of the world have witnessed an
-increase in brown macroalgae blooms, predominantly involving algae of
-the genus \emph{Sargassum} washing along the Caribbean coastlines
-\citep{louime2017sargassum}, and more recently \emph{Rugulopteryx
-okamurea} in southern Europe \citep{Roca2022}. Satellite remote sensing
-has proven to be a valuable tool for mapping the spatial and temporal
-extent of macroalgal blooms worldwide. However, due to limitations in
-spatial resolution, it can only effectively map well-developed blooms
-\citetext{\citealp[ ]{rs13081408}; \citealp[
-]{klemas2012remote}; \citealp{haro2023biointertidal}}. High spatial
-resolution drone imagery, coupled with an accurate classification
-algorithm, could be used to map the early stages of macroalgal blooms in
-areas known to have regular blooms or in new sites. Indeed, this
-approach could provide early warning alerts to local managers and
-complimentary to traditional sampling methods to monitor coastal
-ecosystems. These methods are generally time and resource-intensive, and
-the findings are often difficult to scale-up when applied alone. Earth
-Observation can bridge this gap and meet the needs for systematic
-monitoring coastal ecosystems over large areas
+increasingly common in many regions around the world
+\citep{sutton2011european, ye2011green}. These blooms can have negative
+impacts on human health and local economic activities, including human
+health, fishing and aquaculture, tourism, and recreational activities
+\citep{villares1999nitrogen, ye2011green}. The first green tide events
+(i.e.~bloom of green macroalgae of the genus \emph{Ulva}) were reported
+in Brittany, France, back in the 1970s and have since been a concern for
+local stakeholders and economic activities \citep{menesguen2018marees}.
+Some regions of the world have witnessed an increase in brown macroalgae
+blooms, predominantly involving algae of the genus \emph{Sargassum}
+washing along the Caribbean coastlines \citep{louime2017sargassum}, and
+more recently \emph{Rugulopteryx okamurea} in southern Europe
+\citep{Roca2022}. Satellite remote sensing has proven to be a valuable
+tool for mapping the spatial and temporal extent of macroalgal blooms
+worldwide. However, due to limitations in spatial resolution, it can
+only effectively map well-developed blooms
+\citep{rs13081408, klemas2012remote, haro2023biointertidal}. High
+spatial resolution drone imagery, coupled with an accurate
+classification algorithm, could be used to map the early stages of
+macroalgal blooms in areas known to have regular blooms or in new sites.
+Indeed, this approach could provide early warning alerts to local
+managers and complimentary to traditional sampling methods to monitor
+coastal ecosystems. These methods are generally time and
+resource-intensive, and the findings are often difficult to scale-up
+when applied alone. Earth Observation can bridge this gap and meet the
+needs for systematic monitoring coastal ecosystems over large areas
 \citep{papathanasopoulou2019satellite}. The retrieval of Essential
 Biodiversity Variables and Essential Ocean Variables through satellite
 observations has been increasingly common, enabling comprehensive
 monitoring of entire ecosystems over extended time periods
-\citetext{\citealp[ ]{ratnarajah2023monitoring}; \citealp{Zoffoli2021}}.
-The Water Framework Directive \citep{WFD2000} mandates the achievement
-and maintenance of ``good ecological status'' for all European waters,
-which necessitates a comprehensive understanding and monitoring of
-aquatic ecosystems, including coastal habitats like seagrass beds
-\citetext{\citealp[ ]{foden2007angiosperms}; \citealp[
-]{nordlund2024one}; \citealp{Zoffoli2021}}.
+\citep{ratnarajah2023monitoring, Zoffoli2021}. The Water Framework
+Directive \citep{WFD2000} mandates the achievement and maintenance of
+``good ecological status'' for all European waters, which necessitates a
+comprehensive understanding and monitoring of aquatic ecosystems,
+including coastal habitats like seagrass beds
+\citep{foden2007angiosperms, nordlund2024one, Zoffoli2021}.
 
 Effective and efficient monitoring tools are essential for identifying
 the impacts of human activities and natural changes on coastal
@@ -1274,6 +1272,7 @@ policy implementation aimed at ecosystem conservation and restoration.
 
 
   \bibliography{library.bib}
+
 
 
 \end{document}
