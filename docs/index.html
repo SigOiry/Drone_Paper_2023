@@ -14,7 +14,7 @@
 <meta name="author" content="Guillaume Brunier">
 <meta name="author" content="Pierre Gernez">
 <meta name="author" content="Laurent Barillé">
-<meta name="dcterms.date" content="2024-10-01">
+<meta name="dcterms.date" content="2024-10-02">
 <meta name="keywords" content="Drone, Remote Sensing, Seagrass, Coastal Ecosystems, Neural Network">
 
 <title>Draft – Discriminating Seagrasses From Green Macroalgae in European Intertidal areas using high resolution multispectral drone imagery – Draft</title>
@@ -115,10 +115,10 @@ window.Quarto = {
 <meta name="citation_author" content="Guillaume Brunier">
 <meta name="citation_author" content="Pierre Gernez">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_publication_date" content="2024-10-01">
-<meta name="citation_cover_date" content="2024-10-01">
+<meta name="citation_publication_date" content="2024-10-02">
+<meta name="citation_cover_date" content="2024-10-02">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-10-01">
+<meta name="citation_online_date" content="2024-10-02">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=‘Blue carbon’and nutrient stocks of salt marshes at a temperate coastal lagoon (ria de aveiro, portugal);,citation_author=Ana I Sousa;,citation_author=Danielle B Santos;,citation_author=Eduardo Ferreira Silva;,citation_author=Lisa P Sousa;,citation_author=Daniel FR Cleary;,citation_author=Amadeu MVM Soares;,citation_author=Ana I Lillebø;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=1;,citation_volume=7;,citation_journal_title=Scientific reports;,citation_publisher=Nature Publishing Group UK London;">
@@ -295,7 +295,7 @@ window.Quarto = {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">October 1, 2024</p>
+              <p class="date">October 2, 2024</p>
             </div>
           </div>
           
@@ -517,7 +517,7 @@ NDVI = \frac{R(840nm)-R(668nm)}{R(840nm)+R(668nm)}
 <p>To evaluate the impact of spatial resolution on the model’s output, we resampled the reflectance of each flight’s orthomosaic using the average method from the Terra package in R. DISCOV was then applied to these resampled rasters, and the results were compared to the original model predictions. For each resolution and vegetation class, we calculated predicted area loss, where a score of 0 indicates no area loss during resampling, and a score of 100 indicates complete loss of vegetation.</p>
 <p>We used a Generalized Linear Model (GLM) with a Gaussian family and identity link function to examine the relationship between pixel resolution, vegetation class, and their interaction on the response variable (the loss of vegetation area). The model formula was as follows:</p>
 <p><span id="eq-gam"><span class="math display">\[
-%loss \sim  Resolution \times VegetationClass
+VegetationLoss \sim  Resolution \times VegetationClass
 \tag{3}\]</span></span></p>
 </section>
 <section id="impact-of-mixed-vegetation-cover-on-the-prediction" class="level2" data-number="2.7">
@@ -1001,7 +1001,7 @@ Zoffoli, M.L., Gernez, P., Rosa, P., Le Bris, A., Brando, V.E., Barillé, A.-L.,
   title = {Draft -\/- {Discriminating} {Seagrasses} {From} {Green}
     {Macroalgae} in {European} {Intertidal} Areas Using High Resolution
     Multispectral Drone Imagery -\/- {Draft}},
-  date = {2024-10-01},
+  date = {2024-10-02},
   langid = {en},
   abstract = {Coastal areas support seagrass meadows, which offer
     crucial ecosystem services including erosion control and carbon
@@ -1467,7 +1467,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

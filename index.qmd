@@ -3127,7 +3127,7 @@ To evaluate the impact of spatial resolution on the model’s output, we resampl
 We used a Generalized Linear Model (GLM) with a Gaussian family and identity link function to examine the relationship between pixel resolution, vegetation class, and their interaction on the response variable (the loss of vegetation area). The model formula was as follows:
 
 $$
-%loss \sim  Resolution \times VegetationClass
+VegetationLoss \sim  Resolution \times VegetationClass
 $$ {#eq-gam}
 
 ## Impact of mixed vegetation cover on the prediction
