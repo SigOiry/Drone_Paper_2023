@@ -131,7 +131,6 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -152,7 +151,6 @@ Ecosystems, Neural Network},
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
-
 
 \setlength{\parindent}{6pt}
 \begin{document}
@@ -226,31 +224,37 @@ habitat fragmentation and seagrass decline. In situ surveys,
 traditionally performed to monitor these ecosystems face limitations on
 temporal and spatial coverage, particularly in intertidal zones,
 prompting the addition of satellite data within monitoring programs.
-Yet, satellite remote sensing struggles with spatial and spectral
-resolution, making it difficult to discriminate seagrass from other
-macrophytes in highly heterogenous meadows. Drone (unmanned aerial
-vehicles -- UAV) images at a very high spatial resolution offer a
+Yet, satellite remote sensing can be limited by too coarse spatial
+and/or spectral resolution, making it difficult to discriminate seagrass
+from other macrophytes in highly heterogenous meadows. Drone (unmanned
+aerial vehicles -- UAV) images at a very high spatial resolution offer a
 promising solution to address challenges related to spatial
 heterogeneity and intrapixel mixture. This study focuses on using drone
-acquisitions with a ten spectral band sensor mirroring those of
-Sentinel-2, for mapping intertidal macrophytes and effectively
-discriminating between seagrass and green macroalgae. Nine drone flights
-were conducted at two different altitudes (12 m and 120 m) across
-heterogeneous intertidal European habitats in France and Portugal. Low
+acquisitions with a ten spectral band sensor similar to that onboard
+Sentinel-2, for mapping intertidal macrophytes at low tide (i.e.~during
+a period of emersion) and effectively discriminating between seagrass
+and green macroalgae. Nine drone flights were conducted at two different
+altitudes (12 m and 120 m) across heterogeneous intertidal European
+habitats in France and Portugal, providing multispectral reflectance
+observation at very high spatial resolution (respectively at 8 mm and 80
+mm). Taking advantage of their extremly high spatial resolution; the low
 altitude flights were used to train a Deep Learning classifier based on
 Neural Networks to discrimintate among five taxonomic classes of
 intertidal vegetation: Magnoliopsida (Seagrass), Chlorophyceae (Green
 macroalgae), Phaeophyceae (Brown algae), Rhodophyceae (Red macroalgae)
-and benthic Bacillariophyceae (Diatoms). Classification of drone imagery
-resulted in an overall accuracy of 94\% across all the sites and images,
-covering a total area of 467 000 m². The model exhibited an accuracy of
-96.4\% in identifying seagrass. Importantly, seagrass and green algae
-can be discriminated, although they share the same pigment composition.
-As the algorithm was developed for a multispectral camera with ten
-spectral bands in the visible and near-infrared, it could be adapted to
-the Multi-Spectral Instrument (MSI) onboard Sentinel-2 thus offering
-promising perspectives for satellite remote sensing of intertidal
-biodiversity over lager scales.
+and benthic Bacillariophyceae (Diatoms), and validated using concomitant
+field measurements. Classification of drone imagery resulted in an
+overall accuracy of 94\% across all sites and images, covering a total
+area of 467 000 m². The model exhibited an accuracy of 96.4\% in
+identifying seagrass. In particular , seagrass and green algae can be
+discriminated. The very high spatial resolution of the drone data made
+ot possoble to assess the influence of spatial resolution on the
+classification outputs, showing a limited loss in seagrass detection up
+to about 10m. Altogether, out findings suggest that the Multi-Spectral
+Instrument (MSI) onboard Sentinel-2 offers a relevant trade-off between
+its spatial and spectral resolution, thus offering promising
+perspectives for satellite remote sensing of intertidal biodiversity
+over lager scales.
 \end{abstract}
 
 
@@ -264,18 +268,16 @@ Ecosystems \sep
 \end{keyword}
 \end{frontmatter}
     
-
 \section{Introduction}\label{introduction}
 
 Coastal areas are vital hotspots for marine biodiversity, with
 intertidal seagrass meadows playing a crucial role at the interface
-between the land and oceans \citep{unsworth2022}. Seagrass meadows
-provide a myriad of ecosystem services, including carbon sequestration,
-oxygen production, protection against sea-level rise and coastline
-erosion, and mitigation of eutrophication
-\citep{unsworth2022, sousa2019blue}. They serve as vital habitats for a
-diverse array of marine and terrestrial species, providing living,
-breeding, and feeding grounds
+between land and ocean \citep{unsworth2022}. Seagrass meadows provide a
+myriad of ecosystem services, including carbon sequestration, oxygen
+production, protection against sea-level rise and coastline erosion, and
+mitigation of eutrophication \citep{unsworth2022, sousa2019blue}. They
+serve as vital habitats for a diverse array of marine and terrestrial
+species, providing living, breeding, and feeding grounds
 \citep{gardner2018, Zoffoli2022, jankowska2019}. Due to the
 concentration of human activities in coastal zones, seagrass meadows are
 directly exposed to and impacted by anthropogenic pressures. Global
@@ -302,15 +304,15 @@ composition \citep{Miloslavich2018}, as well as Essential Biodiversity
 Variable (EBVs) such as seagrass taxonomic diversity, species
 distribution, population abundance, and phenology \citep{Pereira2013}.
 Traditionally, indicators of seagrass status have been quantified using
-\emph{in situ} measurements. However, the acquisition of these
+\emph{in situ} measurements. However, the acquisition of field
 measurements in intertidal zones is notoriously challenging. Intertidal
 seagrass meadows are only exposed during low tide and can be situated in
 difficult-to-reach mudflats, potentially leading to inaccurate and
 limited estimations with conventional sampling techniques
 \citep{nijland2019}. Satellite observations have been proven effective
-in complementing \emph{in situ} sampling, allowing for the near
-real-time and consistent retrieval of seagrass EOVs and EBVs over
-extensive meadows. \citep{Zoffoli2021, xu2021, Traganos2018, coffer2023}
+in complementing \emph{in situ} sampling, allowing for near real-time
+and consistent retrieval of seagrass EOVs and EBVs over extensive
+meadows \citep{Zoffoli2021, xu2021, Traganos2018, coffer2023}.
 
 While satellite remote sensing (RS) provides temporally consistent
 observations over large spatial scales, its utilization over intertidal
@@ -321,19 +323,19 @@ seagrass meadows. Missions with a high spatial resolution such as
 Sentinel-2 (10 m) or Landsat8/9 (30 m) can be limited by low spectral
 resolution. The limited number of spectral bands challenges accurate
 discrimination of seagrass from other co-existing macrophytes. In
-particular Chlorophyceae (green algae) and marine Magnoliopsida
+particular, Chlorophyceae (green algae) and marine Magnoliopsida
 (seagrass) share the same pigment composition
-\citep{ralph2002, Douay2022}. Therefore, to someone not specialized in
-the field, their spectral signatures may appear to be alike
+\citep{ralph2002, Douay2022}, resulting in a similar spectral signature
+in therms of reflectance, especially in the visible range
 \citep{Davies2023, bannari2022}. Recently, using advanced
 machine-learning algorithms trained with a large hyperspectral library
 of more than 300 field reflectance spectra, \citep{Davies2023}
 demonstrated that it was possible to discriminate Magnoliopsida from
-Chlorophyceae using radiometric data acquired at Sentinel-2 's spectral
+Chlorophyceae using reflectance spectra at Sentinel-2 's spectral
 resolution. However the application of this approach to satellite RS
 remains to be validated. Moreover patches of green algae can develop at
-small spatial scales that are not observable using non-commercial
-satellite imagery \citep{tuya2013}, especially during the initial stage
+small spatial scales that are not observable using Sentinel-2 and/or
+Landsat-8/9 images \citep{tuya2013}, especially during the initial stage
 of a green tide.
 
 Drones (Unmanned Aerial Vehicles -- UAVs) can potentially fill the data
@@ -346,25 +348,26 @@ thematic range , from coastal zone management
 \citep{adade2021, casella2020, angnuureng2022} to mapping species
 distribution
 \citep{joyce2023, tallam2023, Roca2022, Roman2021, Brunier2022Topographic, sousa2019blue}.
-However, when applied to coastal habitat mapping, most case studies were
-previously limited to a single flight, restricting the generalizability
-of their application over wider geographical scales
+However, when applied to coastal habitat mapping, previous case studies
+were mostly limited to a limited number of flights over a single study
+site, restricting the generalizability of their application over wider
+geographical scales
 \citep{Roman2021, collin2019improving, rossiter2020uav, Brunier2022Topographic}.
 The present study aimed at analyzing the potential of multispectral
 drone RS to map intertidal macrophytes over a diverse biogeographical
 range, with a particular focus on discriminating Magnoliopsida and
-Chlorophyceae (Seagrass and Green Algae, respectively). Ten drone
+Chlorophyceae (Seagrass and Green Algae, respectively). Nine drone
 flights were performed over soft-bottom intertidal areas along the
 Atlantic coastlines of two European countries (France and Portugal),
 covering a wide range of habitats, from monospecific seagrass meadows to
 meadows mixed with green, or red macroalgae. A deep learning algorithm
 was trained and validated for macrophyte discrimination, emphasizing
 applicability across diverse sites without a loss of prediction
-accuracy. In addition, the results obtained from drone-based
-multispectral remote sensing will be spatially degraded to satellite
-resolutions, and the effect of this resolution on the model's
-predictions will be investigated, providing insights for coastal habitat
-mapping using satellites.
+accuracy. The classification maps obtained at a very high spatial
+resolution with the drone were spatially degraded to satellite
+resolutions, making it possible to asses the effect of spatial
+resolution on classification accuracy; and provide insights for coastal
+habitat mapping using satellite remote sensing.
 
 \section{Material \& Methods}\label{material-methods}
 
@@ -441,7 +444,8 @@ downwelling light sensor (DLS2) was used to acquire irradiance data
 concomitantly with the camera measurements. Raw data were calibrated in
 reflectance using a calibration panel reflective at \textasciitilde50\%
 provided by the manufacturer. Across all sites, flights were made at two
-different altitudes : 12 m or/and 120 m. (Table~\ref{tbl-flights}).
+different altitudes : 12 m or/and 120 m, with a spatial resolution of 8
+mm and 80 mm, respectively (Table~\ref{tbl-flights}).
 
 \begin{table}
 
@@ -504,20 +508,20 @@ Phaeophyceae (Fucus sp.) ; C : Rhodophyceae (Gracilaria vermiculophylla)
 \subsection{Drone Processing}\label{drone-processing}
 
 A structure-from-motion photogrammetry software \citep[Agisoft
-Metashape,][]{agisoft}was used to process images to obtain multispectral
-orthomosaics of each flight. The process for orthomosaicking was
-identical for every flight. First, tying key points were detected inside
-of each image and between overlapping images in order to obtain a sparse
-point cloud. This cloud was cleaned using reprojection accuracy metric
-in order to remove noisy points. A dense point cloud was then produced
-using a structure from motion algorithm. A surface interpolation of this
-dense point cloud was made to obtain a digital surface model (DSM), used
-to reconstruct the multispectral ortho-image \citep{nebel2020review}.
-Low altitude drone flights produced ortho-images with a very high
-spatial resolution (8 mm per pixel), making it efficient to visually
-distinguish between the various types of vegetation. High altitude
-flights on the other hand allowed to cover large areas and produced
-images with a pixel size of 80 mm (Table~\ref{tbl-flights}).
+Metashape,][]{agisoft} was used to process images to obtain
+multispectral orthomosaics of each flight. The process for
+orthomosaicking was identical for every flight. First, tying key points
+were detected inside of each image and between overlapping images in
+order to obtain a sparse point cloud. This cloud was cleaned using
+reprojection accuracy metric in order to remove noisy points. A dense
+point cloud was then produced using a structure from motion algorithm. A
+surface interpolation of this dense point cloud was made to obtain a
+digital surface model (DSM), used to reconstruct the multispectral
+ortho-image \citep{nebel2020review}. Low altitude drone flights produced
+ortho-images with a very high spatial resolution (8 mm per pixel),
+making it efficient to visually distinguish between the various types of
+vegetation. High altitude flights allowed to cover larger areas and
+produced images with a pixel size of 80 mm (Table~\ref{tbl-flights}).
 
 \subsection{General Workflow}\label{general-workflow}
 
@@ -610,7 +614,7 @@ been fine tuned using 12 epoch to minimize the error rate.
 \subsubsection{Validation}\label{validation}
 
 The workflow of this study revolves around two distinct flight heights
-(12 m and 120 m, Figure~\ref{fig-workflow}) where ensuring consistency
+(12 and 120 m, Figure~\ref{fig-workflow}) where ensuring consistency
 between reflectances at both heights is crucial. This comparison was
 conducted at sites where low and high altitude flights overlapped. The
 low altitude flights were resampled to the same spatial resolution and
@@ -648,22 +652,24 @@ to the benchmark score obtained without shuffling any variables. The
 greater the difference between these two benchmark values, the more
 important the variable is for the model \citep{WEI2015399}.
 
-\subsection{Impact of the spatial resolution in the
-prediction}\label{impact-of-the-spatial-resolution-in-the-prediction}
+\subsection{Influence of the spatial resolution on
+classification}\label{influence-of-the-spatial-resolution-on-classification}
 
-To evaluate the impact of spatial resolution on the model's output, we
-resampled the reflectance of each flight's orthomosaic using the average
-method from the Terra package in R. DISCOV was then applied to these
-resampled rasters, and the results were compared to the original model
-predictions. For each resolution and vegetation class, we calculated
-predicted area loss, where a score of 0 indicates no area loss during
-resampling, and a score of 100 indicates complete loss of vegetation.
+To evaluate the influence of spatial resolution on the model's output,
+we resampled the drone orthomosaics from their native resolution (8 cm
+for the high altitude flights) using the ``average'' method from the
+Terra package in R. DISCOV was then applied to these resampled rasters,
+and the results were compared to the original model predictions. For
+each resolution and vegetation class, we calculated the predicted area
+loss, where a score of 0 indicates no area loss during spatial
+resampling, and a score of 100 indicates complete loss of the vegetation
+class.
 
 We used a Generalized Linear Model (GLM) with a Gaussian family and
 identity link function to examine the relationship between pixel
 resolution, vegetation class, and their interaction on the response
-variable (the loss of vegetation area). The model formula was as
-follows:
+variable (the loss of vegetation area within a given class). The model
+formula was as follows:
 
 \begin{equation}\phantomsection\label{eq-gam}{
 VegetationLoss \sim  Resolution \times VegetationClass
@@ -673,8 +679,8 @@ VegetationLoss \sim  Resolution \times VegetationClass
 prediction}\label{impact-of-mixed-vegetation-cover-on-the-prediction}
 
 The key aspect of the workflow adopted in the present study is the
-mapping at two different altitudes (12 m and 120 m), resulting in two
-distinct resolutions for the same area (8 mm and 80 mm). The
+mapping at two different altitudes (12 and 120 m), resulting in two
+distinct resolutions for the same area (8 and 80 mm; respectively). The
 high-resolution flight was used to estimate the sub-pixel composition
 for each pixel of the lower-resolution flight. Consequently, within each
 pixel of the high-altitude flights, the contribution of each vegetation
@@ -690,10 +696,10 @@ to confidently predict that class.
 altitudes}\label{reflectance-comparison-between-the-two-different-altitudes}
 
 In this study, drone flights were conducted at two different altitudes
-(12 m and 120 m) to construct the neural network model. At the sites
-where the flights at both altitudes overlapped, reflectance was
-compared. Overall there was a good agreement between the two altitudes
-(RMSE: 0.027 ; Figure~\ref{fig-CompareRef}).
+(12 and 120 m) to construct the neural network model. At the sites where
+the flights at both altitudes overlapped, reflectance was compared.
+Overall there was a good agreement between the two altitudes (RMSE:
+0.027 ; Figure~\ref{fig-CompareRef}).
 
 \phantomsection\label{cell-fig-CompareRef}
 \begin{figure}[H]
@@ -714,9 +720,9 @@ data and right (B) plots standardized data (Equation~\ref{eq-std}).}
 There was a slight underestimation for raw reflectance values in the
 high-altitude flight, particularly for higher reflectance values
 (Figure~\ref{fig-CompareRef} A). Since both flights were conducted over
-vegetation areas, the highest reflectance values correspond to the
-infrared part of the spectrum. This difference was not present when
-reflectance values have been standardized (Equation~\ref{eq-std} ;
+vegetated areas, the highest reflectance values correspond to the
+infrared part of the spectrum. This difference was not present when the
+reflectance has been standardized (Equation~\ref{eq-std} ;
 Figure~\ref{fig-CompareRef} B).
 
 \subsection{Classification}\label{classification}
@@ -915,14 +921,14 @@ respectively. Four predictors, ranging from the green (560 nm) to the
 RedEdge (705 nm) bands were important to accurately predict
 Magnoliopsida.
 
-\subsection{Effect of the spatial resolution on the
-prediction}\label{effect-of-the-spatial-resolution-on-the-prediction}
+\subsection{Effect of spatial resolution on the
+classification}\label{effect-of-spatial-resolution-on-the-classification}
 
 Figure~\ref{fig-pixelsize} illustrates the relationship between
 predicted area loss for various vegetation types and map resolution. At
 a fine resolution of 1m, changes in the retrieved area for each
 vegetation type are minimal. Green algae shows the highest loss rate,
-with 1.2\% area lost compared to the raw resolution (8cm). As the
+with 1.2\% area lost compared to the native resolution (80 mm). As the
 resolution coarsens to 10m, area loss becomes significant, with green
 algae again experiencing the greatest reduction (12\% compared to 8cm)
 and seagrass showing the smallest loss (1.3\%). At a resolution of 30m,
@@ -982,32 +988,32 @@ altitude flight of Gafanha, Portugal.}
 
 \end{figure}%
 
-A percent cover of at least 80\% was sufficient to have all the pixels
-of high altitude flights correctly classified, with the exception of
-Magnoliopsida that required a higher cover (\textgreater90 \%) to be
-well classified. Concerning the probability of each class, there is a
-linear relationship between the percent cover and the confidence of the
-model to predict the class. To predict Chlorophyceae with a model
-likelihood of 0.85, a cover of 93 \% was needed, 90 \% for
-Magnoliopsida, 92 \% for Rhodophyceae and 97 \% for Bacillariophyceae.
-When the vegetation cover of a given class was 100 \%, coarser
-high-flight pixels were well classified for all the classes except for
-Bare Sediment, which was only well classified 80\% of the time. This
-phenomenon may be attributed to the time gap between the two flights,
-allowing for microphytobenthos migration to the surface during low tide,
-consequently altering the model's classification from bare sediment to
-Bacillariophyceae.
+A percent cover of at least 80\% was sufficient to have all the 80 mm
+pixels correctly classified, with the exception of Magnoliopsida that
+required a higher cover (\textgreater90 \%) to be accurately classified.
+Concerning the probability of each class, there is a linear relationship
+between the percent cover and the confidence of the model to predict the
+class. To predict Chlorophyceae with a model likelihood of 0.85, a cover
+of 93 \% was needed, 90 \% for Magnoliopsida, 92 \% for Rhodophyceae and
+97 \% for Bacillariophyceae. When the vegetation cover of a given class
+was 100 \%, coarser high-flight pixels were correctly classified for all
+the classes except for Bare Sediment, which was only correctly
+classified 80\% of the time. This phenomenon may be attributed to the
+time gap between the two flights, allowing for microphytobenthos
+migration to the surface during low tide, consequently altering the
+model's classification from bare sediment to Bacillariophyceae.
 
 \section{Discussion}\label{discussion}
 
 \subsection{Vegetation Discrimination}\label{vegetation-discrimination}
 
 The primary objective of this study was to develop a method for the
-accurate classification of macrophytes at low tide on tidal flats,
-specifically focusing on distinguishing between Chlorophyceae (green
-macroalgae) and marine Magnoliopsida (seagrasses) using a multispectral
-resolution. The discrimination of seagrasses from green macroalgae
-presents is spectrally challenging
+accurate classification of emerged macrophytes observed during low tide
+on tidal flats, specifically focusing on distinguishing between
+Chlorophyceae (green macroalgae) and marine Magnoliopsida (seagrasses)
+using a multispectral resolution. The discrimination between seagrasses
+and green macroalgae is challenging due to their optical similarity in
+the visible range
 \citep{oiry2021using, bannari2022, veettil2020opportunities}. These two
 macrophytes share a similar pigment composition: chlorophyll-a (common
 to all vegetation types), chlorophyll-b (an additional photosynthetic
@@ -1017,13 +1023,14 @@ close, particularly at a multispectral resolution. Seagrass and green
 macroalgae frequently co-occur in intertidal areas, and can intermingle
 within a remote sensing pixel if the spatial resolution is too low.
 Here, the issue of intra-pixel mixing was resolved thanks to the very
-high spatial resolution of the drone. In this study the risk of spectral
-confusion was avoided with a machine-learning approach exploiting a
-neural networks classifier. Our drone flights and a recent study based
-on \emph{in situ} radiometry, suggested that a sensor with at least
-eight spectral bands ranging from 500 to 850 nm and including a green
-band at 530 nm and a RedEdge band at 730 nm was crucial to accurately
-discriminate green macroalgae from seagrasses \citep{Davies2023}.
+high spatial resolution of the drone (from 8 to 80 mm). In this study
+the risk of spectral confusion was avoided with a machine-learning
+approach exploiting a neural networks classifier. Our drone flights and
+a recent study based on \emph{in situ} radiometry, suggested that a
+sensor with at least eight spectral bands ranging from 500 to 850 nm,
+and including a green band at 530 nm and a RedEdge band at 730 nm, was
+crucial to accurately discriminate green macroalgae from seagrasses
+\citep{Davies2023}.
 
 \phantomsection\label{cell-fig-Pigm}
 \begin{figure}[H]
@@ -1104,14 +1111,15 @@ critical role in ecological monitoring and coastal management
 our approach facilitates targeted conservation strategies, enabling more
 effective preservation and restoration efforts in coastal ecosystems.
 While comparing the reflectance at two different altitudes (12 m and 120
-m), a nearly one-to-one relationship was observed, with a Root Mean
-Square Error (RMSE) of 0.02 (Figure~\ref{fig-CompareRef}). This result
-indicates that the reflectance measured by remote sensing (RS) sensors
-is not significantly influenced by pixel size. This finding is valuable
-for integrating drone-based data into larger-scale mapping projects
-(e.g., combining satellite and drone mapping in side-by-side analyses).
-The consistency of reflectance across altitudes suggests that drones can
-be effectively used for finer-scale mapping without compromising data
+m with a spatial resolution of 8 and 80 mm, respectively), a nearly
+one-to-one relationship was observed, with a Root Mean Square Error
+(RMSE) of 0.02 (Figure~\ref{fig-CompareRef}). This result indicates that
+the reflectance measured by remote sensing (RS) sensors is not
+significantly influenced by pixel size. This finding is valuable for
+integrating drone-based data into larger-scale mapping projects (e.g.,
+combining satellite and drone mapping in side-by-side analyses). The
+consistency of reflectance across altitudes suggests that drones can be
+effectively used for finer-scale mapping without compromising data
 accuracy when merging with other platforms. However, it was observed
 that there is an underestimation of the infrared part of the spectra in
 the high-altitude dataset (Figure~\ref{fig-CompareRef}). Such disparity
@@ -1164,32 +1172,32 @@ pixel size increases, which aligns with expectations given the
 limitations of coarser resolution in capturing fine-scale details.
 
 This resolution-area relationship has important implications for
-satellite platforms like Sentinel-2 and Landsat, which are commonly used
+satellite missions like Sentinel-2 and Landsat, which are commonly used
 in marine and coastal vegetation studies. Both satellites offer
-medium-resolution imagery, with pixel sizes of 10m and 30m,
-respectively. While these resolutions are suitable for broad-scale
-environmental monitoring, they may struggle to capture finer-scale
-heterogeneity, particularly in fragmented vegetation like green algae.
-The findings suggest that, while coarser resolutions like those of
-Landsat may be adequate for more homogeneous types, such as seagrass,
-higher resolutions are essential for accurately mapping patchier species
-like green algae. These findings have direct implications for
-environmental management and conservation planning. Overlooking
-fine-scale vegetation features, such as those seen in green algae, could
-result in inadequate protection or restoration efforts, particularly in
-ecologically sensitive coastal zones, as early stages of green tides
-could be challenging to monitor at coarse resolutions.
+high-resolution imagery, with pixel sizes of 10m and 30m, respectively.
+While these resolutions are suitable for broad-scale environmental
+monitoring, they may be too coarse to capture finer-scale heterogeneity,
+particularly in fragmented vegetation like green algae. Our findings
+suggest that, while the 30m resolution of Landsat may be adequate for
+homogeneous vegetation types, such as seagrass, a higher resolution is
+essential for accurately mapping patchy vegetation like green algae.
+These findings have direct implications for environmental management and
+conservation planning. Overlooking fine-scale vegetation features, such
+as those seen in green algae, could result in inadequate protection or
+restoration efforts, particularly in ecologically sensitive coastal
+zones, as early stages of green tides could be challenging to monitor at
+coarse resolutions.
 
-Higher-resolution imagery offers more accurate vegetation mapping but
+Very high-resolution imagery offers more accurate vegetation mapping but
 comes with trade-offs. As resolution increases, data costs rise, and
 processing becomes more resource-intensive due to the larger file sizes
 and computational demands. Additionally, high-resolution data requires
 more storage and can slow down real-time applications. For large-scale
-monitoring or homogeneous vegetation types, medium-resolution platforms
-like Sentinel-2 are often sufficient. However, when mapping fragmented
-vegetation like green algae, the precision provided by higher-resolution
-imagery is crucial, despite the additional costs and processing
-challenges it imposes.
+monitoring or homogeneous vegetation types, 10 m resolution of S2/MSI or
+even the 30 m of Landsat/OLI are often sufficient. However, when mapping
+fragmented vegetation like green algae, the precision provided by
+higher-resolution imagery is crucial, despite the additional costs and
+processing challenges it imposes.
 
 \subsection{Towards climate and biodiversity
 applications}\label{towards-climate-and-biodiversity-applications}
@@ -1267,29 +1275,29 @@ restoration of aquatic ecosystems.
 
 \section{Conclusion}\label{conclusion}
 
-The utilization of very high spatial-resolution drone-based remote
-sensing coupled with machine learning techniques has proven to be an
-effective method for the discrimination of intertidal seagrasses from
-green macroalgae with a multispectral resolution sensor. Standardized
-reflectance was incorporated in the Neural Network model allowing for a
-better discrimination of spectral features related to pigment absorption
-in the visible region of the spectrum. There was a striking difference
-for the variable of importance to discriminate Magnoliopsida from
-Chlorophyceae. The latter was essentially identified with the 451 nm
-spectral band while more spectral bands were needed to identify the
-former, notably 650, 560, 668, and 705 nm. As the spectral bands of the
-Micasense RedEdge Dual MX are very similar to those of Sentinel-2, we
-suggest that multispectral satellite data have the potential to perform
-this discrimination between green these macrophytes. A Sentinel-2
-algorithm could be developed, using the output of this current workflow
-as training and validation data. The findings underscore the importance
-of adopting advanced remote sensing tools in ecological studies and
-environmental monitoring, providing a foundation for future research and
-policy implementation aimed at ecosystem conservation and restoration.
+The utilization of very high spatial resolution (from 8 to 80 mm)
+drone-based remote sensing coupled with machine learning techniques has
+proven to be an effective method for the discrimination of intertidal
+seagrasses from green macroalgae with a multispectral resolution sensor.
+Standardized reflectance was incorporated in the Neural Network model
+allowing for a better discrimination of spectral features related to
+pigment absorption in the visible region of the spectrum. There was a
+striking difference for the variable of importance to discriminate
+Magnoliopsida from Chlorophyceae. The latter was essentially identified
+with the 451 nm spectral band while more spectral bands were needed to
+identify the former, notably 650, 560, 668, and 705 nm. As the spectral
+bands of the Micasense RedEdge Dual MX are very similar to those of
+Sentinel-2/MSI, we suggest that multispectral satellite data have the
+potential to perform this discrimination between green these
+macrophytes. A Sentinel-2 algorithm could be developed, using the output
+of this current workflow as training and validation data. The findings
+underscore the importance of adopting advanced remote sensing tools in
+ecological studies and environmental monitoring, providing a foundation
+for future research and policy implementation aimed at ecosystem
+conservation and restoration.
 
 
   \bibliography{library.bib}
-
 
 
 \end{document}
