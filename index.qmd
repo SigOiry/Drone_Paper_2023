@@ -6081,7 +6081,7 @@ NewData <- NewData %>%
  
 ```
 
-Clear differences were seen in vegetation loss across different resolutions and vegetation classes (\@fig-pixel). At a fine resolution of 1m, changes in the retrieved area for each vegetation type are minimal. Green algae shows the highest loss, with 1.2% area lost compared to the native resolution (80 mm). As the resolution coarsens to 10m, vegetation loss becomes more pronounced, with green algae again experiencing the greatest reduction (12% compared to 8cm) and seagrass showing the smallest loss (1.3%). At a resolution of 30m, all green algae have been lost (100% compared to 8cm), while seagrass experiences a relatively small reduction of 11%. Brown algae and red algae show moderate declines, with losses at 30m resolution reaching approximately 37% and 59%, respectively.
+Clear differences were seen in vegetation loss across different resolutions and vegetation classes (\@fig-pixelsize). At a fine resolution of 1m, changes in the retrieved area for each vegetation type are minimal. Green algae shows the highest loss, with 1.2% area lost compared to the native resolution (80 mm). As the resolution coarsens to 10m, vegetation loss becomes more pronounced, with green algae again experiencing the greatest reduction (12% compared to 8cm) and seagrass showing the smallest loss (1.3%). At a resolution of 30m, all green algae have been lost (100% compared to 8cm), while seagrass experiences a relatively small reduction of 11%. Brown algae and red algae show moderate declines, with losses at 30m resolution reaching approximately 37% and 59%, respectively.
 
 ```{r Pixel size Plot}
 #| cache: false

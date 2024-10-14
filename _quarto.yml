@@ -13,6 +13,7 @@ format:
       hypothesis: true
   docx: 
     output-file: "Simon_Drone_Paper"
+    reference-doc: Word_Template.docx
   elsevier-pdf: 
     fig-pos: "H"
     output-file: "Simon_Drone_Paper"
