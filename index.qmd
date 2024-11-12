@@ -678,7 +678,7 @@ knitr::include_graphics("./Figures/Low_res/Fig1_Map_Drone_Sites.png")
 
 ### Drone acquisition
 
-At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands ranging from the blue to the near infrared (NIR): 444, 475, 531, 560, 650, 668, 705, 717, 740 and 840 nm. To ensure consistent lighting conditions across flight paths, the drone's trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at ~50% provided by the manufacturer. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m, with a spatial resolution of 8 mm and 80 mm, respectively (@tbl-flights). **Low altitude flights were used as training dataset for a neural network model while high altitude flight were used for validation.**
+At each location, a DJI Matrice 200 quadcopter drone equipped with a Micasense RedEdge Dual MX multispectral camera was flown to take 1.2 million pixel reflectance photographs with ten spectral bands ranging from the blue to the near infrared (NIR): 444, 475, 531, 560, 650, 668, 705, 717, 740 and 840 nm. To ensure consistent lighting conditions across flight paths, the drone's trajectory was aligned to maintain a solar azimuth angle of 90 degrees. An overlap of 70% and 80% (side and front respectively) between each image was set for each flight. A downwelling light sensor (DLS2) was used to acquire irradiance data concomitantly with the camera measurements. Raw data were calibrated in reflectance using a calibration panel reflective at ~50% provided by the manufacturer. Across all sites, flights were made at two different altitudes : 12 m or/and 120 m, with a spatial resolution of 8 mm and 80 mm, respectively (@tbl-flights). **Low-altitude flights, with a spatial resolution of 8 mm, were used to build the training dataset for the neural network, as this high resolution allowed for precise photo-interpretation of vegetation classes. In contrast, high-altitude flights were utilized for validation purposes.**
 
 ```{r Table1 building}
 #| cache: false
@@ -788,7 +788,7 @@ knitr::include_graphics("Figures/High_res/Table1/table_flights.png")
 
 ### Ground Control Points
 
-Before each flight, targets used as ground control points were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). Ground control points were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. A dGPS was also used to georeference quadrats of 0.25 m² ,which assessed the presence or absence of five key taxonomic classes of intertidal vegetation : Bacillariophyceae (unicellular benthic diatoms forming biofilms at the sediment surface during low tide, **ranging in size from small patches (m²) to entire mudflats (km²)**; henceforth: Diatoms), Phaeophyceae (henceforth: brown macroalgae), Magnoliopsida (henceforth: Seagrasses), Chlorophyceae (henceforth: Green macroalgae) and Rhodophyceae (henceforth: red macroalgae) (@fig-vegetation). Only homogeneous vegetation patches extending over several meters were selected as ground control points. Pictures of each quadrat were uploaded online to the open-portal Global Biodiversity Information Facility (GBIF) platform [@BedeGbif]. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software [ImageJ, @schneider2012nih]. Hyperspectral reflectance signatures of each vegetation class were recorded using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures served dual purposes: they validate the radiometric calibration of drone data and contribute to misclassification reduction in photo interpretations.
+Before each flight, targets used as ground control points were distributed over the study site and georeferenced with a Trimble © Geo XH 6000 differential GPS (dGPS). Ground control points were used to correct georeferencing imprecision of orthomosaics with an horizontal and vertical accuracy of 10cm. A dGPS was also used to georeference quadrats of 0.25 m², which assessed the presence or absence of five key taxonomic classes of intertidal vegetation: Bacillariophyceae **(unicellular benthic diatoms forming biofilms at the sediment surface during low tide, ranging in size from small patches (m²) to entire mudflats (km²); henceforth: Diatoms), Phaeophyceae (brown macroalgae that are generally attached to rocks or other substrates and often form dense beds in the intertidal zone; henceforth: brown macroalgae), Magnoliopsida (seagrasses, which are rooted flowering plants that grow submerged and form extensive meadows on soft sediments; henceforth: Seagrasses), Chlorophyceae (green macroalgae, typically found attached to rocks or drifting in the water, and known for their bright green color due to chlorophyll; henceforth: Green macroalgae), and Rhodophyceae (red macroalgae that are mostly attached to hard substrates and often occur in smaller patches; henceforth: red macroalgae)**. Only homogeneous vegetation patches extending over several meters were selected as ground control points. Pictures of each quadrat were uploaded online to the open-portal Global Biodiversity Information Facility (GBIF) platform [@BedeGbif]. Each photograph was also processed to estimate the percent cover of each type of vegetation using an image processing software [ImageJ, @schneider2012nih]. Hyperspectral reflectance signatures of each vegetation class were recorded using an ASD FieldSpec HandHeld 2 spectroradiometer, which acquires reflectance between 325 and 1075 nm, with 1 nm of spectral resolution. Hyperspectral signatures served dual purposes: they validate the radiometric calibration of drone data and contribute to misclassification reduction in photo interpretations.
 
 ```{r Figure2 Spectra Pictures}
 #| cache: true
@@ -1106,7 +1106,7 @@ A structure-from-motion photogrammetry software [Agisoft Metashape, @agisoft] wa
 #| warning: false
 
 layout<-"Data/Figure2_Workflow" %>%
-  list.files("V4.txt",full.names = T, recursive = T) %>%
+  list.files("V5.txt",full.names = T, recursive = T) %>%
   read_delim(delim = "\t", escape_double = FALSE,
     trim_ws = TRUE) %>%
   dplyr::filter(Evaluate == T)
@@ -1340,7 +1340,7 @@ The spectral similarities of the reflectance signatures at the spectral resoluti
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Low_res/Figure3_workflow.png")
+knitr::include_graphics("./Figures/Figure3_workflow.png")
 
 ```
 
