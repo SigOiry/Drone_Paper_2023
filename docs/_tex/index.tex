@@ -78,15 +78,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
@@ -132,9 +134,6 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \usepackage[]{natbib}
 \bibliographystyle{elsarticle-num}
 \usepackage{bookmark}
@@ -352,25 +351,36 @@ thematic range , from coastal zone management
 distribution
 \citep{joyce2023, tallam2023, Roca2022, Roman2021, Brunier2022Topographic, sousa2019blue}.
 However, when applied to coastal habitat mapping, previous case studies
-were mostly limited to a low number of flights over a single study site,
-restricting the generalizability of their application over wider
-geographical scales
+were mostly limited to a low number of \textbf{drone} flights over a
+single study site, restricting the generalizability of their application
+over wider geographical scales
 \citep{Roman2021, collin2019improving, rossiter2020uav, Brunier2022Topographic}.
-The present study aimed at analyzing the potential of multispectral
-drone RS to map intertidal macrophytes over a diverse biogeographical
-range, with a particular focus on discriminating Magnoliopsida and
-Chlorophyceae (Seagrass and Green Algae, respectively). Nine drone
-flights were performed over soft-bottom intertidal areas along the
-Atlantic coastlines of two European countries (France and Portugal),
-covering a wide range of habitats, from monospecific seagrass meadows to
-meadows mixed with green, or red macroalgae. A deep learning algorithm
-was trained and validated for macrophyte discrimination, emphasizing
-applicability across diverse sites without a loss of prediction
-accuracy. The classification maps obtained at a very high spatial
-resolution with the drone were spatially degraded to satellite
-resolutions, making it possible to assess the effect of spatial
-resolution on classification accuracy, and provide insights for coastal
-habitat mapping using satellite remote sensing.
+\textbf{These studies have demonstrated the capability of drones to map
+intertidal habitats, including seagrasses; however, broader
+generalization of these findings is still lacking. The current paper
+uniquely expands the spatial and methodological scope of drone-based
+remote sensing for intertidal habitat mapping across a broad
+biogeographical range. It demonstrates the feasibility of accurately
+classifying diverse macrophyte types across various study sites, with a
+particular focus on distinguishing Magnoliopsida (seagrasses) and
+Chlorophyceae (green algae). Unlike previous studies, our approach
+integrates multiple spatial scales by simulating satellite resolutions
+and quantifying the impact of spatial resolution on classification
+accuracy.} Nine drone flights were performed over soft-bottom intertidal
+areas along the Atlantic coastlines of two European countries (France
+and Portugal), covering a wide range of habitats, from monospecific
+seagrass meadows to meadows mixed with green, or red macroalgae. A deep
+learning algorithm was trained and validated for macrophyte
+discrimination, emphasizing applicability across diverse sites without a
+loss of prediction accuracy. The classification maps obtained at a very
+high spatial resolution with the drone were spatially degraded to
+satellite resolutions, making it possible to assess the effect of
+spatial resolution on classification accuracy, and provide insights for
+coastal habitat mapping using satellite remote sensing. \textbf{This
+study is, therefore, among the first to quantify the effects of spatial
+resolution on the accuracy of drone-based macrophyte classification
+across a wide geographical scale, providing a framework for to better
+understand satellite-based classification challenges.}
 
 \section{Material \& Methods}\label{material-methods}
 
@@ -394,33 +404,33 @@ semi-enclosed macrotidal bay, protected from waves by Noirmoutier
 Island. Bourgneuf bay hosts a large intertidal seagrass meadow of about
 6 km² \citep{ZOFFOLI2020112020}. Within this meadow, the sites observed
 by drones (L'Epine and Barbatre) contained monospecific beds of
-\emph{Nanozostera noltei} (dwarf eelgrass, syn. \emph{Zostera noltei})
-with very little mixing with other macrophytes. Bourgneuf Bay is also
-part of the Natura 2000 network and serves as a RAMSAR site due to its
-critical habitat for migratory bird species and its extensive seagrass
-meadows \citep{Zoffoli2022}. Three sites were surveyed in the Ria de
-Aveiro Coastal Lagoon in Portugal (Figure~\ref{fig-map} C : 40.6887°N,
-8.6810°W). The extent of this lagoon is \textasciitilde83 km² (at low
-tide) with many narrow channels, large salt marshes and many mudflats
-that uncover at low tide \citep{sousa2017blue}. It is connected to the
-open sea through a single channel, with a tidal lag between the North
-and the South of the lagoon. The southernmost site (Gafanha) is a
-mudflat located in the Mira channel (one of the four main channels of
-the lagoon) whereas the two other sites (Mataducos and Marinha
-Lanzarote) were situated in the middle of the lagoon and only accessible
-by boat. These Portuguese sites are characterized by a more diverse
-intertidal vegetation, where patches of seagrass intermingle with red,
-brown, and green macroalgae. The Aveiro Lagoon, like the other study
-areas, is a Natura 2000 site and a RAMSAR wetland, recognized for its
-rich mosaic of habitats and importance for biodiversity, including
-migratory bird species and intertidal vegetation.
+\emph{Zostera noltei} (dwarf eelgrass) with very little mixing with
+other macrophytes. Bourgneuf Bay is also part of the Natura 2000 network
+and serves as a RAMSAR site due to its critical habitat for migratory
+bird species and its extensive seagrass meadows \citep{Zoffoli2022}.
+Three sites were surveyed in the Ria de Aveiro Coastal Lagoon in
+Portugal (Figure~\ref{fig-map} C : 40.6887°N, 8.6810°W). The extent of
+this lagoon is \textasciitilde83 km² (at low tide) with many narrow
+channels, large salt marshes and many mudflats that uncover at low tide
+\citep{sousa2017blue}. It is connected to the open sea through a single
+channel, with a tidal lag between the North and the South of the lagoon.
+The southernmost site (Gafanha) is a mudflat located in the Mira channel
+(one of the four main channels of the lagoon) whereas the two other
+sites (Mataducos and Marinha Lanzarote) were situated in the middle of
+the lagoon and only accessible by boat. These Portuguese sites are
+characterized by a more diverse intertidal vegetation, where patches of
+seagrass intermingle with red, brown, and green macroalgae. The Aveiro
+Lagoon, like the other study areas, is a Natura 2000 site and a RAMSAR
+wetland, recognized for its rich mosaic of habitats and importance for
+biodiversity, including migratory bird species and intertidal
+vegetation.
 
 \phantomsection\label{cell-fig-map}
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Fig1_Map_Drone_Sites.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Fig1_Map_Drone_Sites.png}
 
 }
 
@@ -448,7 +458,9 @@ concomitantly with the camera measurements. Raw data were calibrated in
 reflectance using a calibration panel reflective at \textasciitilde50\%
 provided by the manufacturer. Across all sites, flights were made at two
 different altitudes : 12 m or/and 120 m, with a spatial resolution of 8
-mm and 80 mm, respectively (Table~\ref{tbl-flights}).
+mm and 80 mm, respectively (Table~\ref{tbl-flights}). \textbf{Low
+altitude flights were used as training dataset for a neural network
+model while high altitude flight were used for validation.}
 
 \begin{table}
 
@@ -458,7 +470,7 @@ have a spatial resolution of 8 and 80 mm respectively.}
 
 \centering{
 
-\includegraphics[width=6.63in,height=\textheight]{Figures/High_res/Table1/table_flights.png}
+\includegraphics[width=6.63in,height=\textheight,keepaspectratio]{Figures/High_res/Table1/table_flights.png}
 
 }
 
@@ -474,8 +486,10 @@ and vertical accuracy of 10cm. A dGPS was also used to georeference
 quadrats of 0.25 m² ,which assessed the presence or absence of five key
 taxonomic classes of intertidal vegetation : Bacillariophyceae
 (unicellular benthic diatoms forming biofilms at the sediment surface
-during low tide), Phaeophyceae (brown macroalgae), Magnoliopsida (dwarf
-eelgrass), Chlorophyceae (green macroalgae) and Rhodophyceae (red
+during low tide, \textbf{ranging in size from small patches (m²) to
+entire mudflats (km²)}; henceforth: Diatoms), Phaeophyceae (henceforth:
+brown macroalgae), Magnoliopsida (henceforth: Seagrasses), Chlorophyceae
+(henceforth: Green macroalgae) and Rhodophyceae (henceforth: red
 macroalgae) (Figure~\ref{fig-vegetation}). Only homogeneous vegetation
 patches extending over several meters were selected as ground control
 points. Pictures of each quadrat were uploaded online to the open-portal
@@ -495,16 +509,18 @@ interpretations.
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{Figures/Low_res/Spectral_shapes_total.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{Figures/Low_res/Spectral_shapes_total.png}
 
 }
 
 \caption{\label{fig-vegetation}The five taxonomic classes of vegetation
-used to train the Neural Network model and their raw spectral signatures
-at the spectral resolution of the Micasense RedEdge Dual MX. A :
-Magnoliopsida (Nanozostera noltei syn. Zostera noltei) ; B :
-Phaeophyceae (Fucus sp.) ; C : Rhodophyceae (Gracilaria vermiculophylla)
-; D : Chlorophyceae (Ulva sp.) ; E : Bacillariophyceae (Diatoms - MPB)}
+used to train the Neural Network model and an example of their raw
+spectral signatures at the spectral resolution of the Micasense RedEdge
+Dual MX. A : Magnoliopsida (\emph{Zostera noltei}) ; B : Phaeophyceae
+(\emph{Fucus sp.}) ; C : Rhodophyceae (\emph{Gracilaria
+vermiculophylla}) ; D : Chlorophyceae (\emph{Ulva sp.}) ; E :
+Bacillariophyceae (Diatoms - MPB). \textbf{Classes were identified
+following the World register of Marine species.}}
 
 \end{figure}%
 
@@ -541,7 +557,7 @@ trained, validated, and applied to each drone flight
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Figure3_workflow.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Figure3_workflow.png}
 
 }
 
@@ -567,7 +583,7 @@ number of pixels used to train and validate each class}
 
 \centering{
 
-\includegraphics[width=6.63in,height=\textheight]{Figures/High_res/table_validation_px.png}
+\includegraphics[width=6.63in,height=\textheight,keepaspectratio]{Figures/High_res/table_validation_px.png}
 
 }
 
@@ -577,20 +593,25 @@ A dataset containing photo-interpreted drone reflectance pixels was
 built to train a Neural Network model. The training pixels were
 categorized into seven different classes, representing the various
 habitats encountered at the different study sites: Sediment, Water,
-Chlorophyceae, Magnoliopsida, Bacillariophyceae, Phaeophyceae and
-Rhodophyceae. Only data from the low-altitude flights
+green macroalgae, seagrasses, diatoms, brown macroalgae and red
+macroalgae. Only data from the low-altitude flights
 (Table~\ref{tbl-flights}) were used for training because their 8 mm
 spatial resolution allowed to avoid spectral sub-pixel mixing and to
-accurately identify vegetation classes. More than 418,000 pixels at 8 mm
-resolution from the 3 training flights were used to train the model
-(Table~\ref{tbl-validationPX}). Twenty one variables were used by the
-model as predictors: the ten raw spectral bands of the Micasense RedEdge
-Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same
-ten spectral bands standardized using a min/max transformation
-(Equation~\ref{eq-std} ; \citep{Cao2017}) and the Normalized difference
-vegetation index (NDVI, Equation~\ref{eq-ndvi}). Standardisation of
-spectral bands is commonly used to eliminate the scaling differences
-between spectra and to limit the effect of biomass on the spectra shape
+accurately identify vegetation classes. \textbf{In the field, seagrasses
+displaying two distinct colors, each with a unique spectral signature,
+were observed. Careful attention was given to incorporating training
+pixels from both color types into the training dataset for the seagrass
+class. This approach was consistently applied to all classes within the
+model.} More than 418,000 pixels at 8 mm resolution from the 3 training
+flights were used to train the model (Table~\ref{tbl-validationPX}).
+Twenty one variables were used by the model as predictors: the ten raw
+spectral bands of the Micasense RedEdge Dual MX multispectral camera
+(ranging from 444 nm to 840 nm), the same ten spectral bands
+standardized using a min/max transformation (Equation~\ref{eq-std} ;
+\citep{Cao2017}) and the Normalized difference vegetation index (NDVI,
+Equation~\ref{eq-ndvi}). Standardisation of spectral bands is commonly
+used to eliminate the scaling differences between spectra and to limit
+the effect of biomass on the spectra shape
 \citep{Douay2022, Davies2023}.
 
 \begin{equation}\phantomsection\label{eq-std}{
@@ -642,8 +663,22 @@ classifier. The sites with the lowest and highest number of validation
 data were Gafanha Low (17316 pixels) and Marinha Lanzarote (159713
 pixels), respectively. A confusion matrix, along with precision metrics
 such as global accuracy, sensitivity, specificity, F1 score, and Kappa
-coefficient, were generated for each site. All validation matrices were
-then aggregated to create an overall matrix .
+coefficient, were generated for each site. These metrics were computed
+as follow :
+
+\[
+\text{Global accuracy} = \frac{\sum_{i=1}^{k} \text{TP}_i}{\sum_{i=1}^{k} \left(\text{TP}_i + \text{FP}_i + \text{FN}_i \right)}
+\] \[
+\text{Sensitivity}_i = \frac{\text{TP}_i}{\text{TP}_i + \text{FN}_i}
+\] \[
+\text{Specificity}_i = \frac{\text{TN}_i}{\text{TN}_i + \text{FP}_i}
+\] \[
+\text{F1}_i = \frac{2 \cdot \text{TP}_i}{2 \cdot \text{TP}_i + \text{FP}_i + \text{FN}_i}
+\] Where \(\text{TP}_i\), \(\text{TN}_i\), \(\text{FN}_i\) and
+\(\text{FP}_i\) represent the true positives, true negatives, false
+negatives and false positives relative to the class i.
+
+All validation matrices were then aggregated to create an overall matrix
 
 \subsection{Variable Importance}\label{variable-importance}
 
@@ -661,24 +696,25 @@ variable is for the model \citep{WEI2015399}.
 \subsection{Influence of the spatial resolution on
 classification}\label{influence-of-the-spatial-resolution-on-classification}
 
-To evaluate the influence of spatial resolution on the model's output,
-we resampled the drone orthomosaics from their native resolution (8 cm
-for the high altitude flights) using the ``average'' method from the
-Terra package in R. DISCOV was then applied to these resampled rasters,
-and the results were compared to the original model predictions. For
-each resolution and vegetation class, we calculated the predicted area
-loss, where a score of 0 indicates no area loss during spatial
-resampling, and a score of 100 indicates complete loss of the vegetation
-class.
+To assess the impact of spatial resolution on the model's output, we
+resampled the drone orthomosaics from their native resolution (8 cm for
+high-altitude flights) using the ``average'' method from the terra
+package in R. \textbf{The rasters were resampled to 32 different
+resolutions, ranging from 10 cm to 30 m.} DISCOV was then applied to
+these resampled rasters, and the results were compared to the original
+model predictions. For each resolution and vegetation class, we
+calculated the predicted area loss, where a score of 0 indicates no area
+loss during spatial resampling, and a score of 100 indicates complete
+loss of the vegetation class.
 
 We used a Generalized Linear Model (GLM) with a Beta distribution to
 examine the relationship between pixel resolution, vegetation class, and
 their interaction on the loss of vegetation. The loss of vegetation was
 modelled as function of the interaction between pixel resolution and
-vegetation class (Bacillariophyceae, Phaeophyceae, Magnoliopsida,
-Chlorophyceae and Rhodophyceae). Sample vs fitted residuals and
-quartile-quartile graphics were assessed visually, to ensure assumption
-of the models used were met
+vegetation class (Diatoms, brown macroalgae, seagrass, green macroalgae
+and red macroalage). Sample vs fitted residuals and quartile-quartile
+graphics were assessed visually, to ensure assumption of the models used
+were met.
 
 \subsection{Impact of mixed vegetation cover on the
 prediction}\label{impact-of-mixed-vegetation-cover-on-the-prediction}
@@ -711,7 +747,7 @@ Overall there was a good agreement between the two altitudes (RMSE :
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/High_res/Compare_reflectance_both.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/High_res/Compare_reflectance_both.png}
 
 }
 
@@ -740,19 +776,19 @@ Gafanha, Portugal, represented the site with the highest complexity
 the model was trained, four were present on this site, with green and
 red macroalgae mixed with a seagrass meadow. There was also diatoms
 forming biofilms on bare sediment surface. Although the seagrass was
-solely composed of a single specie, \emph{Nanozostera noltei}, various
+solely composed of a single specie, \emph{Zostera noltei}, various
 colors of this specie could be observed from dark green (corresponding
 to healthy leaves) to brown (when leaves are senescent or have an
 altered pigment composition). Regardless of the variation of color, the
-class Magnoliopsida was accurately predicted by the model (F1 score of
-0.96 at that site).
+class Magnoliopsida (seagrass) was accurately predicted by the model (F1
+score of 0.96 at that site).
 
 \phantomsection\label{cell-fig-GafLow}
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Maps Pred/FigX-Gaf_Low_Pred.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Gaf_Low_Pred.png}
 
 }
 
@@ -769,9 +805,9 @@ The high-altitude flight over Gafanha covered a total area of
 \textasciitilde1 km² (Figure~\ref{fig-GafHigh}). A channel contouring a
 small island was masked in the prediction map. Most of vegetation area
 was classified as seagrass by the model, including patches with
-discolored leaves. Only a few pixels were classified as green algae (F1
-score of 0.55). Patches of Rhodophyceae were correctly classified (F1
-score of 0.85). In the northern part of the site and near the land
+discolored leaves. Only a few pixels were classified as green macroalgae
+(F1 score of 0.55). Patches of red macroalgae were correctly classified
+(F1 score of 0.85). In the northern part of the site and near the land
 eadges, patches of the schorre angiosperm \emph{Sporobolus maritimus}
 (syn. \emph{Spartina maritima)} were misclassified, either as seagrass
 or as brown algae (F1 score of 0.77 and 0.71, respectively).
@@ -781,7 +817,7 @@ or as brown algae (F1 score of 0.77 and 0.71, respectively).
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred1.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred1.png}
 
 }
 
@@ -811,7 +847,7 @@ macroalgae (\emph{Ulva sp.}), which the model agreed with (F1 score of
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Maps Pred/FigX-Boat_Pred.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Boat_Pred.png}
 
 }
 
@@ -840,7 +876,7 @@ respectively).
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Dike_Pred.png}
 
 }
 
@@ -862,7 +898,7 @@ with a Kappa coefficient of 0.92 (Figure~\ref{fig-Validation}).
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Validation/ConfusionMatrixGlobal.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Validation/ConfusionMatrixGlobal.png}
 
 }
 
@@ -900,7 +936,7 @@ which bands were the most useful for class prediction
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{Figures/Low_res/VIP/Fig_VIP.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{Figures/Low_res/VIP/Fig_VIP.png}
 
 }
 
@@ -930,34 +966,34 @@ Magnoliopsida.
 classification}\label{effect-of-spatial-resolution-on-the-classification}
 
 Clear differences were seen in vegetation loss across different
-resolutions and vegetation classes (@fig-pixel). At a fine resolution of
-1m, changes in the retrieved area for each vegetation type are minimal.
-Green algae shows the highest loss, with 1.2\% area lost compared to the
-native resolution (80 mm). As the resolution coarsens to 10m, vegetation
-loss becomes more pronounced, with green algae again experiencing the
-greatest reduction (12\% compared to 8cm) and seagrass showing the
-smallest loss (1.3\%). At a resolution of 30m, all green algae have been
-lost (100\% compared to 8cm), while seagrass experiences a relatively
-small reduction of 11\%. Brown algae and red algae show moderate
-declines, with losses at 30m resolution reaching approximately 37\% and
-59\%, respectively.
+resolutions and vegetation classes (Figure~\ref{fig-pixelsize}). At a
+fine resolution of 1m, changes in the retrieved area for each vegetation
+type are minimal. Green algae shows the highest loss, with 1.2\% area
+lost compared to the native resolution (80 mm). As the resolution
+coarsens to 10m, vegetation loss becomes more pronounced, with green
+macroalgae again experiencing the greatest reduction (12\% compared to
+8cm) and seagrass showing the smallest loss (1.3\%). At a resolution of
+30m, all green algae have been lost (100\% compared to 8cm), while
+seagrass experiences a relatively small reduction of 11\%. Brown
+macroalgae and red macroalgae show moderate declines, with losses at 30m
+resolution reaching approximately 37\% and 59\%, respectively.
 
 \phantomsection\label{cell-fig-pixelsize}
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics[width=0.9\textwidth,height=\textheight]{Figures/High_res/resolution_plot.png}
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{Figures/High_res/resolution_plot.png}
 
 }
 
 \caption{\label{fig-pixelsize}Predicted area loss for different
 vegetation types (green algae, seagrass, brown algae, red algae) as a
-function of spatial resolution. Lines represent GLM predictions, and
-shaded areas indicate standard errors. As resolution decreases,
-predicted area loss increases for all vegetation types, with green algae
-showing the highest loss and seagrass the smallest at coarser
-resolutions.}
+function of spatial resolution. Lines represent Generalized Linear Model
+(GLM) predictions, and shaded areas indicate standard errors. As
+resolution decreases, predicted area loss increases for all vegetation
+types, with green algae showing the highest loss and seagrass the
+smallest at coarser resolutions.}
 
 \end{figure}%
 
@@ -974,7 +1010,7 @@ resolution ; Figure~\ref{fig-upscaling}).
 
 \centering{
 
-\includegraphics[width=0.9\textwidth,height=\textheight]{Figures/Low_res/Upscaling/density_vs_Proportion.png}
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{Figures/Low_res/Upscaling/density_vs_Proportion.png}
 
 }
 
@@ -992,15 +1028,15 @@ pixels correctly classified, with the exception of Magnoliopsida that
 required a higher cover (\textgreater90 \%) to be accurately classified.
 Concerning the probability of each class, there is a linear relationship
 between the percent cover and the confidence of the model to predict the
-class. To predict Chlorophyceae with a model likelihood of 0.85, a cover
-of 93 \% was needed, 90 \% for Magnoliopsida, 92 \% for Rhodophyceae and
-97 \% for Bacillariophyceae. When the vegetation cover of a given class
-was 100 \%, coarser high-flight pixels were correctly classified for all
-the classes except for Bare Sediment, which was only correctly
-classified 80\% of the time. This phenomenon may be attributed to the
-time gap between the two flights, allowing for microphytobenthos
-migration to the surface during low tide, consequently altering the
-model's classification from bare sediment to Bacillariophyceae.
+class. To predict green macroalgae with a model likelihood of 0.85, a
+cover of 93 \% was needed, 90 \% for seagrass, 92 \% for red macroalgae
+and 97 \% for diatoms When the vegetation cover of a given class was 100
+\%, coarser high-flight pixels were correctly classified for all the
+classes except for Bare Sediment, which was only correctly classified
+80\% of the time. This phenomenon may be attributed to the time gap
+between the two flights, allowing for microphytobenthos migration to the
+sediment surface during low tide, consequently altering the model's
+classification from bare sediment to Bacillariophyceae.
 
 \section{Discussion}\label{discussion}
 
@@ -1036,7 +1072,7 @@ crucial to accurately discriminate green macroalgae from seagrasses
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Disc_Pigment_Table.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Disc_Pigment_Table.png}
 
 }
 
@@ -1046,7 +1082,8 @@ Network Classifier, along with their absorption wavelength measured with
 spectroradiometer, Chl-b: chlorophyll-b, Chl-c: chlorophyll-c, Fuco:
 fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo:
 neoxanthin, PE: phycoerythrin, PC: phycocyanin
-\citetext{\citealp{ralph2002}; \citealp[@christensen1977seaweeds]{Douay2022}; \citealp{cartaxana2016regulation}; \citealp{meleder2013vivo}}.}
+\citetext{\citealp{ralph2002}; \citealp[
+\citep{christensen1977seaweeds}]{Douay2022}; \citealp{cartaxana2016regulation}; \citealp{meleder2013vivo}}.}
 
 \end{figure}%
 
@@ -1055,7 +1092,7 @@ neoxanthin, PE: phycoerythrin, PC: phycocyanin
 
 \centering{
 
-\includegraphics[width=1\textwidth,height=\textheight]{./Figures/Low_res/Validation/ConfusionMatrixGreen.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Validation/ConfusionMatrixGreen.png}
 
 }
 

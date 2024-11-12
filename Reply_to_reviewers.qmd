@@ -1,0 +1,38 @@
+---
+title: "Replies to reviewers of the 1st round of Remote Sensing"
+author: "Simon Oiry"
+format: docx
+editor: visual
+---
+
+# Reviewer 1 
+
+## Reviewer's comments
+
+Overall, this paper presents a solidly researched and theoretically grounded study, offering insights into the types of seagrass bed vegetation and the importance of seagrass bed monitoring. It is a worthwhile document to read. However, there are issues related to uniqueness and experimental organization that, if addressed, could enhance its academic quality:
+
+1.  Please highlight more clearly the innovations, distinctive features, or unique content of this paper. The work conducted in this paper is indeed sufficiently rigorous, but the unique content or scientific contributions of this work are not yet prominent enough. Since the equipment and methods used in this paper are relatively mature, the distinctive contributions of the current work are not sufficient to support its scientific contributions. Please elaborate and summarize in this regard, and if possible, consider dedicating a separate chapter for a detailed explanation.
+
+2.  There seem to be issues with the classification results presented in Figures 5 to 8. For instance, in Figure 5, the Magnoliopsida category includes two different spectral representations of ground objects (appearing as green and brown in the RGB image). Similarly, in Figure 8, Magnoliopsida encompasses multiple spectral representations of ground objects (displayed in various colors in the RGB image). Please carefully organize and analyze the experimental results. The current figures have some Conflicts with the accuracy table and confusion matrix.
+
+## Reply
+
+1.  Thank you for this valuable suggestion. We appreciate your feedback on the need to further highlight the unique contributions and innovations of our study. In response, we have revised the final paragraph of the Introduction (between lines 90 and 107) to more explicitly underscore the distinctive aspects and scientific contributions of our work.
+
+    Specifically, we have:
+
+    1.  **Clarified the unique contribution of this paper** by emphasizing the broader geographical range and methodological scope of our drone remote sensing application for intertidal habitat mapping, as well as our focus on classifying diverse macrophyte types with high accuracy.
+
+    2.  **Highlighted the novelty of our approach in integrating multiple spatial scales** through the simulation of satellite resolutions and quantification of the impact of spatial resolution on classification accuracy, providing a framework to better understand challenges of satellite based-habitat mapping.
+
+    3.  **Added a summary of the study’s contributions** to contextualize our findings within existing research and underscore the broader implications of this work for coastal habitat mapping.
+
+        We believe these additions better address the innovative aspects of our study and strengthen the scientific contribution of the manuscript.
+
+2.  Thank you for your detailed feedback on the classification results presented in Figures 5 to 8. We appreciate your attention to the spectral representations of the Magnoliopsida category in the RGB images. Your observations regarding the varying appearances of pixels classified as seagrass in the RGB images were extremely helpful, as this distinction between different coloration of seagrasses was not sufficiently emphasized in the original manuscript.
+
+    In response, we have revised the main text to clarify that the Magnoliopsida class includes pixels with varying spectral signatures due to differences in physiological states, such as leaf health and senescence. These variations are visible in the RGB images, where healthy seagrass leaves appear green, while senescent or altered leaves may appear brown or even white. This variation in seagrass leaf color has been observed during the field campaign by our team.
+
+    To ensure accurate classification despite these spectral differences, we carefully included spectral signatures from both healthy and senescent seagrass states in the neural network classifier’s training dataset. This approach allowed the classifier to consistently recognize both states as part of the same seagrass class, ensuring that all instances of seagrass, regardless of coloration, are correctly classified as Magnoliopsida.
+
+    These modification of the text can be found between lines 188-191 and also between lines 274 and 278.
