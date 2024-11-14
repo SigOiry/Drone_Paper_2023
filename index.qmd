@@ -4304,7 +4304,7 @@ ggsave("Figures/High_res/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width 
 #| fig-height: 8
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred1.png")
+knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png")
 
 ```
 
