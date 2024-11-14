@@ -1325,7 +1325,7 @@ if(building == T){
 if(building == T){
 a
 }else{
-  ggsave("Figures/Figure3_workflow.png",a, width = 1920, height = 1129, units = "px")
+  ggsave("Figures/High_res/Figure3_workflow.png",a, width = 1920, height = 1129, units = "px")
 }
 
 
@@ -1343,7 +1343,7 @@ The spectral similarities of the reflectance signatures at the spectral resoluti
 #| fig-height: 7
 #| out-width: "100%"
 
-knitr::include_graphics("./Figures/Figure3_workflow.png")
+knitr::include_graphics("./Figures/High_res/Figure3_workflow.png")
 
 ```
 
@@ -3503,7 +3503,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
+                    values = c("#70543e", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
 
@@ -3564,7 +3564,7 @@ p1<-ggplot() +
                                   g = 2,
                                   b = 1)+
    theme_Bede_Map()+
-   geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+   geom_sf(data = zoom_extent, fill = "transparent", colour = "red2",linetype = "dashed", linewidth = 1.5)+
    coord_sf(crs = 4326)+
      theme_void()
 
@@ -3576,27 +3576,29 @@ p1<-ggplot() +
  
  
  
-  rgb_Gafanha_low<- ggplot()+
-  scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="grey30")+
+rgb_Gafanha_low<- ggplot()+
+  # scale_fill_manual("", 
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_GafHigh,
+  #         fill = "white",
+  #         show.legend = F,
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="white")+
+  # geom_sf(data = background_GafHigh,
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="grey30")+
    tidyterra::geom_spatraster_rgb(data = Gafanha_low_ortho,
          r = 1,
          g = 2,
          b = 3,
          maxcell = 4010533
+         # maxcell = 10000
+
          )+
     ggspatial::annotation_scale(location = "tl",
                                 text_cex=2)+
@@ -3608,9 +3610,9 @@ p1<-ggplot() +
    theme_Bede_Map()+
    geom_sf(data = zoom_extent, 
            fill = "transparent",
-           colour = "black",
+           colour = "red2",
            linetype = "dashed", 
-           linewidth = 1)+
+           linewidth = 1.5)+
    coord_sf(crs = 4326)+
   annotation_custom(ggplotGrob(rgb_Gafanha_low_zoomed),
                     xmin = -8.7430,
@@ -3620,13 +3622,14 @@ p1<-ggplot() +
             data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
                               y=c(40.5976275,40.5979,40.5975373,40.59771),
                               grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
+            linetype = "dashed", linewidth = 1.5, color = "red2")+
   theme(axis.title = element_blank(),
         axis.text.y = element_text(size = 20),
         axis.text.x = element_text(size = 20, angle = 20, hjust = 1))+
     scale_x_continuous(limits = c(-8.7437, -8.74275), breaks = -8.743)+
     scale_y_continuous(limits = c(40.59715, 40.5979), breaks = 40.5975)
-
+ 
+# rgb_Gafanha_low
  
  
   
@@ -3655,7 +3658,7 @@ Gafanha_low_pred_zoomed<-as.factor(Gafanha_low_pred_zoomed)
 
 Gafanha_low_pred_map_zoomed<-ggplot()+
   tidyterra::geom_spatraster(data = Gafanha_low_pred_zoomed, mapping = aes(fill = layer))+
-  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+  geom_sf(data = zoom_extent, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1.5)+
   coord_sf(crs = 4326)+
   scale_fill_manual(values=c("#A3A3A3", "#b3ff1a","#70543e", "#DAA520", "#389318","#5C2E1A","#b3002d", NA, "#42c9bc"), na.value = NA)+
   theme_void()+
@@ -3683,15 +3686,15 @@ Gafanha_low_pred<-Gafanha_low_pred %>%
 
 Gafanha_low_pred_map <-
   ggplot()+
-  scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="grey30")+
+  # scale_fill_manual("", 
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("white", "white","white"))+
+  # geom_sf(data = background_GafHigh,
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="grey30")+
   # geom_sf(data = background_GafHigh,
   #         fill = "white",
   #         show.legend = F, 
@@ -3706,7 +3709,7 @@ Gafanha_low_pred_map <-
           fill = "transparent", 
           colour = "black",
           linetype = "dashed", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   coord_sf(crs = 4326)+
   annotation_custom(ggplotGrob(Gafanha_low_pred_map_zoomed), 
                     xmin = -8.7430,
@@ -3716,7 +3719,7 @@ Gafanha_low_pred_map <-
             data = data.frame(x = c(-8.7432439,-8.743,-8.7432439,-8.743),
                               y=c(40.5976275,40.5979,40.5975373,40.59771),
                               grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
+            linetype = "dashed", linewidth = 1.5)+
   scale_fill_manual(breaks = c(1,2,5,6,7,8,10),
                     values=c("#A3A3A3", "#b3ff1a", "#DAA520", "#389318","#5C2E1A","#b3002d", "#42c9bc",NA,NA,NA,NA),
                     na.value = NA,
@@ -3759,7 +3762,7 @@ ggsave("Figures/High_res/Maps Pred/FigX-Gaf_Low_Pred.png",plot_Gaf_Low , width =
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the low altitude flight of Gafanha, Portugal. The total extent of this flight was 3000 m² with a resolution of 8 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
+#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the low altitude flight of Gafanha, Portugal. The total extent of this flight was 3000 m² with a resolution of 8 mm per pixel. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
 #| label: fig-GafLow
 #| fig-width: 10
 #| fig-height: 8
@@ -4002,7 +4005,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
+                    values = c("#70543e", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
       coord_sf(xlim=c(519749,535233) ,
@@ -4095,33 +4098,36 @@ rgb_Gafanha_High_zoomed<-
          r = 1,
          g = 2,
          b = 3)+
-     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "red",linetype = "dashed", linewidth = 1.5)+
   theme_void()
 
   
   
 
 rgb_Gafanha_High <- ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_GafHigh,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
+  # scale_fill_manual("",  
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_GafHigh,
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="grey30")+
+  # geom_sf(data = background_GafHigh,
+  #         fill = "white",
+  #         show.legend = F,
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="white")+
    tidyterra::geom_spatraster_rgb(data = GafHigh_ortho_masked,
          r = 1,
          g = 2,
          b = 3,
-         maxcell = 5007120)+
+         maxcell = 5007120
+        # maxcell = 100000
+
+         )+
     ggspatial::annotation_scale(location = "bl",
                                 text_cex=2)+
     annotation_custom(ggplotGrob(p1), 
@@ -4131,20 +4137,21 @@ rgb_Gafanha_High <- ggplot()+
                       ymax = 40.595) +
     geom_sf(data = zoom_gaf_high_sf,
             fill = "transparent", 
-            colour = "black",
-            linetype = "dashed", 
-            linewidth = 1)+
+            colour = "red",
+            linetype = 1, 
+            linewidth = 1.5)+
     geom_sf(data = Gaflow_extent,
             fill = "transparent", 
-            colour = "red",
-            linetype = "dashed", 
-            linewidth = 2)+
+            colour = "yellow",
+            linetype = 1, 
+            linewidth = 1)+
     geom_path(aes(x,y,group=grp),
             data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
                               y=c(40.5983781677,40.5995,40.598377893,40.5995),
                               grp=c(1,1,2,2)),
             linetype = "dashed", 
-            linewidth = 1)+
+            linewidth = 1.5,
+            color = "red")+
   annotation_custom(ggplotGrob(rgb_Gafanha_High_zoomed),
                     xmin = -8.7479, 
                     xmax = -8.7452, 
@@ -4202,25 +4209,25 @@ Gafanha_High_zoomed_pred<-
                                "Phaeophyceae",
                                "Rhodophyceae",
                                "Water"))+
-     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "black",linetype = "dashed", linewidth = 1)+
+     geom_sf(data = zoom_gaf_high_sf, fill = "transparent", colour = "red",linetype = "dashed", linewidth = 1.5)+
   theme_void()
 
 Gafanha_high_pred_map<-ggplot()+
-  geom_sf(data = background_GafHigh, 
-          mapping = aes(fill = Type),
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_GafHigh,
-          fill = "white",
-          show.legend = F,
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-    scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_GafHigh, 
+  #         mapping = aes(fill = Type),
+  #         show.legend = F,
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="grey30")+
+  # geom_sf(data = background_GafHigh,
+  #         fill = "white",
+  #         show.legend = F,
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="white")+
+  #   scale_fill_manual("", 
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
   ggnewscale::new_scale("fill")+
   tidyterra::geom_spatraster(data = GafHigh_pred_masked, 
                              # show.legend = F,
@@ -4239,19 +4246,19 @@ Gafanha_high_pred_map<-ggplot()+
                                "Water"))+
        geom_sf(data = zoom_gaf_high_sf, 
                fill = "transparent", 
-               colour = "black",
-               linetype = "dashed", 
-               linewidth = 1)+
+               colour = "red",
+               linetype = 1, 
+               linewidth = 1.5)+
     geom_sf(data = Gaflow_extent,
             fill = "transparent", 
-            colour = "red",
-            linetype = "dashed", 
-            linewidth = 2)+
+            colour = "yellow",
+            linetype = 1, 
+            linewidth = 1)+
   geom_path(aes(x,y,group=grp),
             data = data.frame(x = c(-8.74363778,-8.74757,-8.74351982,-8.7453), 
                               y=c(40.5983781677,40.5995,40.598377893,40.5995),
                               grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
+            linetype = "dashed", linewidth = 1.5, color = "red")+
   annotation_custom(ggplotGrob(Gafanha_High_zoomed_pred), 
                     xmin = -8.7479, 
                     xmax = -8.7452, 
@@ -4289,7 +4296,7 @@ ggsave("Figures/High_res/Maps Pred/FigX-Gaf_High_Pred.png",plot_GafHigh , width 
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high-altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. Background colors indicate the intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The red outline shows the extent of the low altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
+#| fig-cap: RGB orthomosaic (Left) and Prediction (Right) of the high-altitude flight of Gafanha, Portugal. The total extent of this flight was about 1 km² with a resolution of 80 mm per pixel. The yellow outline shows the extent of the low-altitude flight of Gafanha presented in @fig-GafLow. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size.
 #| label: fig-GafHigh
 #| fig-width: 10
 #| fig-height: 8
@@ -4299,7 +4306,7 @@ knitr::include_graphics("./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred1.png")
 
 ```
 
-Among the high altitude flights, the one acquired over the inner part of Ria de Aveiro coastal lagoon covered the largest area with approximately 1.5 km² (@fig-Boat). Teh vegetation present at the site was dominated by seagrass and red macroalgae. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow were mixed with green macroalgae (*Ulva sp.*), which the model agreed with (F1 score of 0.89 for green algae, 0.97 for seagrass and 0.98 for red algae).
+Among the high altitude flights, the one acquired over the inner part of Ria de Aveiro coastal lagoon covered the largest area with approximately 1.5 km² (@fig-Boat). The vegetation present at the site was dominated by seagrass and red macroalgae. The classification provided consistent results, with a patchy seagrass meadow mixed with red macroalgae on the eastern part of the site. As shown in the zoom (@fig-Boat), the edges of the meadow were mixed with green macroalgae (*Ulva sp.*), which the model agreed with (F1 score of 0.89 for green algae, 0.97 for seagrass and 0.98 for red algae).
 
 ```{r Figure 6 Boat}
 #| cache: true
@@ -4361,7 +4368,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#7DC27D", "#BDBDBD"))+
+                    values = c("#70543e", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,show.legend = F,colour="grey30")+
       coord_sf(xlim=c(519749,535233) ,
@@ -4451,7 +4458,7 @@ rgb_Boat_zoomed_map<- ggplot()+
                       g = 2,
                       b = 1,
                       max_col_value = 4000)+
-  geom_sf(data = zoom_boat_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  geom_sf(data = zoom_boat_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1.5)+
 
   theme_void()
 
@@ -4463,7 +4470,7 @@ ggplot()+
                       b = 1,
                       interpolate = F,
                       max_col_value = 4000)+
-  geom_sf(data = zoom_boat_high_sf_2, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  geom_sf(data = zoom_boat_high_sf_2, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1.5)+
 
   theme_void()
 
@@ -4471,21 +4478,21 @@ ggplot()+
 
 RGB_Boat_map<-
 ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_Boat,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Boat,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
+  # scale_fill_manual("",  
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_Boat,
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="transparent")+
+  # geom_sf(data = background_Boat,
+  #         fill = "white",
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="transparent")+
   tidyterra::geom_spatraster_rgb(data = Boat_rgb_mask,
                       r = 3,
                       g = 2,
@@ -4496,11 +4503,11 @@ ggplot()+
   geom_sf(data = zoom_boat_high_sf,
           fill = "transparent",
           colour = "black", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   geom_sf(data = zoom_boat_high_sf_2,
           fill = "transparent",
           colour = "black", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   annotation_custom(ggplotGrob(rgb_Boat_zoomed_map),
                     xmin = -8.6975,
                     xmax = -8.69,
@@ -4521,13 +4528,13 @@ ggplot()+
                               y=c(40.66244282,40.66673,40.66244282,40.66673),
                               grp=c(1,1,2,2)),
             linetype = "dashed", 
-            linewidth = 1)+
+            linewidth = 1.5)+
     geom_path(aes(x,y,group=grp),
             data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
                               y=c(40.6652874,40.66675,40.6652874,40.66673),
                               grp=c(1,1,2,2)),
             linetype = "dashed", 
-            linewidth = 1)+
+            linewidth = 1.5)+
   ggspatial::annotation_scale(location = "bl",
                               text_cex=2)+
   scale_x_continuous(limits = c(-8.6965,-8.675),
@@ -4603,7 +4610,7 @@ Boat_Pred_zoomed_map<- ggplot()+
           fill = "transparent", 
           linetype = "dashed",
           colour = "black", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   theme_void()
 
 Boat_Pred_zoomed_map_2<- ggplot()+
@@ -4622,26 +4629,26 @@ Boat_Pred_zoomed_map_2<- ggplot()+
           fill = "transparent", 
           linetype = "dashed",
           colour = "black", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   theme_void()
 
 
 Boat_pred_map<-ggplot()+
-  geom_sf(data = background_Boat, 
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Boat,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
-    scale_fill_manual("", 
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_Boat, 
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="transparent")+
+  # geom_sf(data = background_Boat,
+  #         fill = "white",
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="transparent")+
+  #   scale_fill_manual("", 
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
   ggnewscale::new_scale("fill")+
   tidyterra::geom_spatraster(data = masked_pred, 
                              mapping = aes(fill = layer),
@@ -4664,24 +4671,24 @@ Boat_pred_map<-ggplot()+
                fill = "transparent", 
                colour = "black",
                linetype = "dashed", 
-               linewidth = 1)+
+               linewidth = 1.5)+
   geom_sf(data = zoom_boat_high_sf_2, 
                fill = "transparent", 
                colour = "black",
                linetype = "dashed", 
-               linewidth = 1)+
+               linewidth = 1.5)+
   geom_path(aes(x,y,group=grp),
             data = data.frame(x = c(-8.69452127,-8.6965,-8.69440039,-8.69105), 
                               y=c(40.66244282,40.66673,40.66244282,40.66673),
                               grp=c(1,1,2,2)),
             linetype = "dashed", 
-            linewidth = 1)+
+            linewidth = 1.5)+
   geom_path(aes(x,y,group=grp),
             data = data.frame(x = c(-8.6819877,-8.69645+0.007,-8.6818696,-8.6911+0.007), 
                               y=c(40.6652874,40.66675,40.6652874,40.66673),
                               grp=c(1,1,2,2)),
             linetype = "dashed", 
-            linewidth = 1)+
+            linewidth = 1.5)+
   annotation_custom(ggplotGrob(Boat_Pred_zoomed_map),
                     xmin = -8.6975,
                     xmax = -8.69,
@@ -4720,7 +4727,7 @@ ggsave("Figures/High_res/Maps Pred/FigX-Boat_Pred.png",plot_Boat , width = 1000*
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: RGB orthomosaic (Top) and Prediction (Bottom) of the flight made in the inner part of Ria de Aveiro Lagoon, Portugal. The total extent of this flight was about 1.5 km² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green), land area (Light Grey) and water (Light Blue). The zoom inserts cover an area equivalent to the size of a 10-meter Sentinel-2 pixel.
+#| fig-cap: RGB orthomosaic (Top) and Prediction (Bottom) of the flight made in the inner part of Ria de Aveiro Lagoon, Portugal. The total extent of this flight was about 1.5 km² with a resolution of 80 mm per pixel. The zoom inserts cover an area equivalent to the size of a 10-meter Sentinel-2 pixel.
 #| label: fig-Boat
 #| fig-width: 10
 #| fig-height: 4
@@ -4791,7 +4798,7 @@ Flight_BB<-data.frame(
 
 p1 <- ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land mask"),
-                    values = c("#7DC27D", "#BDBDBD"))+
+                    values = c("#70543e", "#BDBDBD"))+
   geom_sf(data = mask_BB, mapping = aes(fill = Type), linewidth=0.05,alpha=0.93, show.legend = F,colour="grey30")+
       coord_sf(xlim=c(550609,579539) ,
           ylim=c(5189447,5218377) )+
@@ -4880,27 +4887,27 @@ zoom_rgb_dike_map<-ggplot()+
                       r = 3,
                       g = 2,
                       b = 1)+
-  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "red", linewidth = 1.5)+
   coord_sf(crs = 32630)+
   theme_void()
 
 
 RGB_Dike_map <- ggplot()+
-  scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
-  geom_sf(data = background_Dike,
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="transparent")+
-  geom_sf(data = background_Dike,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="transparent")+
+  # scale_fill_manual("",  
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_Dike,
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="transparent")+
+  # geom_sf(data = background_Dike,
+  #         fill = "white",
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="transparent")+
   tidyterra::geom_spatraster_rgb(data = Dike_rgb_masked,
                       r = 3,
                       g = 2,
@@ -4911,8 +4918,8 @@ RGB_Dike_map <- ggplot()+
   geom_sf(data = zoom_Dike_high_sf, 
           fill = "transparent", 
           linetype = "dashed",
-          colour = "black", 
-          linewidth = 1)+
+          colour = "red", 
+          linewidth = 1.5)+
   annotation_custom(ggplotGrob(zoom_rgb_dike_map), 
                     xmin = -2.226, 
                     ymin = 46.9888,
@@ -4924,7 +4931,7 @@ RGB_Dike_map <- ggplot()+
             data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
                               y=c(46.9886439,46.9892105,46.9885538,46.988805),
                               grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
+            linetype = "dashed", linewidth = 1.5, color = "red")+
   ggspatial::annotation_scale(location = "tl",text_cex=2)+
   scale_x_continuous(limits = c(-2.2293,-2.2253),
                      breaks =  -2.228)+
@@ -4967,28 +4974,28 @@ zoom_Pred_dike_map<-ggplot()+
                                "Magnoliopsida",
                                "Phaeophyceae",
                                "Water"))+
-  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1)+
+  geom_sf(data = zoom_Dike_high_sf, fill = "transparent", linetype = "dashed",colour = "black", linewidth = 1.5)+
   theme_void()
 
 
 Dike_pred_map<-ggplot()+
-  geom_sf(data = background_Dike, 
-          mapping = aes(fill = Type),
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.93,
-          colour="grey30")+
-  geom_sf(data = background_Dike,
-          fill = "white",
-          show.legend = F, 
-          linewidth=0.05,
-          alpha=0.4,
-          colour="white")+
-    scale_fill_manual("",  
-                    labels = c("Intertidal area", "Land area", "water"),
-                    values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
+  # geom_sf(data = background_Dike, 
+  #         mapping = aes(fill = Type),
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.93,
+  #         colour="grey30")+
+  # geom_sf(data = background_Dike,
+  #         fill = "white",
+  #         show.legend = F, 
+  #         linewidth=0.05,
+  #         alpha=0.4,
+  #         colour="white")+
+  #   scale_fill_manual("",  
+  #                   labels = c("Intertidal area", "Land area", "water"),
+  #                   values = c("#7DC27D", "#CFCFCF","#42c9bc"))+
   ggnewscale::new_scale("fill")+
-  tidyterra::geom_spatraster(data = Dike_Pred_masked, 
+  tidyterra::geom_spatraster(data = Dike_Pred_masked,
                              mapping = aes(fill = layer),
                              maxcell = 5010420,
                              )+
@@ -5008,7 +5015,7 @@ Dike_pred_map<-ggplot()+
           fill = "transparent", 
           colour = "black",
           linetype = "dashed", 
-          linewidth = 1)+
+          linewidth = 1.5)+
   annotation_custom(ggplotGrob(zoom_Pred_dike_map), 
                     xmin = -2.226, 
                     ymin = 46.9888,
@@ -5017,7 +5024,7 @@ Dike_pred_map<-ggplot()+
             data = data.frame(x = c(-2.226834,-2.225905,-2.226834,-2.225905),
                               y=c(46.9886439,46.9892105,46.9885538,46.988805),
                               grp=c(1,1,2,2)),
-            linetype = "dashed", linewidth = 1)+
+            linetype = "dashed", linewidth = 1.5)+
   # annotation_custom(ggplotGrob(Boat_Pred_zoomed_map), xmin = -8.697, xmax = -8.692, ymin = 40.667,ymax = 40.6705) +
   coord_sf(crs = 4326)+
   theme_Bede_Map()+
@@ -5047,7 +5054,7 @@ ggsave("Figures/High_res/Maps Pred/FigX-Dike_Pred.png",plot_Dike , width = 1200*
 #| cache: false
 #| echo: false
 #| warning: false
-#| fig-cap: "RGB orthomosaic (Top) and Prediction (Bottom) of L'Epine, France. The total extent of this flight was about 28 000 m² with a resolution of 80 mm per pixel. Background colors indicate intertidal area (Light Green) and land area (Light Grey). The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size."
+#| fig-cap: "RGB orthomosaic (Top) and Prediction (Bottom) of L'Epine, France. The total extent of this flight was about 28 000 m² with a resolution of 80 mm per pixel. The zoom covers an area equivalent to a 10-meter Sentinel-2 pixel size."
 #| label: fig-Dike
 #| fig-width: 10
 #| fig-height: 7
@@ -6040,7 +6047,7 @@ df_area_compare <- read.csv("Data/Resampling/Area_loss_df.csv") %>%
   as_tibble()
 
 
-glm_res_true <- glm(loss ~ res*class_fct , data = df_area_compare, family=quasi(link="logit", variance="mu(1-mu)"))
+glm_res_true <- glm(loss ~ area*class_fct , data = df_area_compare, family=quasi(link="logit", variance="mu(1-mu)"))
 # glm_res_true <- mgcv::gam(prop ~ area * true_fct , data = total, familly = mgcv::betar(link="logit")) 
 
 summary(glm_res_true)
@@ -6107,10 +6114,9 @@ NewData <- NewData %>%
           )
     
       )
- 
 ```
 
-Clear differences were seen in vegetation loss across different resolutions and vegetation classes (@fig-pixelsize). At a fine resolution of 1m, changes in the retrieved area for each vegetation type are minimal. Green algae shows the highest loss, with 1.2% area lost compared to the native resolution (80 mm). As the resolution coarsens to 10m, vegetation loss becomes more pronounced, with green macroalgae again experiencing the greatest reduction (12% compared to 8cm) and seagrass showing the smallest loss (1.3%). At a resolution of 30m, all green algae have been lost (100% compared to 8cm), while seagrass experiences a relatively small reduction of 11%. Brown macroalgae and red macroalgae show moderate declines, with losses at 30m resolution reaching approximately 37% and 59%, respectively.
+Clear differences were seen in vegetation loss across spatial resolutions and vegetation classes (@fig-pixelsize). At a fine resolution of 1m, changes in the retrieved area for each vegetation type are minimal. Green macroalgae show the highest loss, with 1.2% area lost compared to the native resolution (80 mm). As the resolution coarsens to 10m, vegetation loss becomes more pronounced, with green macroalgae again experiencing the greatest reduction (12% compared to 8cm) and seagrass showing the smallest loss (1.3%). All green macroalgae have been lost at a resolution of 30m (100% compared to 8cm), while seagrass experiences a relatively small reduction of 11%. Brown and red macroalgae show lower declines, with losses at 30m resolution reaching approximately 37% and 59%, respectively.
 
 ```{r Pixel size Plot}
 #| cache: false
@@ -6412,6 +6418,8 @@ sediment<-output_80_filtered %>%
   geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,show.legend = F,position = "fill",adjust = 3)+
   # facet_wrap(~ True)+
   scale_fill_manual(values=c("gray85","#70543e"))+
+      scale_y_continuous(expand = c(0, 0))+
+
   # scale_alpha_manual(values = c(0.5,1))+
   theme_Bede()+
   # geom_polygon(data = alpha_sed, mapping = aes(x=x, y = y, alpha = alpha, group = ID),alpha = alpha_sed$alpha,color=NA, fill = "white")+
@@ -6439,11 +6447,14 @@ green<-output_80_filtered %>%
   geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,show.legend = F,position = "fill",adjust = 3)+
   # facet_wrap(~ True)+
   scale_fill_manual(values=c("gray85", "#b3ff1a"))+
+    scale_y_continuous(position = "right",
+                       expand = c(0, 0))+
+
   # scale_alpha_manual(values = c(0.5,1))+
   theme_Bede()+
   # geom_polygon(data = alpha_green, mapping = aes(x=x, y = y, alpha = alpha, group = ID),alpha = alpha_green$alpha,color=NA, fill = "white")+
   geom_vline(xintercept = (lm_green$coefficients[[2]]*85+lm_green$coefficients[[1]])*100, linetype = "dashed",linewidth = 2)+
-  ggtitle("Green Algae")+
+  ggtitle("Chlorophyceae")+
   # annotate(geom="text",x = lm_green$coefficients[[2]]*0.85+lm_green$coefficients[[1]]+0.05, y = 0.85, label = "p = 0.85", angle = - 90, size = 7)+
   theme(axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 15)
@@ -6466,6 +6477,8 @@ magno<-output_80_filtered %>%
   geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,show.legend = F, position = "fill",adjust = 3)+
   # facet_wrap(~ True)+
   scale_fill_manual(values=c("gray85","#389350"))+
+    scale_y_continuous(expand = c(0, 0))+
+
   # scale_alpha_manual(values = c(0.5,1))+
   theme_Bede()+
   # geom_polygon(data = alpha_magno, mapping = aes(x=x, y = y, alpha = alpha, group = ID),alpha = alpha_magno$alpha,color=NA, fill = "white")+
@@ -6494,11 +6507,12 @@ MPB<-output_80_filtered %>%
   geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,show.legend = F,position = "fill",adjust = 3)+
   # facet_wrap(~ True)+
   scale_fill_manual(values=c("gray85","#DAA520"))+
+    scale_y_continuous(expand = c(0, 0))+
   # scale_alpha_manual(values = c(0.5,1))+
   theme_Bede()+
   # geom_polygon(data = alpha_MPB, mapping = aes(x=x, y = y, alpha = alpha, group = ID),alpha = alpha_MPB$alpha,color=NA, fill = "white")+
   geom_vline(xintercept = (lm_MPB$coefficients[[2]]*85+lm_MPB$coefficients[[1]])*100, linetype = "dashed",linewidth = 2)+
-  ggtitle("Microphytobenthos")+
+  ggtitle("Bacillariophyceae")+
   # annotate(geom="text",x = lm_MPB$coefficients[[2]]*0.85+lm_MPB$coefficients[[1]]+0.05, y = 0.85, label = "p = 0.85", angle = - 90, size = 7)+
   theme(axis.text.x = element_text(size = 15),
         axis.text.y = element_text(size = 15)
@@ -6521,12 +6535,14 @@ rodo<-output_80_filtered %>%
   mutate(Class = factor(Class, c("Others Classes","Rhodophyceae","Bacillariophyceae", "Magnoliopsida","Chlorophyceae","Phaeophyceae"))) %>% 
          # Class = forcats::fct_relevel(Class,"Rodophyceae", after = Inf)) %>%
   ggplot()+
-  geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,position = "fill",adjust = 3)+
+  geom_density(mapping = aes(x = Proportion , y = after_stat(ndensity) , fill = Class),alpha = 0.8,position = "fill",adjust = 3, show.legend = F)+
   # facet_wrap(~ True)+
   scale_fill_manual("Class",
                     labels = c("Others Classes","Rhodophyceae","Bacillariophyceae", "Magnoliopsida","Chlorophyceae","Phaeophyceae"),
                     values=c("gray85","#b3002d","#DAA520","#389350","#b3ff1a","#70543e"),
                     drop = F)+
+  scale_y_continuous(position = "right",
+                     expand = c(0, 0))+
   # scale_alpha_manual(values = c(0.5,1))+
   theme_Bede()+
   # geom_polygon(data = alpha_Rodo, mapping = aes(x=x, y = y, alpha = alpha, group = ID),alpha = alpha_Rodo$alpha,color=NA, fill = "white")+
@@ -6562,18 +6578,18 @@ plot<-(sediment + green) /
 (MPB + rodo)+
 magno+
   patchwork::plot_layout(guides = "collect") &
-  theme(legend.position = "bottom",
+  theme(
         plot.title = element_text(size=25, hjust = 0.55),
         axis.text.x = element_text(size = 15, hjust = 0.8),
         axis.title = element_text(size=20),
         axis.text.y = element_text(size = 15),
         panel.grid=element_blank())&
   scale_x_continuous(breaks = c(25,50,75,100),limits= c(0,100.01),expand = c(0, 0)) &
-  scale_y_continuous(expand = c(0, 0)) &
+  # scale_y_continuous(expand = c(0, 0)) &
   xlab("Percent Cover (%)") & 
   ylab("Density")
   
-ggsave("Figures/Upscaling/density_vs_Proportion.png",plot , width = 833*4, height = 1118*4, units = "px")
+ggsave("Figures/High_res/Upscaling/density_vs_Proportion.png",plot , width = 833*4, height = 1118*4, units = "px")
 
 ```
 
@@ -6613,7 +6629,7 @@ lm_Rodo<-output_80_filtered_same %>%
 
 ```
 
-Using the very high resolution low altitude flight (8 mm pixels), we determined the minimal percent cover required to correctly classify a given class within the corresponding high altitude flight (8cm pixel resolution ; @fig-upscaling).
+Using the very high-resolution low-altitude flight (8 mm pixels), we determined the minimal percent cover required to correctly classify a given class within the corresponding high-altitude flight (8cm pixel resolution ; @fig-upscaling).
 
 ```{r Upscaling Plot}
 #| cache: false
@@ -6629,7 +6645,7 @@ knitr::include_graphics("Figures/Low_res/Upscaling/density_vs_Proportion.png")
 
 ```
 
-A percent cover of at least 80% was sufficient to have all the 80 mm pixels correctly classified, with the exception of Magnoliopsida that required a higher cover (>90 %) to be accurately classified. Concerning the probability of each class, there is a linear relationship between the percent cover and the confidence of the model to predict the class. To predict green macroalgae with a model likelihood of 0.85, a cover of `r round((lm_green$coefficients[[2]]*85+lm_green$coefficients[[1]])*100,0)` % was needed, `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % for seagrass, `r round((lm_Rodo$coefficients[[2]]*85+lm_Rodo$coefficients[[1]])*100,0)` % for red macroalgae and `r round((lm_MPB$coefficients[[2]]*85+lm_MPB$coefficients[[1]])*100,0)` % for benthic diatoms When the vegetation cover of a given class was 100 %, coarser high-flight pixels were correctly classified for all the classes except for Bare Sediment, which was only correctly classified 80% of the time. This phenomenon may be attributed to the time gap between the two flights, allowing for microphytobenthos migration to the sediment surface during low tide, consequently altering the model's classification from bare sediment to Bacillariophyceae.
+A percent cover of at least 80% was sufficient to have all the 80 mm pixels correctly classified, with the exception of Magnoliopsida which required a higher cover (>90 %) to be accurately classified. Concerning the probability of each class, there is a linear relationship between the percent cover and the confidence of the model to predict the class. To predict green macroalgae with a model likelihood of 0.85, a cover of `r round((lm_green$coefficients[[2]]*85+lm_green$coefficients[[1]])*100,0)` % was needed, `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % for seagrass, `r round((lm_Rodo$coefficients[[2]]*85+lm_Rodo$coefficients[[1]])*100,0)` % for red macroalgae and `r round((lm_MPB$coefficients[[2]]*85+lm_MPB$coefficients[[1]])*100,0)` % for benthic diatoms When the vegetation cover of a given class was 100 %, coarser high-flight pixels were correctly classified for all the classes except for Bare Sediment, which was only correctly classified 80% of the time. This phenomenon may be attributed to the time gap between the two flights, allowing for microphytobenthos migration to the sediment surface during low tide, consequently altering the model's classification from bare sediment to Bacillariophyceae.
 
 # Discussion
 
@@ -6825,7 +6841,7 @@ The primary objective of this study was to develop a method for the accurate cla
 #| echo: false
 #| warning: false
 #| fig-cap: >
-#|   Photosynthetic and carotenoid pigments present (Green) or absent (Red) in each taxonomic class present in the Neural Network Classifier, along with their absorption wavelength measured with spectroradiometer, Chl-b: chlorophyll-b, Chl-c: chlorophyll-c, Fuco: fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo: neoxanthin, PE: phycoerythrin, PC: phycocyanin [@ralph2002 ; @Douay2022 @christensen1977seaweeds ; @cartaxana2016regulation ; @meleder2013vivo].
+#|   Photosynthetic and carotenoid pigments present (Green) or absent (Red) in each taxonomic class present in the Neural Network Classifier, along with their absorption wavelength measured with spectroradiometer, Chl-b: chlorophyll-b, Chl-c: chlorophyll-c, Fuco: fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo: neoxanthin, PE: phycoerythrin, PC: phycocyanin; [@ralph2002 ; @Douay2022 @christensen1977seaweeds ; @cartaxana2016regulation ; @meleder2013vivo].
 #| label: fig-Pigm
 #| fig-width: 10
 #| fig-height: 5
@@ -6853,32 +6869,32 @@ knitr::include_graphics("./Figures/Low_res/Validation/ConfusionMatrixGreen.png")
 :::
 
 ::: column
-Meeting these two criteria, the Micasense RedEdge-MX DUAL camera used in this study, enabled the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% of accuracy between these two classes (@fig-ValidationGreen). Even if their pigment composition is similar, differences in the spectral shape can be observed, with green algae having a higher reflectance peak at 560 nm as well as a higher NIR plateau than seagrass (@fig-vegetation). Such differences were previously attributed to differences in pigments concentration and/or ratios [@bargain2013seasonal], cellular structure as well as in the orientation of the plant at the sediment surface [@beach1997vivo ; @kirk1994light ; @hedley2018influence].
+Meeting these two criteria, the Micasense RedEdge-MX DUAL camera used in this study, enabled the classifier to achieve `r round(validation_metrics_green$overall[[1]],2)*100`% accuracy between these two classes (@fig-ValidationGreen). Even if their pigment composition is similar, differences in the spectral shape can be observed, with green algae having a higher reflectance peak at 560 nm as well as a higher NIR plateau than seagrass (@fig-vegetation). Such differences were previously attributed to differences in pigments concentration and/or ratios [@bargain2013seasonal], cellular structure as well as in the orientation of the plant at the sediment surface [@beach1997vivo ; @kirk1994light ; @hedley2018influence].
 :::
 :::
 
-The variable importance analysis (@fig-VIP) identified that the band at 531 nm was the most important for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibited the highest reflectance among all other classes, highlighting the difference in carotenoid to chlorophyll-a ratios between seagrasses and green macroalgae [@repolho2017seagrass]. Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021growth] make it more reflective in the infrared part of the spectra [@Slaton2001], while the presence of fucoxanthin and zeaxanthin result in a low reflectance in the visible region (@fig-VIP ; @fig-Pigm). These two key features have been identified by the Neural Network as the two principal predictors to accurately identify brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contribute to the lowest reflectance among all classes in the spectral range from 560 to 615 nm (@fig-VIP). Indeed the band at 560 nm has been identified as important for identifying this class, likely due to phycoerythrin absorption at this wavelength. Regarding Bacillariophyceae, 475 nm was the most important predictor for this class (@fig-VIP). Indeed, the reflectance at 475 nm was higher for Bacillariophyceae than for any other vegetation class (@fig-vegetation), very likely due to the low biomass (and associated concentration of blue-absorbing pigments) of these unicellular organisms compared to seagrass and macroalgae.
+The variable importance analysis (@fig-VIP) identified that the band at 531 nm was the most important for accurately identifying Chlorophyceae. In fact, at this wavelength, Chlorophyceae exhibited the highest reflectance among all other classes, highlighting the difference in carotenoid to chlorophyll-a ratios between seagrasses and green macroalgae [@repolho2017seagrass]. Concerning Phaeophyceae, the thick cell walls of these macroalgae [@charrier2021growth] make it more reflective in the infrared part of the spectra [@Slaton2001], while the presence of fucoxanthin and zeaxanthin result in a low reflectance in the visible region (@fig-VIP ; @fig-Pigm). These two key features have been identified by the Neural Network as the two principal predictors to accurately identify brown algae (@fig-VIP). Similarly, the presence of phycoerythrin and phycocyanin in Rhodophyceae contributes to the lowest reflectance among all classes in the spectral range from 560 to 615 nm (@fig-VIP). Indeed the band at 560 nm has been identified as important for identifying this class, likely due to phycoerythrin absorption at this wavelength. Regarding Bacillariophyceae, 475 nm was the most important predictor for this class (@fig-VIP). Indeed, the reflectance at 475 nm was higher for Bacillariophyceae than for any other vegetation class (@fig-vegetation), very likely due to the low biomass (and associated concentration of blue-absorbing pigments) of these unicellular organisms compared to seagrass and macroalgae.
 
 ## Altitude and Temporal Effects on Vegetation Prediction Accuracy
 
-The ability to differentiate between various types of vegetation plays a critical role in ecological monitoring and coastal management [@WFD2000]. By distinguishing between seagrasses and macroalgae, our approach facilitates targeted conservation strategies, enabling more effective preservation and restoration efforts in coastal ecosystems. While comparing the reflectance at two different altitudes (12 m and 120 m with a spatial resolution of 8 and 80 mm, respectively), a nearly one-to-one relationship was observed, with a Root Mean Square Error (RMSE) of 0.02 (@fig-CompareRef). This result indicates that the reflectance measured by remote sensing (RS) sensors is not significantly influenced by pixel size. This finding is valuable for integrating drone-based data into larger-scale mapping projects (e.g., combining satellite and drone mapping in side-by-side analyses). The consistency of reflectance across altitudes suggests that drones can be effectively used for finer-scale mapping without compromising data accuracy when merging with other platforms. However, it was observed that there is an underestimation of the infrared part of the spectra in the high-altitude dataset (@fig-CompareRef). Such disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model [@eq-std ; @Cao2017]. This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible part of the electromagnetic spectra, where different pigmentation are associated to taxonomic diagnostic features. In contrast to subtidal seagrasses, which maintain a relatively constant biomass throughout the year, intertidal seagrasses, like the one studied in this work, exhibit strong seasonal phenology [@davies2024sentinel]. At some sites, they completely disappear during the winter and reach their peak above-ground biomass in the summer and early autumn. Along with these seasonal changes in biomass, the pigment composition and ratios also vary throughout the year, reflecting the plants' adaptations to different environmental conditions [@bargain2013seasonal ; @legare2022remote]. Standardization of spectral signatures helps to mitigate the impact of changing biomass on the spectral profile, enabling the development of a model that can reliably predict vegetation across different geographical locations and seasons. This approach allows for consistent classification of vegetation despite variations in biomass and fluctuations in light conditions, providing a robust tool for monitoring and predicting vegetation dynamics [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact]. We found `r round((lm_magno$coefficients[[2]]*85+lm_magno$coefficients[[1]])*100,0)` % seagrass cover was necessary at an 8 cm resolution for confident prediction of its presence (@fig-upscaling). However, due to the strong phenology of intertidal seagrass meadows in Europe, the period when a meadow is well-established can be temporally restricted, limiting the ideal window for accurate detection.
+The ability to differentiate between various types of vegetation plays a critical role in ecological monitoring and coastal management [@WFD2000]. By distinguishing between seagrasses and macroalgae, our approach facilitates targeted conservation strategies, enabling more effective preservation and restoration efforts in coastal ecosystems. While comparing the reflectance at two different altitudes (12 m and 120 m with a spatial resolution of 8 and 80 mm, respectively), a nearly one-to-one relationship was observed, with a Root Mean Square Error (RMSE) of 0.02 (@fig-CompareRef). This result indicates that the reflectance measured by remote sensing (RS) sensors was not significantly influenced by pixel size for these two altitude. This finding is valuable for integrating drone-based data into larger-scale mapping projects (e.g., combining satellite and drone mapping in side-by-side analyses). The consistency of reflectance across altitudes suggests that drones can be effectively used for finer-scale mapping without compromising data accuracy when merging with other platforms. However, it was observed that there is an underestimation of the infrared part of the spectra in the high-altitude dataset (@fig-CompareRef). Such disparity in infrared reflectance may stem from temporal differences between the flights, possibly resulting in a slightly drier intertidal area and consequently higher infrared reflectance. This disparity poses an issue for the methodology followed in the present study, relying solely on one flight height for training. To address this issue, we employed min/max standardized reflectance spectra as predictors for the model [@eq-std ; @Cao2017]. This approach allowed us to eliminate the slight reflectance difference between the flights (@fig-CompareRef B) and to focus on the shape of the spectra in the visible domain (400 to 700 nm). At these wavelength different pigments are associated with taxonomic diagnostic features. In contrast to subtidal seagrasses, which maintain relatively constant biomass throughout the year, intertidal seagrasses, like the one studied in this work, exhibit strong seasonal phenology [@davies2024sentinel]. At some sites, they completely disappear during the winter and reach their peak above-ground biomass in the summer and early autumn. Along with these seasonal changes in biomass, the pigment composition and ratios also vary throughout the year, reflecting the plants' adaptations to different environmental conditions [@bargain2013seasonal ; @legare2022remote]. Standardization of spectral signatures helps to mitigate the impact of changing biomass on the spectral profile, enabling the development of a model that can reliably predict vegetation across different geographical locations and seasons. This approach allows for consistent classification of vegetation despite variations in biomass and fluctuations in light conditions, providing a robust tool for monitoring and predicting vegetation dynamics [@fyfe2003spatial ; @COSTA2021107018 ; @piaser2023impact]. However, due to the strong phenology of intertidal seagrass meadows in Europe, the period when a meadow is well-established can be temporally restricted, limiting the ideal window for accurate detection.
 
 ## Impact of Pixel Resolution on the prediction and Implications for Satellite Remote Sensing
 
-Pixel resolution plays a critical role in accuratly retrieving vegetation area from remote sensing data. As pixel size increases, we found a consistent decline in area retrieval is observed across all vegetation types, with more pronounced effects for certain types, such as green algae (@fig-pixelsize). This highlights the sensitivity of spatial resolution in detecting smaller or more fragmented vegetation features. Green algae, being particularly patchy across all study sites, shows the steepest decline in areal agreement as pixel size increases, which aligns with expectations given the limitations of coarser resolution in capturing fine-scale details.
+Pixel resolution plays a critical role in accuratly retrieving vegetation areas from remote sensing data. As pixel size increases, we found a consistent decline in area retrieval across all vegetation types, with more pronounced effects for certain types, such as green algae (@fig-pixelsize). This highlights the sensitivity of spatial resolution in detecting smaller or more fragmented vegetation features. Green algae, being particularly patchy across all study sites, showed the steepest decline in areal agreement as pixel size increases, which aligns with expectations given the limitations of coarser resolution in capturing fine-scale details.
 
-This resolution-area relationship has important implications for satellite missions like Sentinel-2 and Landsat, which are commonly used in marine and coastal vegetation studies. Both satellites offer high-resolution imagery, with pixel sizes of 10m and 30m, respectively. While these resolutions are suitable for broad-scale environmental monitoring, they may be too coarse to capture finer-scale heterogeneity, particularly in fragmented vegetation like green algae. Our findings suggest that, while the 30m resolution of Landsat may be adequate for homogeneous vegetation types, such as seagrass, a higher resolution is essential for accurately mapping patchy vegetation like green algae. These findings have direct implications for environmental management and conservation planning. Overlooking fine-scale vegetation features, such as those seen in green algae, could result in inadequate protection or restoration efforts, particularly in ecologically sensitive coastal zones, as early stages of green tides could be challenging to monitor at coarse resolutions.
+This resolution-area relationship has important implications for satellite missions like Sentinel-2 and Landsat, which are commonly used in marine and coastal vegetation studies. Both satellites offer high-resolution imagery, with pixel sizes of 10m and 30m, respectively. While these resolutions are suitable for broad-scale environmental monitoring, they may be too coarse to capture finer-scale heterogeneity, as it was observed with green macroalgae in this study. Our findings suggest that, while the 30m resolution of Landsat may be adequate for homogeneous vegetation types, such as seagrass, a higher resolution is essential for accurately mapping patchy vegetation like green algae. These findings have direct implications for environmental management and conservation planning. Overlooking fine-scale vegetation features, such as those seen in green algae, could result in inadequate protection or restoration efforts, particularly in ecologically sensitive coastal zones, as the early stages of green tides could be challenging to detect at coarse resolutions.
 
-Very high-resolution imagery offers more accurate vegetation mapping but comes with trade-offs. As resolution increases, data costs rise, and processing becomes more resource-intensive due to the larger file sizes and computational demands. Consequently, high-resolution data requires more storage and can slow down real-time applications. For large-scale monitoring of homogeneous vegetation types, 10 m resolution of S2/MSI or even the 30 m of Landsat/OLI are often sufficient. However, when mapping fragmented vegetation like green algae, the precision provided by higher-resolution imagery is crucial, despite the additional costs and processing challenges it imposes.
+Very high-resolution imagery offers more accurate vegetation mapping but comes with trade-offs. As resolution increases, data costs rise, and processing becomes more resource-intensive due to the larger file sizes and computational demands. Consequently, high-resolution data requires more storage and can slow down real-time applications. For large-scale monitoring of homogeneous vegetation types, 10 m resolution of S2/MSI or even the 30 m of Landsat/OLI is often sufficient. However, when mapping vegetation like macroalgae with an heterogeneous distribution, the precision provided by higher-resolution imagery is crucial, despite the additional costs and processing challenges it imposes.
 
 ## Towards climate and biodiversity applications
 
-Climate change, global warming, eutrophication, alien and invasive species development, coastal erosion, and sea level rise are expected to continue impacting coastal ecosystems in the future [@SCHIBALSKI2022101414 ; @holon2018predictive ; @marquet2024global] and the demand for meaningful and efficient monitoring of coastal habitats has never been higher[@muller2018satellite ; @villalobos2023remote ; @oiry2021using]. Our findings, particularly the improved discrimination of intertidal seagrass and green macroalgae from other intertidal vegetation classes, highlight the potential of drone-based remote sensing to support diverse applications, from conservation of biodiversity to climate change adaptation strategies.
+Climate change, global warming, eutrophication, alien and invasive species development, coastal erosion, and sea level rise are expected to continue impacting coastal ecosystems in the future [@SCHIBALSKI2022101414 ; @holon2018predictive ; @marquet2024global] and the demand for meaningful and efficient monitoring of coastal habitats has never been higher[@muller2018satellite ; @villalobos2023remote ; @oiry2021using]. Our findings, particularly the improved discrimination of intertidal seagrass and green macroalgae from other intertidal vegetation classes, highlight the potential of drone-based remote sensing to support diverse applications, from the conservation of biodiversity to climate change adaptation strategies.
 
-Due to increasing coastal eutrophication, macroalgal blooms are becoming increasingly common in many regions around the world [@sutton2011european ; @ye2011green]. These blooms can have negative impacts on human health and local economic activities, including human health, fishing and aquaculture, tourism, and recreational activities [@villares1999nitrogen ; @ye2011green]. The first green tide events (i.e. bloom of green macroalgae of the genus *Ulva*) were reported in Brittany, France, in the 1970s and have since been a concern for local stakeholders and economic activities [@menesguen2018marees]. Some regions of the world have witnessed an increase in brown macroalgae blooms, predominantly involving algae of the genus *Sargassum* washing along the Caribbean coastlines [@louime2017sargassum], and more recently *Rugulopteryx okamurea* in southern Europe [@Roca2022]. Satellite remote sensing has proven to be a valuable tool for mapping the spatial and temporal extent of macroalgal blooms worldwide. However, due to limitations in spatial resolution, it can only effectively map well-developed blooms [@rs13081408 ; @klemas2012remote ; @haro2023biointertidal]. High spatial resolution drone imagery, coupled with accurate classification algorithm, could be used to map the early stages of macroalgal blooms in areas known to have regular blooms or in new sites. Indeed, this approach could provide early warning alerts to local managers and complimentary to traditional sampling methods to monitor coastal ecosystems. These methods are generally time and resource-intensive, and the findings are often difficult to scale-up when applied alone. Earth Observation can bridge this gap and meet the needs for systematic monitoring of coastal ecosystems over large areas [@papathanasopoulou2019satellite]. The retrieval of Essential Biodiversity Variables and Essential Ocean Variables through satellite observations has been increasingly common, enabling comprehensive monitoring of entire ecosystems over extended time periods [@ratnarajah2023monitoring ; @Zoffoli2021]. The Water Framework Directive [@WFD2000] mandates the achievement and maintenance of "good ecological status" for all European waters, which necessitates a comprehensive understanding and monitoring of aquatic ecosystems, including coastal habitats like seagrass beds [@foden2007angiosperms ; @nordlund2024one ; @Zoffoli2021].
+Due to increasing coastal eutrophication, macroalgal blooms are becoming increasingly common in many regions around the world [@sutton2011european ; @ye2011green]. These blooms can have negative impacts on human health and local economic activities, including human health, fishing and aquaculture, tourism, and recreational activities [@villares1999nitrogen ; @ye2011green]. The first green tide events (*i.e.* bloom of green macroalgae of the genus *Ulva*) were reported in Brittany, France, in the 1970s and have since been a concern for local stakeholders and economic activities [@menesguen2018marees]. Some regions of the world have witnessed an increase in brown macroalgae blooms, predominantly involving algae of the genus *Sargassum* washing along the Caribbean coastlines [@louime2017sargassum], and more recently *Rugulopteryx okamurea* in southern Europe [@Roca2022]. Satellite remote sensing has proven to be a valuable tool for mapping the spatial and temporal extent of macroalgal blooms worldwide. However, due to limitations in spatial resolution, it can only effectively map well-developed blooms [@rs13081408 ; @klemas2012remote ; @haro2023biointertidal]. High spatial resolution drone imagery, coupled with an accurate classification algorithm, could be used to map the early stages of macroalgal blooms in areas known to have regular blooms or in new sites. Indeed, this approach could provide early warning alerts to local managers and complimentary to traditional sampling methods to monitor coastal ecosystems. These methods are generally time and resource-intensive, and the findings are often difficult to scale up when applied alone. Earth Observation can bridge this gap and meet the need for systematic monitoring of coastal ecosystems over large areas [@papathanasopoulou2019satellite]. The retrieval of Essential Biodiversity Variables and Essential Ocean Variables through satellite observations has been increasingly common, enabling comprehensive monitoring of entire ecosystems over extended time periods [@ratnarajah2023monitoring ; @Zoffoli2021]. The Water Framework Directive [@WFD2000] mandates the achievement and maintenance of "good ecological status" for all European waters, which necessitates a comprehensive understanding and monitoring of aquatic ecosystems, including coastal habitats like seagrass beds [@foden2007angiosperms ; @nordlund2024one ; @Zoffoli2021].
 
-Effective and efficient monitoring tools are essential for identifying the impacts of human activities and natural changes on coastal ecosystems. On-demand, multispectral drone observations at very high spatial-resolution provide a novel and powerful tool to rapidly and accurately acquire ground truth data which can be used to develop machine-learning algorithm for satellite sensors [@davies2024intertidal]. Spatially resolved data are indeed critical for calibrating and validating satellite remote sensing observations, thereby enhancing our capacity to monitor vast coastal areas. The integration of drone technology facilitates a scalable approach to environmental surveillance while taking into account patchiness of secondary vegetation, offering significant advancements in the spatial and temporal resolution of data collection. This, in turn, supports the EU WFD's objectives by enabling more informed and timely management decisions for the conservation and restoration of aquatic ecosystems.
+Effective and efficient monitoring tools are essential for identifying the impacts of human activities and natural changes on coastal ecosystems. On-demand, multispectral drone observations at very high spatial resolution provide a novel and powerful tool to rapidly and accurately acquire ground truth data, which can be used to develop machine-learning algorithm for satellite sensors [@davies2024intertidal]. Spatially resolved data are indeed critical for calibrating and validating satellite remote sensing observations, thereby enhancing our capacity to monitor vast coastal areas. The integration of drone technology facilitates a scalable approach to environmental surveillance while taking into account the patchiness of vegetation, offering significant advancements in the spatial and temporal resolution of data collection. This, in turn, supports the EU WFD's objectives by enabling more informed and timely management decisions for the conservation and restoration of aquatic ecosystems.
 
 # Conclusion
 
-The utilization of very high spatial resolution (from 8 to 80 mm) drone-based remote sensing coupled with machine learning techniques has proven to be an effective method for the discrimination of intertidal seagrasses from green macroalgae with a multispectral resolution sensor. Standardized reflectance was incorporated in the Neural Network model allowing for a better discrimination of spectral features related to pigment absorption in the visible region of the spectrum. There was a striking difference between the variable of importance to discriminate Magnoliopsida from Chlorophyceae. The latter was essentially identified with the 451 nm spectral band while more spectral bands were needed to identify the former, notably 650, 560, 668, and 705 nm. As the spectral bands of the Micasense RedEdge Dual MX are very similar to those of Sentinel-2/MSI, we suggest that multispectral satellite data have the potential to perform this discrimination between these green macrophytes. The findings underscore the importance of adopting advanced remote sensing tools in ecological studies and environmental monitoring, providing a foundation for future research and policy implementation aimed at ecosystem conservation and restoration.
+The utilization of very high spatial resolution (from 8 to 80 mm) drone-based remote sensing coupled with machine learning techniques has proven to be an effective method for the discrimination of intertidal seagrasses from green macroalgae with a multispectral resolution sensor. Standardized reflectance was incorporated in the Neural Network model allowing for a better discrimination of spectral features related to pigment absorption in the visible region of the spectrum. There was a striking difference between the variable of importance to discriminate Magnoliopsida from Chlorophyceae. The latter was essentially identified with the 451 nm spectral band while more spectral bands were needed to identify the former, notably 650, 560, 668, and 705 nm. As the spectral bands of the Micasense RedEdge Dual sensor are very similar to those of Sentinel-2/MSI, we suggest that multispectral satellite data have the potential to perform this discrimination between these green macrophytes. The findings underscore the importance of adopting advanced remote sensing tools in ecological studies and environmental monitoring, providing a foundation for future research and policy implementation aimed at ecosystem conservation and restoration.
