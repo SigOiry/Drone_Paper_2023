@@ -672,7 +672,7 @@ ggsave("./Figures/High_res/Figure1/Fig1_Map_Drone_Sites.png",a, width= 10, heigh
 #| echo: false
 #| warning: false
 #| fig-cap: >
-#|   Location of drone flights in France and Portugal. A: Gulf of Morbihan (Two sites), B: Bourgneuf Bay (Two sites), C: Ria de Aveiro Coastal Lagoon (Three sites). Brown areas represents the intertidal zone. 
+#|   Location of drone flights in France and Portugal. A: Gulf of Morbihan (Two sites), B: Bourgneuf Bay (Two sites), C: Ria de Aveiro Coastal Lagoon (Three sites). Golden areas represents the intertidal zone. 
 #| label: fig-map
 #| out-width: "100%"
 
