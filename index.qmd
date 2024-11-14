@@ -6841,7 +6841,7 @@ The primary objective of this study was to develop a method for the accurate cla
 #| echo: false
 #| warning: false
 #| fig-cap: >
-#|   Photosynthetic and carotenoid pigments present (Green) or absent (Red) in each taxonomic class present in the Neural Network Classifier, along with their absorption wavelength measured with spectroradiometer, Chl-b: chlorophyll-b, Chl-c: chlorophyll-c, Fuco: fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo: neoxanthin, PE: phycoerythrin, PC: phycocyanin; [@ralph2002 ; @Douay2022 @christensen1977seaweeds ; @cartaxana2016regulation ; @meleder2013vivo].
+#|   Photosynthetic and carotenoid pigments present (Green) or absent (Red) in each taxonomic class present in the Neural Network Classifier, along with their absorption wavelength measured with spectroradiometer, Chl-b: chlorophyll-b, Chl-c: chlorophyll-c, Fuco: fucoxanthin, Zea: zeaxanthin, Diad: diadinoxanthin, Lut: lutein, Neo: neoxanthin, PE: phycoerythrin, PC: phycocyanin; [@ralph2002 ; @Douay2022 ; @christensen1977seaweeds ; @cartaxana2016regulation ; @meleder2013vivo].
 #| label: fig-Pigm
 #| fig-width: 10
 #| fig-height: 5
