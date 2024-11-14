@@ -452,10 +452,12 @@ Flight_aveiro<-data.frame(
                 lat = sf::st_coordinates(.) [,2]) %>% 
   sf::st_set_geometry(NULL)
 
+
+
 aveiro_plot <-
 ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#70543e", "#CFCFCF"))+
+                    values = c("goldenrod", "#CFCFCF"))+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,colour="grey30")+
       coord_sf(xlim=c(519749,535233) ,
           ylim=c(4493310,4508794) )+
@@ -526,7 +528,7 @@ Flight_BB<-data.frame(
 
 BB_plot <- ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#70543e", "#CFCFCF"))+
+                    values = c("goldenrod", "#CFCFCF"))+
   geom_sf(data = mask_BB, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,colour="grey30")+
       coord_sf(xlim=c(550609,579539) ,
           ylim=c(5189447,5218377) )+
@@ -601,7 +603,7 @@ Flight_Morbihan<-data.frame(
 
 Morbihan_plot<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land mask"),
-                    values = c("#70543e", "#CFCFCF"))+
+                    values = c("goldenrod", "#CFCFCF"))+
   geom_sf(data = mask_Morb, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,colour="grey30")+
       coord_sf(xlim=c(503019,526177) ,
           ylim=c(5257824,5280982))+
@@ -3448,18 +3450,18 @@ imglist<-
   dplyr::filter(alt != "NA",
                 !str_detect(path,".aux.xml"))
 
-shp_roi<-"Data/reflectance_calibration_low_&_high_flights/" %>%
-  list.files(pattern = ".shp", recursive = T, full.names = T) %>%
-  read_sf() %>%
-  mutate(ID = case_when(name == "Microphytobenthos" ~ 1,
-                        name == "ZOS" ~ 2,
-                        name == "BL" ~ 3,
-                        name == "SED" ~ 4,
-                        name == "GRE" ~ 5,
-                        name == "RED" ~ 6,
-                        name == "Xanthophyceae" ~ 7)) %>% 
-  as("Spatial") %>% 
-  vect()
+# shp_roi<-"Data/reflectance_calibration_low_&_high_flights/" %>%
+#   list.files(pattern = ".shp", recursive = T, full.names = T) %>%
+#   read_sf() %>%
+#   mutate(ID = case_when(name == "Microphytobenthos" ~ 1,
+#                         name == "ZOS" ~ 2,
+#                         name == "BL" ~ 3,
+#                         name == "SED" ~ 4,
+#                         name == "GRE" ~ 5,
+#                         name == "RED" ~ 6,
+#                         name == "Xanthophyceae" ~ 7)) %>% 
+#   as("Spatial") %>% 
+#   vect()
 
 
 zoom_extent<-"Data/shp" %>% 
@@ -3503,7 +3505,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#70543e", "#BDBDBD"))+
+                    values = c("goldenrod", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
 
@@ -4005,7 +4007,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#70543e", "#BDBDBD"))+
+                    values = c("goldenrod", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),show.legend = F, linewidth=0.05,alpha=0.93,colour="grey30")+
       coord_sf(xlim=c(519749,535233) ,
@@ -4368,7 +4370,7 @@ p1_background<- read_sf("Data/shp/Aveiro/Background_p1_aveiro.shp")
 
 p1<-ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land area"),
-                    values = c("#70543e", "#BDBDBD"))+
+                    values = c("goldenrod", "#BDBDBD"))+
   geom_sf(data = p1_background, fill = "white",show.legend = F, linewidth=0.05,alpha=0.93,colour="transparent")+
   geom_sf(data = mask_aveiro, mapping = aes(fill = Type),linewidth=0.05,alpha=0.93,show.legend = F,colour="grey30")+
       coord_sf(xlim=c(519749,535233) ,
@@ -4798,7 +4800,7 @@ Flight_BB<-data.frame(
 
 p1 <- ggplot() +
   scale_fill_manual("", labels = c("Intertidal area", "Land mask"),
-                    values = c("#70543e", "#BDBDBD"))+
+                    values = c("goldenrod", "#BDBDBD"))+
   geom_sf(data = mask_BB, mapping = aes(fill = Type), linewidth=0.05,alpha=0.93, show.legend = F,colour="grey30")+
       coord_sf(xlim=c(550609,579539) ,
           ylim=c(5189447,5218377) )+
