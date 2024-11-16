@@ -352,11 +352,11 @@ thematic range , from coastal zone management
 distribution
 \citep{joyce2023, tallam2023, Roca2022, Roman2021, Brunier2022Topographic, sousa2019blue}.
 However, when applied to coastal habitat mapping, previous case studies
-were mostly limited to a low number of \textbf{drone} flights over a
-single study site, restricting the generalizability of their application
-over wider geographical scales
+were mostly limited to a low number of drone flights over a single study
+site, restricting the generalizability of their application over wider
+geographical scales
 \citep{Roman2021, collin2019improving, rossiter2020uav, Brunier2022Topographic}.
-\textbf{These studies have demonstrated the capability of drones to map
+These studies have demonstrated the capability of drones to map
 intertidal habitats, including seagrasses; however a broader
 generalization of these findings is still lacking. The current paper
 uniquely expands the spatial and methodological scope of drone-based
@@ -367,7 +367,7 @@ particular focus on distinguishing Magnoliopsida (seagrasses) and
 Chlorophyceae (green algae). Unlike previous studies, our approach
 integrates multiple spatial scales by simulating satellite resolutions
 and quantifying the impact of spatial resolution on classification
-accuracy.} Nine drone flights were performed over soft-bottom intertidal
+accuracy. Nine drone flights were performed over soft-bottom intertidal
 areas along the Atlantic coastlines of two European countries (France
 and Portugal), covering a wide range of habitats, from monospecific
 seagrass meadows to meadows mixed with green, or red macroalgae. A deep
@@ -377,11 +377,11 @@ losing prediction accuracy. The classification maps obtained at a very
 high spatial resolution with the drone were spatially degraded to
 satellite resolutions, making it possible to assess the effect of
 spatial resolution on classification accuracy, and provide insights for
-coastal habitat mapping using satellite remote sensing. \textbf{This
-study is, therefore, among the first to quantify the effects of spatial
-resolution on the accuracy of drone-based macrophyte classification
-across a wide geographical scale, providing a framework to better
-understand satellite-based classification challenges.}
+coastal habitat mapping using satellite remote sensing. This study is,
+therefore, among the first to quantify the effects of spatial resolution
+on the accuracy of drone-based macrophyte classification across a wide
+geographical scale, providing a framework to better understand
+satellite-based classification challenges.
 
 \section{Material \& Methods}\label{material-methods}
 
@@ -459,12 +459,11 @@ concomitantly with the camera measurements. Raw data were calibrated in
 reflectance using a calibration panel reflective at \textasciitilde50\%
 provided by the manufacturer. Across all sites, flights were made at two
 different altitudes : 12 m or/and 120 m, with a spatial resolution of 8
-mm and 80 mm, respectively (Table~\ref{tbl-flights}).
-\textbf{Low-altitude flights, with a spatial resolution of 8 mm, were
-used to build the training dataset for the neural network, as this high
-resolution allowed for precise photo-interpretation of vegetation
-classes. In contrast, high-altitude flights were used for validation
-purposes.}
+mm and 80 mm, respectively (Table~\ref{tbl-flights}). Low-altitude
+flights, with a spatial resolution of 8 mm, were used to build the
+training dataset for the neural network, as this high resolution allowed
+for precise photo-interpretation of vegetation classes. In contrast,
+high-altitude flights were used for validation purposes.
 
 \begin{table}
 
@@ -488,21 +487,21 @@ XH 6000 differential GPS (dGPS). Ground control points were used to
 correct georeferencing imprecision of orthomosaics with an horizontal
 and vertical accuracy of 10cm. A dGPS was also used to georeference
 quadrats of 0.25 m², which assessed the presence or absence of five key
-taxonomic classes of intertidal vegetation: Bacillariophyceae
-\textbf{(benthic diatoms forming biofilms at the sediment surface during
-low tide with biofilm's size ranging from small patches (m²) to entire
-mudflats (km²); henceforth: Benthic diatoms), Phaeophyceae (brown
-macroalgae generally attached to rocks or other substrates able to form
-dense beds in the intertidal zone; henceforth: Brown macroalgae),
-Magnoliopsida (seagrasses, rooted flowering marine plants able to form
-extensive meadows on soft sediments; henceforth: Seagrasses),
-Chlorophyceae (green macroalgae, typically found attached to rocks or
-washed ashore; henceforth: Green macroalgae), and Rhodophyceae (red
-macroalgae, attached to hard substrates but can also be found on
-soft-bottom substrate; henceforth: Red macroalgae)}. Only homogeneous
-vegetation patches extending over several meters were selected as ground
-control points. Pictures of each quadrat were uploaded online to the
-open-portal Global Biodiversity Information Facility (GBIF) platform
+taxonomic classes of intertidal vegetation: Bacillariophyceae (benthic
+diatoms forming biofilms at the sediment surface during low tide with
+biofilm's size ranging from small patches (m²) to entire mudflats (km²);
+henceforth: Benthic diatoms), Phaeophyceae (brown macroalgae generally
+attached to rocks or other substrates able to form dense beds in the
+intertidal zone; henceforth: Brown macroalgae), Magnoliopsida
+(seagrasses, rooted flowering marine plants able to form extensive
+meadows on soft sediments; henceforth: Seagrasses), Chlorophyceae (green
+macroalgae, typically found attached to rocks or washed ashore;
+henceforth: Green macroalgae), and Rhodophyceae (red macroalgae,
+attached to hard substrates but can also be found on soft-bottom
+substrate; henceforth: Red macroalgae). Only homogeneous vegetation
+patches extending over several meters were selected as ground control
+points. Pictures of each quadrat were uploaded online to the open-portal
+Global Biodiversity Information Facility (GBIF) platform
 \citep{BedeGbif}. Each photograph was also processed to estimate the
 percent cover of each type of vegetation using an image processing
 software \citep[ImageJ,][]{schneider2012nih}. Hyperspectral reflectance
@@ -528,8 +527,8 @@ spectral signatures at the spectral resolution of the Micasense RedEdge
 Dual MX. A : Magnoliopsida (\emph{Zostera noltei}) ; B : Phaeophyceae
 (\emph{Fucus sp.}) ; C : Rhodophyceae (\emph{Gracilaria
 vermiculophylla}) ; D : Chlorophyceae (\emph{Ulva sp.}) ; E :
-Bacillariophyceae (Benthic diatoms). \textbf{The taxonomy was chacked
-following the World Register of Marine Species (WORMS).}}
+Bacillariophyceae (Benthic diatoms). The taxonomy was chacked following
+the World Register of Marine Species (WORMS).}
 
 \end{figure}%
 
@@ -606,14 +605,14 @@ green macroalgae, seagrasses, Benthic diatoms, brown macroalgae and red
 macroalgae. Only data from the low-altitude flights
 (Table~\ref{tbl-flights}) were used for training because their 8 mm
 spatial resolution allowed to avoid spectral sub-pixel mixing and to
-accurately identify vegetation classes. \textbf{In the field, seagrasses
+accurately identify vegetation classes. In the field, seagrasses
 displayed two types of color were observed (i.e.~whereas most seagrass
 had green leaves, brownish leaves were also observed due to senescence
 or photo-degradaration). Careful attention was given to incorporating
 training pixels from both color types into the training dataset for the
 seagrass class. This approach was consistently applied to all classes
-within the model.} More than 418,000 pixels at 8 mm resolution from the
-3 training flights were used to train the model
+within the model. More than 418,000 pixels at 8 mm resolution from the 3
+training flights were used to train the model
 (Table~\ref{tbl-validationPX}). For model training, 21 variables were
 used as predictors: the ten raw spectral bands of the Micasense RedEdge
 Dual MX multispectral camera (ranging from 444 nm to 840 nm), the same
@@ -710,13 +709,13 @@ classification}\label{influence-of-the-spatial-resolution-on-classification}
 To assess the impact of spatial resolution on the model's output, we
 resampled the drone orthomosaics from their native resolution (8 cm for
 high-altitude flights) using the ``average'' method from the terra
-package in R. \textbf{The rasters were resampled to 32 different
-resolutions, ranging from 10 cm to 30 m.} DISCOV was then applied to
-these resampled rasters, and the results were compared to the original
-model predictions. For each resolution and vegetation class, we
-calculated the predicted area loss, where a score of 0 indicates no area
-loss during spatial resampling, and a score of 100 indicates complete
-loss of the vegetation class.
+package in R. The rasters were resampled to 32 different resolutions,
+ranging from 10 cm to 30 m. DISCOV was then applied to these resampled
+rasters, and the results were compared to the original model
+predictions. For each resolution and vegetation class, we calculated the
+predicted area loss, where a score of 0 indicates no area loss during
+spatial resampling, and a score of 100 indicates complete loss of the
+vegetation class.
 
 We used a Generalized Linear Model (GLM) with a Beta distribution to
 examine the relationship between pixel resolution, vegetation class, and
@@ -826,7 +825,7 @@ or as brown algae (F1 score of 0.77 and 0.71, respectively).
 
 \centering{
 
-\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred1.png}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{./Figures/Low_res/Maps Pred/FigX-Gaf_High_Pred.png}
 
 }
 
@@ -1330,6 +1329,27 @@ macrophytes. The findings underscore the importance of adopting advanced
 remote sensing tools in ecological studies and environmental monitoring,
 providing a foundation for future research and policy implementation
 aimed at ecosystem conservation and restoration.
+
+\section{Code availability}\label{code-availability}
+
+All code used to create DISCOV model and apply it to Micasense Dual MX
+images, as described are available at
+\href{https://oirysimon.com/discov/}{https://oirysimon.com/discov}
+
+\section{Acknowledgments}\label{acknowledgments}
+
+The authors would like to thank the extensive revisions and comments
+made by anonymous reviewers to improve the work. This work was supported
+through the BiCOME (Biodiversity of the Coastal Ocean: Monitoring with
+Earth Observation) project funded by the European Space Agency under the
+`Earth Observation Science for Society' element of FutureEO-1
+BIODIVERSITY+PRECURSORS call, contract No.~4000135756/21/I-EF. This work
+was also supported by French Ministry of Research \& Higher Education
+for funding first authors PhD. Further, this work was partially funded
+by Portuguese national funds through the FCT---Foundation for Science
+and Technology, I.P., under the individual project/contract
+CEECIND/00962/2017 and by FCT/MCTES through the support to CESAM
+(UIDB/50017/2020+UIDP/50017/2020+LA/P/0094/2020).
 
 
   \bibliography{library.bib}
